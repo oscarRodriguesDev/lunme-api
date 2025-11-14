@@ -1,0 +1,263 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  role          UserRole
+  registro      String?
+  bandeira      String?
+  celular       String?
+  cep           String?
+  cidade        String?
+  cpf           String?
+  credit_card   String?
+  creditos      String?
+  creditos_admin String? //credito compartilhavel com outros users vinculados ele
+  crp           String?
+  cvc           String?
+  fantasy_name  String?
+  idade         String?
+  psicologoid   String?
+  rg            String?
+  rua           String?
+  telefone      String?
+  uf            String?
+  email_confirm String?
+  cfp           String?
+  banner        String?
+  facebook      String?
+  instagram     String?
+  linkedin      String?
+  photoprofile  String?
+  whatsapp      String?
+  description   String?
+  first_acess   Boolean?
+  lastname      String?
+  pontuacao     Int[]
+  compra        Compra[] //lista de compras porque pode comprar mais de uma vez
+  vinculo_admin String? //vinculo com outro user admin
+}
+
+model PrePsicologo {
+  cpf        String  @unique
+  nome       String
+  rg         String
+  email      String
+  data_nasc  String
+  celular    String
+  telefone   String
+  crp        String  @unique
+  habilitado Boolean
+  id         String  @id @default(uuid())
+  cfp        String  @unique
+  lastname   String?
+}
+
+model PrePaciente {
+  id                   String   @id @default(uuid())
+  nome                 String?
+  email                String?
+  endereco             String?
+  nascimento           String?
+  idade                String?
+  cpf                  String?
+  telefone             String?
+  emergencia           String?
+  generoOrientacao     String?
+  estadoCivil          String?
+  origemConhecimento   String?
+  preocupacao          String?
+  motivoAtendimento    String?
+  experienciaAnterior  String?
+  saudeFisica          String?
+  detalhesSaudeFisica  String?
+  medicamentos         String?
+  diagnosticoMental    String?
+  historicoFamiliar    String?
+  rotina               String?
+  sono                 String?
+  atividadeFisica      String?
+  estresse             String?
+  convivencia          String?
+  relacaoFamiliar      String?
+  apoioSocial          String?
+  nivelFelicidade      String?
+  ansiedade            String?
+  pensamentosNegativos String?
+  objetivoTerapia      String?
+  temasDelicados       String?
+  estiloAtendimento    String?
+  observacoesFinais    String?
+  autorizacaoLGPD      Boolean?
+  habilitado           Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  psicologoId          String?
+
+}
+
+model Paciente {
+  id           String   @id @default(uuid())
+  nome         String?
+  cpf          String
+  idade        String?
+  sintomas     String?
+  telefone     String?
+  convenio     String?
+  fantasy_name String?
+  bairro       String?
+  cep          String?
+  cidade       String?
+  complemento  String?
+  email        String?
+  estado       String?
+  numero       String?
+  pais         String?
+  rg           String?
+  rua          String?
+  sexo         String?
+  psicologoId  String?
+  resumo_anmp  String?
+  result_amnp  String[]
+  prontuario   prontuario?
+}
+
+model Consulta {
+  id            String  @id @default(uuid())
+  pacienteId    String?
+  fantasy_name  String?
+  psicologoId   String?
+  data          String?
+  hora          String?
+  tipo_consulta String?
+  observacao    String?
+  recorrencia   String?
+  titulo        String?
+  name          String?
+  code          String? @unique
+  duracao       String?
+}
+
+model Consents_Agreements {
+  ipNumber     String
+  data_consent String
+  hora_consent String
+  nome_consent String
+  cpf_consent  String
+  id           String @id @default(uuid())
+}
+
+model cookies_consent {
+  ipNumber   String
+  data       String
+  Hora       String
+  permissão Boolean
+  id         String  @id @default(uuid())
+}
+
+model Avaliacao {
+  id                    String   @id @default(uuid())
+  audio                 Int
+  video                 Int
+  experienciaGeral      Int
+  avaliacaoProfissional Int
+  comentario            String?
+  createdAt             DateTime @default(now())
+  psicologoId           String
+}
+
+model AcessoAnamneseTemp {
+  id          String    @id @default(uuid())
+  token       String    @unique
+  ip          String?
+  acessado_em DateTime?
+  psicologoId String?
+  criado_em   DateTime  @default(now())
+}
+
+enum UserRole {
+  ADMIN
+  PISICOLOGO_ADM
+  PSYCHOLOGIST
+  COMMON
+}
+
+//modelos de documentos
+model model_doc {
+  id           String   @id @default(uuid())
+  name         String
+  criado_em    DateTime @default(now())
+  psicologoId  String
+  prompt        String
+  tool          String?
+  }
+
+//livros
+model base_cientific {
+  id           String   @id @default(uuid())
+  psicologoId  String
+  name         String
+  autor        String
+  url_capa     String?
+  resumo       String
+
+}
+
+model prontuario {
+  id          String   @id @default(uuid())
+  pacienteId  String   @unique
+  paciente    Paciente @relation(fields: [pacienteId], references: [id])
+  queixaPrincipal String?
+  historico       String?
+  conduta         String?
+  transcription   String?
+  evolucao        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Historico {
+  id          String   @id @default(uuid())
+  psicologoId String
+  userName    String?
+  descricao   String?
+  tipo        String?   @default("geral")
+  timestamp   DateTime? @default(now())
+}
+
+//produtos que serão vendidos, apensa adm podem criar produtos
+model produto {
+  id         String   @id @default(uuid())
+  codigo     String   @unique
+  titulo     String
+  descricao  String
+  preco      Float
+  valorUn    Float
+  quantidade Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+//model pedido aguardando pagamento
+
+model Compra {
+  id          String       @id @default(uuid()) 
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  paymentId   String       @unique // ID da transação do Pagar.me
+  Status      String 
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  qtdCreditos String?
+}

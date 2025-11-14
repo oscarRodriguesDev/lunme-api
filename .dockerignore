@@ -1,0 +1,34 @@
+# Node modules locais (são instalados no container)
+node_modules
+npm-debug.log
+yarn-error.log
+.yarn/*
+.pnp.*
+.pnpm-debug.log
+
+# Arquivos de build locais (vamos gerar dentro do container)
+.next
+out
+dist
+
+# Arquivos de configuração do editor e sistema
+.vscode
+.idea
+.DS_Store
+*.swp
+
+# Logs
+*.log
+
+# Arquivos de ambiente locais (se usar .env local)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Pasta de testes ou arquivos temporários
+coverage
+tmp
+temp
+.next

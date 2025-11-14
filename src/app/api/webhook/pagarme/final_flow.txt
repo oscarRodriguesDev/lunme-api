@@ -1,0 +1,15 @@
+Fluxo final da compra de produto 
+
+1- usuario realiza uma compra
+2- sistema registra compra (id, id do usuario, id da transação, o status da compra, quantidade de credito)
+3-webhook recebe o status da compra quando 'paid' o sistema entrega os creditos e  seta entregue na  compra e zera o credito
+4-webhook entrega o credito diretamente no usuario no banco de dados
+
+
+fluxo hoje:
+no modalRecharg ele realiza o pagamento por pix ou cartçao de credito, tambem salva a compra no banco de dados
+- fetchOrdens(userId: string) na pagina de creditos eu busco as ordens de compra salvas no banco por usuario (use efect faz isso)
+-entregarCreditos(qtdCreditos: string, compraId:string) na pagina de crediitos faz a entrega dos creditos pela api /api/internal/payments/conclusion, que se encarrega 
+de entregar os creditos e mudar o status da compra ( a ideia é fazer essa fecth dentro do webhook)
+- checkPaymentStatus(transactionId: string) - checa o status da compra para decidir se paga ou não ao usuario
+tem um useefect que garante essa entrega tambem na pagina creditos

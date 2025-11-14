@@ -1,0 +1,195 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.AcessoAnamneseTemp (
+  id text NOT NULL,
+  token text NOT NULL,
+  ip text,
+  acessado_em timestamp without time zone,
+  psicologoId text,
+  criado_em timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT AcessoAnamneseTemp_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.Avaliacao (
+  id text NOT NULL,
+  audio integer NOT NULL,
+  video integer NOT NULL,
+  experienciaGeral integer NOT NULL,
+  avaliacaoProfissional integer NOT NULL,
+  comentario text,
+  createdAt timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  psicologoId text NOT NULL,
+  CONSTRAINT Avaliacao_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.Consents_Agreements (
+  ipNumber text NOT NULL,
+  data_consent text NOT NULL,
+  hora_consent text NOT NULL,
+  nome_consent text NOT NULL,
+  cpf_consent text NOT NULL,
+  id text NOT NULL,
+  CONSTRAINT Consents_Agreements_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.Consulta (
+  id text NOT NULL,
+  pacienteId text,
+  fantasy_name text,
+  psicologoId text,
+  data text,
+  hora text,
+  tipo_consulta text,
+  observacao text,
+  recorrencia text,
+  titulo text,
+  name text,
+  code text,
+  duracao text,
+  CONSTRAINT Consulta_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.Paciente (
+  id text NOT NULL,
+  nome text,
+  cpf text NOT NULL,
+  idade text,
+  sintomas text,
+  telefone text,
+  convenio text,
+  fantasy_name text,
+  bairro text,
+  cep text,
+  cidade text,
+  complemento text,
+  email text,
+  estado text,
+  numero text,
+  pais text,
+  rg text,
+  rua text,
+  sexo text,
+  psicologoId text,
+  resumo_anmp text,
+  result_amnp ARRAY,
+  CONSTRAINT Paciente_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.PrePaciente (
+  id text NOT NULL,
+  nome text,
+  email text,
+  endereco text,
+  nascimento text,
+  idade text,
+  cpf text,
+  telefone text,
+  emergencia text,
+  generoOrientacao text,
+  estadoCivil text,
+  origemConhecimento text,
+  preocupacao text,
+  motivoAtendimento text,
+  experienciaAnterior text,
+  saudeFisica text,
+  detalhesSaudeFisica text,
+  medicamentos text,
+  diagnosticoMental text,
+  historicoFamiliar text,
+  rotina text,
+  sono text,
+  atividadeFisica text,
+  estresse text,
+  convivencia text,
+  relacaoFamiliar text,
+  apoioSocial text,
+  nivelFelicidade text,
+  ansiedade text,
+  pensamentosNegativos text,
+  objetivoTerapia text,
+  temasDelicados text,
+  estiloAtendimento text,
+  observacoesFinais text,
+  autorizacaoLGPD boolean,
+  habilitado boolean NOT NULL DEFAULT false,
+  createdAt timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updatedAt timestamp without time zone NOT NULL,
+  psicologoId text,
+  CONSTRAINT PrePaciente_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.PrePsicologo (
+  cpf text NOT NULL,
+  nome text NOT NULL,
+  rg text NOT NULL,
+  email text NOT NULL,
+  data_nasc text NOT NULL,
+  celular text NOT NULL,
+  telefone text NOT NULL,
+  crp text NOT NULL,
+  habilitado boolean NOT NULL,
+  id text NOT NULL,
+  cfp text NOT NULL,
+  lastname text,
+  CONSTRAINT PrePsicologo_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.User (
+  id text NOT NULL,
+  name text NOT NULL,
+  email text NOT NULL,
+  password text NOT NULL,
+  createdAt timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updatedAt timestamp without time zone NOT NULL,
+  role USER-DEFINED NOT NULL,
+  registro text,
+  bandeira text,
+  celular text,
+  cep text,
+  cidade text,
+  cpf text,
+  credit_card text,
+  creditos text,
+  crp text,
+  cvc text,
+  fantasy_name text,
+  idade text,
+  psicologoid text,
+  rg text,
+  rua text,
+  telefone text,
+  uf text,
+  email_confirm text,
+  cfp text,
+  banner text,
+  facebook text,
+  instagram text,
+  linkedin text,
+  photoprofile text,
+  whatsapp text,
+  description text,
+  first_acess boolean,
+  lastname text,
+  pontuacao ARRAY,
+  CONSTRAINT User_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public._prisma_migrations (
+  id character varying NOT NULL,
+  checksum character varying NOT NULL,
+  finished_at timestamp with time zone,
+  migration_name character varying NOT NULL,
+  logs text,
+  rolled_back_at timestamp with time zone,
+  started_at timestamp with time zone NOT NULL DEFAULT now(),
+  applied_steps_count integer NOT NULL DEFAULT 0,
+  CONSTRAINT _prisma_migrations_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.cookies_consent (
+  ipNumber text NOT NULL,
+  data text NOT NULL,
+  Hora text NOT NULL,
+  permissão boolean NOT NULL,
+  id text NOT NULL,
+  CONSTRAINT cookies_consent_pkey PRIMARY KEY (id)
+);
+
+
+//git revert -m 1 <hash-do-merge>
+
+
+
+
