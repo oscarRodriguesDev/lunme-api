@@ -1,43 +1,89 @@
 import { NextResponse } from "next/server";
+import { PrismaClient, UserRole } from "@prisma/client";
+import { compare } from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
-
   try {
-    // 1. Buscar CSRF Token
-    const csrfRes = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/csrf`);
-    const { csrfToken } = await csrfRes.json();
+    const { email, password } = await req.json(); //chave secreta para key da clinica de psicologia no futuro
 
-    // 2. Executar login no NextAuth
-    const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/auth/callback/credentials`,
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email e senha são obrigatórios." },
+        { status: 400 }
+      );
+    }
+
+    // 1. Buscar usuário
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Usuário não existe no sistema." },
+        { status: 404 }
+      );
+    }
+
+    // 2. Validar senha (bcrypt)
+    const isValid = await compare(password, user.password);
+
+    if (!isValid) {
+      return NextResponse.json(
+        { error: "Usuário ou senha incorretos." },
+        { status: 401 }
+      );
+    }
+
+    // 3. Verificar roles permitidos (igual ao NextAuth)
+    const allowedRoles = [
+      UserRole.ADMIN,
+      UserRole.PSYCHOLOGIST,
+      UserRole.COMMON,
+      UserRole.PISICOLOGO_ADM,
+    ];
+
+    if (!allowedRoles.includes(user.role)) {
+      return NextResponse.json(
+        { error: "Acesso negado: este usuário não tem permissão." },
+        { status: 403 }
+      );
+    }
+
+    // 4. Criar JWT com seus dados do token()
+    const token = jwt.sign(
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          csrfToken,
-          email,
-          password,
-          callbackUrl: "/",
-          json: "true"
-        }),
+        id: user.id,
+        role: user.role,
+        crp: user.crp ?? null,
+        email: user.email,
+      },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "7d",
       }
     );
 
-    const data = await response.json();
-
-    if (data.error) {
-      return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
-    }
-
-    const res = NextResponse.json(data);
-    const cookie = response.headers.get("set-cookie");
-    if (cookie) res.headers.set("set-cookie", cookie);
-
-    return res;
-  } catch (err) {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        crp: user.crp,
+      },
+      token,
+      expiresIn: "3h",
+    });
+  } catch (error) {
+    console.error("Erro no login:", error);
+    return NextResponse.json(
+      { error: "Erro interno no servidor." },
+      { status: 500 }
+    );
   }
 }
