@@ -5,6 +5,125 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Realiza login do usuário
+ *     description: Valida email e senha, checa permissões e retorna um token JWT para autenticação.
+ *     tags:
+ *       - Autenticação
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "usuario@exemplo.com"
+ *               password:
+ *                 type: string
+ *                 example: "senhaSegura123"
+ *
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "clx123456"
+ *                     name:
+ *                       type: string
+ *                       example: "Maria Silva"
+ *                     role:
+ *                       type: string
+ *                       example: "PSYCHOLOGIST"
+ *                     email:
+ *                       type: string
+ *                       example: "maria@exemplo.com"
+ *                     crp:
+ *                       type: string
+ *                       nullable: true
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 expiresIn:
+ *                   type: string
+ *                   example: "3h"
+ *
+ *       400:
+ *         description: Campos obrigatórios ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Email e senha são obrigatórios."
+ *
+ *       401:
+ *         description: Senha incorreta ou usuário inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário ou senha incorretos."
+ *
+ *       403:
+ *         description: Usuário sem permissão
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Acesso negado: este usuário não tem permissão."
+ *
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário não existe no sistema."
+ *
+ *       500:
+ *         description: Erro interno no servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor."
+ */
+
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json(); //chave secreta para key da clinica de psicologia no futuro

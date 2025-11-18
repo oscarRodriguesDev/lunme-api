@@ -10,13 +10,15 @@ export default function LandingPage() {
     const randomTime = Math.floor(Math.random() * 80);
 
     const timer = setTimeout(() => {
-      router.replace('/login');
+      router.replace('/api-docs');
     }, randomTime);
 
     return () => clearTimeout(timer);
   }, [router]);
 
   return (
+    <>
+    
     <div className="flex items-center justify-center min-h-screen bg-[#0a2e2e]">
       <h1 className="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#0A4D4D] to-[#1FAFAF] animate-glow">
         Lunme 
@@ -36,5 +38,6 @@ export default function LandingPage() {
         }
       `}</style>
     </div>
+    </>
   );
 }

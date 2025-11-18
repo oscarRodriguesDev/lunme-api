@@ -5,25 +5,28 @@ import { NextResponse } from 'next/server';
 
 const transcriptionStorage: Record<string, Set<string>> = {};
 
+
 /**
  * @swagger
- * /api/transcriptions:
+ * /api/message?sala={sala}:
  *   get:
- *     summary: Recupera transcrição de uma sala
- *     description: Retorna toda a transcrição acumulada de uma sala específica. Se não houver transcrição, retorna uma string vazia.
+ *     summary: Recupera mensagens transcritas de uma sala
+ *     description: Retorna a transcrição completa armazenada temporariamente para a sala informada.
  *     tags:
- *       - Transcrições
+ *       - Transcrição
+ *
  *     parameters:
  *       - in: query
  *         name: sala
  *         required: true
+ *         description: Identificador único da sala onde as mensagens foram armazenadas.
  *         schema:
  *           type: string
- *         description: Identificador da sala de transcrição
- *         example: "sala123"
+ *         example: "sala_12345"
+ *
  *     responses:
  *       200:
- *         description: Transcrição recuperada com sucesso.
+ *         description: Transcrição retornada com sucesso.
  *         content:
  *           application/json:
  *             schema:
@@ -31,10 +34,10 @@ const transcriptionStorage: Record<string, Set<string>> = {};
  *               properties:
  *                 transcript:
  *                   type: string
- *                   description: Texto completo da transcrição
- *                   example: "Olá, bem-vindo à sala!\nAqui estamos testando a transcrição."
+ *                   example: "Olá, tudo bem?\nPodemos começar a consulta agora."
+ *
  *       400:
- *         description: Parâmetro "sala" não fornecido.
+ *         description: Parâmetro obrigatório ausente.
  *         content:
  *           application/json:
  *             schema:
@@ -42,9 +45,10 @@ const transcriptionStorage: Record<string, Set<string>> = {};
  *               properties:
  *                 message:
  *                   type: string
- *                   example: 'Parâmetro "sala" é obrigatório.'
+ *                   example: "Parâmetro \"sala\" é obrigatório."
+ *
  *       500:
- *         description: Erro interno do servidor.
+ *         description: Erro interno no servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -54,6 +58,7 @@ const transcriptionStorage: Record<string, Set<string>> = {};
  *                   type: string
  *                   example: "Erro interno do servidor."
  */
+
 
 export async function GET(req: Request) {
   try {
@@ -79,16 +84,15 @@ export async function GET(req: Request) {
 }
 
 
-
-
 /**
  * @swagger
- * /api/transcriptions:
+ * /api/message:
  *   post:
- *     summary: Salva uma nova transcrição em uma sala
- *     description: Adiciona o texto da transcrição à sala especificada. Transcrições duplicadas dentro da mesma sala não são adicionadas.
+ *     summary: Adiciona um trecho de transcrição a uma sala
+ *     description: Recebe texto transcrito e armazena temporariamente no servidor dentro da sala indicada.
  *     tags:
- *       - Transcrições
+ *       - Transcrição
+ *
  *     requestBody:
  *       required: true
  *       content:
@@ -101,15 +105,16 @@ export async function GET(req: Request) {
  *             properties:
  *               sala:
  *                 type: string
- *                 description: Identificador da sala
- *                 example: "sala123"
+ *                 description: Identificador único da sala.
+ *                 example: "sala_12345"
  *               transcript:
  *                 type: string
- *                 description: Texto da transcrição a ser salvo
- *                 example: "Olá, esta é a primeira transcrição da sala."
+ *                 description: Trecho de texto transcrito que será armazenado.
+ *                 example: "O paciente relatou melhora desde a última sessão."
+ *
  *     responses:
  *       201:
- *         description: Transcrição salva com sucesso.
+ *         description: Transcrição adicionada com sucesso.
  *         content:
  *           application/json:
  *             schema:
@@ -120,9 +125,10 @@ export async function GET(req: Request) {
  *                   example: "Transcrição salva com sucesso."
  *                 transcript:
  *                   type: string
- *                   example: "Olá, esta é a primeira transcrição da sala."
+ *                   example: "O paciente relatou melhora desde a última sessão."
+ *
  *       400:
- *         description: Dados inválidos fornecidos.
+ *         description: Dados inválidos enviados ao servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -130,9 +136,10 @@ export async function GET(req: Request) {
  *               properties:
  *                 message:
  *                   type: string
- *                   example: 'Dados inválidos. Informe "sala" e "transcript".'
+ *                   example: "Dados inválidos. Informe \"sala\" e \"transcript\"."
+ *
  *       500:
- *         description: Erro interno do servidor.
+ *         description: Erro interno ao processar a requisição.
  *         content:
  *           application/json:
  *             schema:

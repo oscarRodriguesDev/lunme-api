@@ -4,59 +4,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 
-/**
- * @swagger
- * /api/acesso-anamnese:
- *   get:
- *     summary: Verifica autorização de acesso à anamnese
- *     description: Verifica se o psicólogo pode acessar a anamnese temporária usando um token. O acesso é válido por 30 minutos após o primeiro acesso.
- *     tags:
- *       - Anamnese
- *     parameters:
- *       - in: query
- *         name: psicologoId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID do psicólogo solicitando o acesso
- *       - in: query
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: Token único de acesso à anamnese
- *     responses:
- *       200:
- *         description: Acesso autorizado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 autorizado:
- *                   type: boolean
- *                   example: true
- *       400:
- *         description: Parâmetros ausentes
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Parâmetros ausentes
- *       403:
- *         description: Acesso não autorizado (IP ou tempo inválido)
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 autorizado:
- *                   type: boolean
- *                   example: false
- */
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);

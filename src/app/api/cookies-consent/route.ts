@@ -2,7 +2,61 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 
-//consentimento de cookies
+/**
+ * @swagger
+ * /api/consent:
+ *   get:
+ *     summary: Verifica se o usuário já deu consentimento para cookies.
+ *     description: Retorna o registro de consentimento baseado no IP do cliente. Se estiver expirado (mais de 30 dias), o registro é removido e retornado 404.
+ *     tags:
+ *       - uso de cookies
+ *     parameters:
+ *       - in: header
+ *         name: x-forwarded-for
+ *         required: false
+ *         description: IP real do usuário (usado quando a aplicação está atrás de proxy).
+ *         schema:
+ *           type: string
+ *           example: "201.22.31.45"
+ *     responses:
+ *       200:
+ *         description: Consentimento encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   example: "clxyzc12345"
+ *                 ipNumber:
+ *                   type: string
+ *                   example: "201.22.31.45"
+ *                 data:
+ *                   type: string
+ *                   example: "17/11/2025"
+ *       404:
+ *         description: Consentimento não encontrado ou expirado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Consentimento não encontrado"
+ *       500:
+ *         description: Erro ao buscar consentimento.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao buscar consentimento"
+ */
+
 export async function GET(req: Request) {
   try {
     const prisma = new PrismaClient();
@@ -53,6 +107,49 @@ export async function GET(req: Request) {
   }
 }
 
+/**
+ * @swagger
+ * /api/cookies-consent:
+ *   post:
+ *     summary: Registra o consentimento de cookies do usuário.
+ *     description: Armazena no banco o consentimento baseado no IP do cliente, junto com data, hora e status (aceito ou não).
+ *     tags:
+ *       - uso de cookies
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - accepted
+ *               - timestamp
+ *             properties:
+ *               accepted:
+ *                 type: boolean
+ *                 example: true
+ *                 description: Indica se o usuário aceitou os cookies.
+ *               timestamp:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-11-17T23:59:00.000Z"
+ *                 description: Momento exato do consentimento.
+ *     responses:
+ *       200:
+ *         description: Consentimento salvo com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Corpo da requisição inválido.
+ *       500:
+ *         description: Erro interno ao salvar consentimento.
+ */
 
 export async function POST(req: Request) {
   try {

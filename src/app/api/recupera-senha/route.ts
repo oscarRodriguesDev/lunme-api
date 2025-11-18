@@ -65,12 +65,13 @@ async function notificar(email: string, nome: string, email_system: string, senh
 
 /**
  * @swagger
- * /api/recover-password:
+ * /api/recupera-senha:
  *   put:
  *     summary: Recuperação de senha
- *     description: Permite que o usuário recupere a senha. Caso o email seja válido e confirmado, será enviada uma nova senha provisória para o usuário.
+ *     description: Envia uma nova senha provisória para o e-mail do usuário, caso o e-mail esteja cadastrado e confirmado.
  *     tags:
  *       - Autenticação
+ *
  *     requestBody:
  *       required: true
  *       content:
@@ -82,9 +83,9 @@ async function notificar(email: string, nome: string, email_system: string, senh
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
- *                 description: E-mail cadastrado do usuário
- *                 example: usuario@email.com
+ *                 description: E-mail cadastrado no sistema.
+ *                 example: "usuario@example.com"
+ *
  *     responses:
  *       200:
  *         description: Senha alterada com sucesso e enviada por e-mail.
@@ -95,9 +96,10 @@ async function notificar(email: string, nome: string, email_system: string, senh
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Senha alterada com sucesso. Verifique seu e-mail para a nova senha.
+ *                   example: "Senha alterada com sucesso. Verifique seu e-mail para a nova senha."
+ *
  *       400:
- *         description: Erro de validação (e-mail não fornecido ou não confirmado).
+ *         description: E-mail não enviado ou e-mail não confirmado.
  *         content:
  *           application/json:
  *             schema:
@@ -105,9 +107,10 @@ async function notificar(email: string, nome: string, email_system: string, senh
  *               properties:
  *                 message:
  *                   type: string
- *                   example: E-mail não confirmado. Não é possível realizar a recuperação de senha.
+ *                   example: "E-mail não confirmado. Não é possível realizar a recuperação de senha."
+ *
  *       404:
- *         description: Usuário não encontrado.
+ *         description: E-mail não encontrado no sistema.
  *         content:
  *           application/json:
  *             schema:
@@ -115,9 +118,10 @@ async function notificar(email: string, nome: string, email_system: string, senh
  *               properties:
  *                 message:
  *                   type: string
- *                   example: E-mail não encontrado.
+ *                   example: "E-mail não encontrado."
+ *
  *       500:
- *         description: Erro interno do servidor ao tentar recuperar a senha.
+ *         description: Erro interno ao tentar realizar a recuperação de senha.
  *         content:
  *           application/json:
  *             schema:
@@ -125,10 +129,8 @@ async function notificar(email: string, nome: string, email_system: string, senh
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Erro ao tentar recuperar a senha.
+ *                   example: "Erro ao tentar recuperar a senha."
  */
-
-
 
 export async function PUT(req: Request) {
     const { email } = await req.json(); // Supondo que o corpo da requisição tenha o email fornecido pelo usuário

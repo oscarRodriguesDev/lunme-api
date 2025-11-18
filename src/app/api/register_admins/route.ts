@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/register_admins:
  *   post:
- *     summary: Criação de um administrador
+ *     summary: Criação de um administrador rota provisoria para criação de usuarios não deve ser exposta em produção
  *     description: Endpoint para registrar um administrador no sistema.
  *     tags:
  *       - Administradores

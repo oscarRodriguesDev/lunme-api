@@ -6,6 +6,61 @@ const prisma = new PrismaClient();
 
 
 
+/**
+ * @swagger
+ * /api/amnp/{token}:
+ *   get:
+ *     summary: Valida o acesso temporário à anamnese por token
+ *     description: >
+ *       Valida um token temporário de acesso à anamnese.  
+ *       O link expira em 10 minutos e só pode ser acessado pelo mesmo IP após o primeiro acesso.
+ *     tags:
+ *       - Anamnese
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token único de acesso enviado ao paciente.
+ *     responses:
+ *       200:
+ *         description: Acesso autorizado.
+ *         content:
+ *           application/json:
+ *             examples:
+ *               permitido:
+ *                 summary: Token válido
+ *                 value:
+ *                   autorizado: true
+ *       400:
+ *         description: Token não informado.
+ *         content:
+ *           application/json:
+ *             example:
+ *               autorizado: false
+ *               erro: "Token ausente"
+ *       404:
+ *         description: Token inexistente no banco.
+ *         content:
+ *           application/json:
+ *             example:
+ *               autorizado: false
+ *               erro: "Token inválido"
+ *       403:
+ *         description: Token expirado ou inválido após validações.
+ *         content:
+ *           application/json:
+ *             oneOf:
+ *               - example:
+ *                   autorizado: false
+ *                   erro: "Link expirado (tempo excedido)"
+ *               - example:
+ *                   autorizado: false
+ *                   erro: "Link expirado ou IP diferente"
+ *       500:
+ *         description: Erro interno no servidor.
+ */
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.pathname.split("/").pop();
@@ -48,6 +103,50 @@ export async function GET(req: NextRequest) {
 }
 
 
+/**
+ * @swagger
+ * /api/amnp/{token}:
+ *   delete:
+ *     summary: Remove um registro de acesso temporário à anamnese
+ *     description: >
+ *       Deleta manualmente um token temporário de acesso à anamnese.  
+ *       Usado para revogação imediata do link.
+ *     tags:
+ *       - Anamnese
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token temporário que será removido.
+ *     responses:
+ *       200:
+ *         description: Registro removido com sucesso.
+ *         content:
+ *           application/json:
+ *             example:
+ *               sucesso: true
+ *               mensagem: "Registro removido com sucesso"
+ *       400:
+ *         description: Falta o token na URL.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Token ausente"
+ *       404:
+ *         description: Nenhum registro corresponde ao token informado.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Registro não encontrado"
+ *       500:
+ *         description: Erro inesperado ao tentar remover o registro.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Erro interno ao tentar deletar"
+ */
 
 export async function DELETE(req: NextRequest) {
   const token = req.nextUrl.pathname.split('/').pop();

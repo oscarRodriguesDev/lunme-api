@@ -6,20 +6,19 @@ let peerStorage: Record<string, string> = {}; // Armazena temporariamente os pee
 
 /**
  * @swagger
- * /api/peers:
+ * /api/save_peer:
  *   get:
- *     summary: Recupera peerId associado a um iddinamico
- *     description: Retorna o peerId correspondente ao iddinamico fornecido como parâmetro de query. Se não houver correspondência, retorna 404.
+ *     summary: Recupera o peerId associado a um iddinamico
+ *     description: Retorna o peerId salvo no peerStorage a partir de um identificador dinâmico usado nas conexões P2P.
  *     tags:
- *       - Peers
+ *       - Peer
  *     parameters:
  *       - in: query
  *         name: iddinamico
  *         required: true
  *         schema:
  *           type: string
- *         description: Identificador dinâmico usado para buscar o peerId
- *         example: "abc123"
+ *         description: ID dinâmico usado para mapear um peerId no servidor.
  *     responses:
  *       200:
  *         description: PeerId encontrado com sucesso.
@@ -30,42 +29,31 @@ let peerStorage: Record<string, string> = {}; // Armazena temporariamente os pee
  *               properties:
  *                 peerId:
  *                   type: string
- *                   description: ID do peer
- *                   example: "peer_456XYZ"
+ *                   description: Peer ID vinculado ao iddinamico.
  *                 id:
  *                   type: string
- *                   description: ID dinâmico fornecido
- *                   example: "abc123"
+ *                   description: Mesmo iddinamico fornecido.
+ *             example:
+ *               peerId: "peer-1287312-xas"
+ *               id: "abc123"
  *       400:
- *         description: Parâmetro iddinamico ausente.
+ *         description: Parâmetro iddinamico não fornecido.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Falta o parâmetro iddinamico."
+ *             example:
+ *               message: "Falta o parâmetro iddinamico."
  *       404:
- *         description: Nenhum peerId encontrado para o iddinamico fornecido.
+ *         description: Nenhum peerId encontrado.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Nenhum peerId encontrado para o iddinamico fornecido."
+ *             example:
+ *               message: "Nenhum peerId encontrado para o iddinamico fornecido."
  *       500:
- *         description: Erro interno do servidor.
+ *         description: Erro interno no servidor.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Erro interno do servidor."
+ *             example:
+ *               message: "Erro interno do servidor."
  */
 
 export async function GET(req: Request) {
@@ -107,10 +95,10 @@ export async function GET(req: Request) {
  * @swagger
  * /api/save_peer:
  *   post:
- *     summary: Salva um peerId associado a um iddinamico
- *     description: Recebe um identificador dinâmico (iddinamico) e um peerId e os armazena para uso posterior.
+ *     summary: Registra ou atualiza o peerId associado a um iddinamico
+ *     description: Salva um peerId no armazenamento interno (peerStorage) vinculado ao identificador dinâmico enviado pelo cliente.
  *     tags:
- *       - Peers
+ *       - Peer
  *     requestBody:
  *       required: true
  *       content:
@@ -123,43 +111,32 @@ export async function GET(req: Request) {
  *             properties:
  *               iddinamico:
  *                 type: string
- *                 description: Identificador dinâmico para associar ao peerId
- *                 example: abc123
+ *                 description: Identificador dinâmico usado como chave.
  *               peerId:
  *                 type: string
- *                 description: ID do peer a ser salvo
- *                 example: peer_456XYZ
+ *                 description: Peer ID a ser associado ao iddinamico.
+ *           example:
+ *             iddinamico: "abc123"
+ *             peerId: "peer-091283-asd"
  *     responses:
  *       200:
- *         description: ID salvo com sucesso
+ *         description: PeerId salvo com sucesso.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: ID salvo com sucesso
+ *             example:
+ *               message: "ID salvo com sucesso."
  *       400:
- *         description: Parâmetros obrigatórios ausentes
+ *         description: Parâmetros ausentes.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Faltam parâmetros obrigatórios
+ *             example:
+ *               message: "Faltam parâmetros obrigatórios."
  *       500:
- *         description: Erro interno do servidor
+ *         description: Erro interno no servidor.
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Erro interno do servidor
+ *             example:
+ *               message: "Erro interno do servidor."
  */
 
 export async function POST(req: Request) {

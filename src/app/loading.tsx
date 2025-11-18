@@ -13,6 +13,8 @@ export default function LandingPage() {
   }, [router]);
 
   return (
+    <>
+    
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A4D4D] text-white">
       {/* Logo Lunme */}
       <h1 className="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#0A4D4D] to-[#1FAFAF] animate-glow">
@@ -46,5 +48,6 @@ export default function LandingPage() {
         }
       `}</style>
     </div>
+    </>
   );
 }
