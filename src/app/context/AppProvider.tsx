@@ -11,7 +11,7 @@ import { GrUserAdmin } from 'react-icons/gr';
 import { FaHourglassHalf } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import CardUser from '../(private-access)/components/cardUser';
+
 import { useSession } from 'next-auth/react';
 
 type AppProviderProps = {
