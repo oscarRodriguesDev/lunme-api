@@ -8,16 +8,22 @@ const nextConfig: NextConfig = {
         hostname: 'qfpygaqyldmthqakmisq.supabase.co',
         pathname: "/storage/v1/object/public/tiviai-images/**",
       },
-      
-   
     ],
   },
+
   experimental: {
     serverActions: {
-      bodySizeLimit: '10mb',
+      bodySizeLimit: "10mb",
     },
+  },
+
+  // 🔥 FIX necessário para o Prisma no Vercel
+  outputFileTracingIncludes: {
+    // inclui os binários do Prisma no build
+    "/*": ["./node_modules/.prisma/client/**/*"],
+    "/api/**": ["./node_modules/.prisma/client/**/*"],
   },
 };
 
-export default nextConfig; 
+export default nextConfig;
 
