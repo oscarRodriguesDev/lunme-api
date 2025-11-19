@@ -20,7 +20,7 @@ const options = {
     servers: [
       {
         // deixe SEM /api aqui; nos @swagger você usa caminhos começando com /api
-        url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+        url: process.env.PUBLIC_URL,
       },
     ],
   },
