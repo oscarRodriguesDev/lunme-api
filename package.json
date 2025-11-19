@@ -2,6 +2,7 @@
   "name": "mymeet",
   "version": "1.9.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "start": "next start",
