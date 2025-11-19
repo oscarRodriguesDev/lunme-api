@@ -20,8 +20,8 @@ const options = {
     servers: [
       {
         // deixe SEM /api aqui; nos @swagger você usa caminhos começando com /api
-        url: process.env.NEXT_PUBLIC_URL,
-      },
+        url: process.env.API_BASE_URL+"/api-docs",
+      }
     ],
   },
   apis: apisGlobs,
