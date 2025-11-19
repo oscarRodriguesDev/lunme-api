@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 import swaggerJSDoc from "swagger-jsdoc";
 import path from "path";
 
-export const runtime = "nodejs"; // necessário para swagger-jsdoc
+export const runtime = "nodejs"; // swagger-jsdoc precisa de Node (fs/glob)
 
-// Garante que encontraremos os arquivos tanto em DEV quanto na VERCEL
 const apisGlobs = [
-  path.join(process.cwd(), "app", "api", "**/*.{js,ts}"),
-  path.join(process.cwd(), "src", "app", "api", "**/*.{js,ts}"),
-  path.join(process.cwd(), "**/app/api/**/*.{js,ts}"),
+  path.join(process.cwd(), "src", "app", "api", "**/*.{js,ts,jsx,tsx}"),
+  path.join(process.cwd(), "app", "api", "**/*.{js,ts,jsx,tsx}"),
 ];
 
 const options = {
@@ -21,9 +19,8 @@ const options = {
     },
     servers: [
       {
-        // Deixe somente "/"
-        // O Swagger UI se adapta ao domínio automaticamente
-        url: "/",
+        // deixe SEM /api aqui; nos @swagger você usa caminhos começando com /api
+        url: process.env.NEXT_PUBLIC_URL,
       },
     ],
   },
@@ -31,6 +28,7 @@ const options = {
 };
 
 export async function GET() {
+  // Gera na hora para refletir mudanças sem reiniciar o dev server
   const spec = swaggerJSDoc(options);
   return NextResponse.json(spec);
 }

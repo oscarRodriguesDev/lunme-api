@@ -1,5 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc";
-const url = process.env.PUBLIC_URL
+const url = process.env.NEXT_PUBLIC_URL
 
 const options = {
   definition: {
