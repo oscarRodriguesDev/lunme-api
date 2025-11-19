@@ -1,5 +1,4 @@
 import swaggerJsdoc from "swagger-jsdoc";
-const url =process.env.API_BASE_URL
 
 const options = {
   definition: {
@@ -11,22 +10,12 @@ const options = {
     },
     servers: [
       {
-        url: `${url}/api`, // base da sua API
+        url: "http://localhost:3000/api", // base da sua API
       },
     ],
   },
   // caminhos para arquivos que contêm comentários Swagger
-apis: [
-  `${process.cwd()}/app/api/**/*.ts`,
-  `${process.cwd()}/app/api/**/*.js`,
-],
-
-// caminhos para arquivos que contêm comentários Swagger
-  apis: [
-    `${process.cwd()}/app/api/**/*.ts`,
-    `${process.cwd()}/app/api/**/*.js`,
-  ],
-
+  apis: ["./app/api/**/*.ts"], 
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
