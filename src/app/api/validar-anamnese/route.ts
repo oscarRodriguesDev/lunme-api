@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 
 
+
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const psicologoId = url.searchParams.get('psicologoId');
