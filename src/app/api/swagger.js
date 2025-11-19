@@ -16,7 +16,17 @@ const options = {
     ],
   },
   // caminhos para arquivos que contêm comentários Swagger
-  apis: ["./app/api/**/*.ts"], 
+apis: [
+  `${process.cwd()}/app/api/**/*.ts`,
+  `${process.cwd()}/app/api/**/*.js`,
+],
+
+// caminhos para arquivos que contêm comentários Swagger
+  apis: [
+    `${process.cwd()}/app/api/**/*.ts`,
+    `${process.cwd()}/app/api/**/*.js`,
+  ],
+
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
