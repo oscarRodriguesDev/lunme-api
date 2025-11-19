@@ -20,7 +20,7 @@ const options = {
     servers: [
       {
         // deixe SEM /api aqui; nos @swagger você usa caminhos começando com /api
-        url: process.env.API_BASE_URL+"/api-docs",
+        url: process.env.API_BASE_URL,
       }
     ],
   },
