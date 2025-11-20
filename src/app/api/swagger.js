@@ -1,4 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc";
+const url = process.env.API_BASE_URL || "http://localhost:3000/api";
 
 const options = {
   definition: {
@@ -10,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/api", // base da sua API
+        url: url, // base da sua API
       },
     ],
   },
