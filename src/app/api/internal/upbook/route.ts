@@ -12,6 +12,90 @@ interface Livro {
 
 
 const prisma = new PrismaClient()
+/**
+ * @swagger
+ * /api/internal/upbook:
+ *   post:
+ *     summary: Cria um novo livro científico
+ *     description: Adiciona um livro à base científica, vinculando opcionalmente a um psicólogo.
+ *     tags:
+ *       - Interno - Livros
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - autor
+ *               - resumo
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Título do livro
+ *                 example: "Psicologia Moderna"
+ *               psicologoId:
+ *                 type: string
+ *                 description: ID do psicólogo associado (opcional)
+ *                 example: "abc123"
+ *               autor:
+ *                 type: string
+ *                 description: Nome do autor
+ *                 example: "Sigmund Freud"
+ *               url_capa:
+ *                 type: string
+ *                 description: URL da imagem de capa (opcional)
+ *                 example: "https://example.com/capa.jpg"
+ *               resumo:
+ *                 type: string
+ *                 description: Resumo do livro
+ *                 example: "Este livro explora os conceitos fundamentais da psicologia moderna."
+ *
+ *     responses:
+ *       201:
+ *         description: Livro criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 psicologoId:
+ *                   type: string
+ *                 autor:
+ *                   type: string
+ *                 url_capa:
+ *                   type: string
+ *                 resumo:
+ *                   type: string
+ *
+ *       400:
+ *         description: Campos obrigatórios ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Título, autor e resumo são obrigatórios"
+ *
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor"
+ */
 
 export async function POST(req: Request) {
     try {
@@ -44,6 +128,65 @@ export async function POST(req: Request) {
 
   
   //busca os livros de um psicologo
+  /**
+ * @swagger
+ * /api/internal/upbook:
+ *   get:
+ *     summary: Lista livros científicos de um psicólogo
+ *     description: Retorna todos os livros científicos associados a um psicólogo específico.
+ *     tags:
+ *       - Interno - Livros
+ *     parameters:
+ *       - in: query
+ *         name: psicologoId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do psicólogo
+ *     responses:
+ *       200:
+ *         description: Lista de livros retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   psicologoId:
+ *                     type: string
+ *                   autor:
+ *                     type: string
+ *                   url_capa:
+ *                     type: string
+ *                   resumo:
+ *                     type: string
+ *       400:
+ *         description: Parâmetro obrigatório ausente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Parâmetro 'psicologoId' é obrigatório"
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor"
+ */
+
   export async function GET(req: Request) {
     try {
       // Extrai psicologoId da query string
@@ -68,6 +211,63 @@ export async function POST(req: Request) {
     }
   }
   
+/**
+ * @swagger
+ * /api/internal/upbook:
+ *   delete:
+ *     summary: Deleta um livro científico pelo ID
+ *     description: Remove um livro específico do banco de dados usando seu ID.
+ *     tags:
+ *       - Interno - Livros
+ *     parameters:
+ *       - in: query
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do livro a ser deletado
+ *     responses:
+ *       200:
+ *         description: Livro deletado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Livro deletado com sucesso"
+ *       400:
+ *         description: Parâmetro obrigatório ausente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Parâmetro 'bookId' é obrigatório"
+ *       404:
+ *         description: Livro não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Livro não encontrado"
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor"
+ */
 
   export async function DELETE(req: Request) {
     try {

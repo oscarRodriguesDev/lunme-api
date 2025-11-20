@@ -31,23 +31,111 @@ function codeGen(data: string, hora: string): string {
 
 
 
+
 /**
- * Cria uma nova consulta no banco de dados.
+ * @swagger
+ * /api/internal/gen-meet:
+ *   post:
+ *     summary: Cria uma nova consulta
+ *     description: Registra uma nova consulta associada a paciente e psicólogo.
+ *     tags:
+ *       - Interno - Agendamentos
  *
- * Esta função espera um corpo JSON contendo os seguintes campos:
- * - `pacienteId`: ID do paciente associado à consulta
- * - `name`: Nome do paciente
- * - `fantasy_name`: Nome fantasia do paciente
- * - `psicologoId`: ID do psicólogo associado à consulta
- * - `data`: Data da consulta no formato string (ex: "20250406")
- * - `hora`: Hora da consulta no formato string (ex: "1530")
- * - `tipo_consulta`: Tipo de consulta (ex: "terapia")
- * - `observacao`: Observação adicional sobre a consulta
- * - `recorrencia`: Indica se a consulta é recorrente (ex: "sim" ou "não")
- * - `duracao`: Duração da consulta em minutos
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - pacienteId
+ *               - name
+ *               - fantasy_name
+ *               - psicologoId
+ *               - data
+ *               - hora
+ *               - tipo_consulta
+ *               - duracao
+ *             properties:
+ *               pacienteId:
+ *                 type: string
+ *                 example: "user_12345"
+ *               name:
+ *                 type: string
+ *                 example: "João Silva"
+ *               fantasy_name:
+ *                 type: string
+ *                 example: "Clínica Exemplo"
+ *               psicologoId:
+ *                 type: string
+ *                 example: "psico_98765"
+ *               data:
+ *                 type: string
+ *                 format: date
+ *                 example: "2025-11-20"
+ *               hora:
+ *                 type: string
+ *                 example: "14:30"
+ *               tipo_consulta:
+ *                 type: string
+ *                 example: "Online"
+ *               observacao:
+ *                 type: string
+ *                 example: "Consulta de avaliação inicial"
+ *               recorrencia:
+ *                 type: string
+ *                 example: "Semanal"
+ *               duracao:
+ *                 type: number
+ *                 example: 50
  *
- * @returns JSON com a consulta criada e o status 201 (Created).
- *  
+ *     responses:
+ *       201:
+ *         description: Consulta criada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   example: "consulta_123456"
+ *                 pacienteId:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 fantasy_name:
+ *                   type: string
+ *                 titulo:
+ *                   type: string
+ *                   example: "Consulta"
+ *                 psicologoId:
+ *                   type: string
+ *                 data:
+ *                   type: string
+ *                 hora:
+ *                   type: string
+ *                 tipo_consulta:
+ *                   type: string
+ *                 observacao:
+ *                   type: string
+ *                 recorrencia:
+ *                   type: string
+ *                 code:
+ *                   type: string
+ *                 duracao:
+ *                   type: number
+ *
+ *       500:
+ *         description: Erro ao criar consulta.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao criar reunião"
  */
 
 export async function POST(req: Request) {
@@ -93,19 +181,97 @@ export async function POST(req: Request) {
 }
 
 /**
- * Recupera todas as consultas do banco de dados.
+ * @swagger
+ * /api/internal/gen-meet:
+ *   get:
+ *     summary: Lista todas as consultas de um psicólogo
+ *     description: |
+ *       Retorna todas as consultas associadas a um psicólogo específico.  
+ *       Caso não existam consultas, retorna um exemplo de consulta fictícia para exibição.
+ *     tags:
+ *      - Interno - Agendamentos
  *
- * @returns Lista de consultas em formato JSON.
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do psicólogo cujas consultas serão listadas.
  *
- * @throws Retorna erro 500 se a consulta ao banco de dados falhar.
+ *     responses:
+ *       200:
+ *         description: Consultas retornadas com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "consulta_12345"
+ *                   pacienteId:
+ *                     type: string
+ *                     nullable: true
+ *                   fantasy_name:
+ *                     type: string
+ *                     example: "Este agendamento é apenas um exemplo"
+ *                   name:
+ *                     type: string
+ *                     example: "Consulta Demonstrativa"
+ *                   titulo:
+ *                     type: string
+ *                     example: "Sessão de Demonstração"
+ *                   psicologoId:
+ *                     type: string
+ *                   data:
+ *                     type: string
+ *                     format: date
+ *                     example: "2025-11-20"
+ *                   hora:
+ *                     type: string
+ *                     example: "10:00"
+ *                   tipo_consulta:
+ *                     type: string
+ *                     example: "online"
+ *                   observacao:
+ *                     type: string
+ *                     example: "Esta é uma consulta fictícia para fins de exibição."
+ *                   recorrencia:
+ *                     type: string
+ *                     nullable: true
+ *                   code:
+ *                     type: string
+ *                     example: "fake-code"
+ *                   duracao:
+ *                     type: string
+ *                     example: "50min"
  *
- * @example
- * // Requisição GET para /api/consultas retorna:
- * [
- *   { id: 1, data: '2025-04-06T10:00:00Z', pacienteId: '123', psicologoId: '456' },
- *   ...
- * ]
+ *       400:
+ *         description: ID do psicólogo não informado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do psicólogo é obrigatório"
+ *
+ *       500:
+ *         description: Erro ao buscar reuniões.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao buscar reuniões"
  */
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -158,12 +324,101 @@ export async function GET(req: Request) {
 
 
 /**
- * Atualiza uma consulta existente no banco de dados.
+ * @swagger
+ * /api/internal/gen-meet:
+ *   put:
+ *     summary: Atualiza os dados de uma consulta
+ *     description: Permite atualizar qualquer campo de uma consulta existente, exceto o ID.
+ *     tags:
+ *      - Interno - Agendamentos
  *
- * Esta função espera um corpo JSON contendo os seguintes campos:
- * - `id`: ID da consulta a ser atualizada
- * - `dadosAtualizados`: Objeto contendo os novos dados da consulta
- * 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 example: "consulta_12345"
+ *               pacienteId:
+ *                 type: string
+ *                 example: "user_12345"
+ *               name:
+ *                 type: string
+ *                 example: "João Silva"
+ *               fantasy_name:
+ *                 type: string
+ *                 example: "Clínica Exemplo"
+ *               psicologoId:
+ *                 type: string
+ *                 example: "psico_98765"
+ *               data:
+ *                 type: string
+ *                 format: date
+ *                 example: "2025-11-20"
+ *               hora:
+ *                 type: string
+ *                 example: "14:30"
+ *               tipo_consulta:
+ *                 type: string
+ *                 example: "Online"
+ *               observacao:
+ *                 type: string
+ *                 example: "Consulta de avaliação inicial"
+ *               recorrencia:
+ *                 type: string
+ *                 example: "Semanal"
+ *               duracao:
+ *                 type: number
+ *                 example: 50
+ *
+ *     responses:
+ *       200:
+ *         description: Consulta atualizada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 pacienteId:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 fantasy_name:
+ *                   type: string
+ *                 psicologoId:
+ *                   type: string
+ *                 data:
+ *                   type: string
+ *                 hora:
+ *                   type: string
+ *                 tipo_consulta:
+ *                   type: string
+ *                 observacao:
+ *                   type: string
+ *                 recorrencia:
+ *                   type: string
+ *                 code:
+ *                   type: string
+ *                 duracao:
+ *                   type: number
+ *
+ *       500:
+ *         description: Erro ao atualizar a consulta.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao atualizar reunião"
  */
 
 export async function PUT(req: Request) {
@@ -185,13 +440,49 @@ export async function PUT(req: Request) {
 
 
 /**
- * Deleta uma consulta existente no banco de dados.
+ * @swagger
+ * /api/internal/[nome-da-rota]:
+ *   delete:
+ *     summary: Exclui uma consulta existente
+ *     description: Remove do banco de dados uma consulta específica pelo seu ID.
+ *     tags:
+ *       - Interno - Consultas
  *
- * Esta função espera um corpo JSON contendo o ID da consulta a ser deletada.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 example: "consulta_12345"
  *
- * @returns JSON com a mensagem de sucesso ou erro.
+ *     responses:
+ *       200:
+ *         description: Consulta deletada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Reunião deletada com sucesso"
  *
- * @throws Retorna erro 500 se a consulta ao banco de dados falhar.
+ *       500:
+ *         description: Erro ao deletar a consulta.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao deletar reunião"
  */
 
 export async function DELETE(req: Request) {

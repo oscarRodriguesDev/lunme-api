@@ -820,6 +820,2515 @@
         }
       }
     },
+    "/api/internal/analize_psco": {
+      "get": {
+        "summary": "Lista todos os pré-psicólogos cadastrados",
+        "description": "Retorna todos os registros de pré-psicólogos armazenados no sistema.",
+        "tags": [
+          "Interno - Psicólogos"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "Dados de cada pré-psicólogo."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Realiza o pré-cadastro de um psicólogo",
+        "description": "Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios.",
+        "tags": [
+          "Interno - Analise de Psicólogos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cpf",
+                  "crp",
+                  "nome",
+                  "lastname",
+                  "rg",
+                  "email",
+                  "data_nasc",
+                  "celular",
+                  "telefone"
+                ],
+                "properties": {
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "cfp": {
+                    "type": "string"
+                  },
+                  "crp": {
+                    "type": "string"
+                  },
+                  "nome": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "rg": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "data_nasc": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "celular": {
+                    "type": "string"
+                  },
+                  "telefone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pré-cadastro realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Pré-cadastro realizado com sucesso!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Dados do psicólogo criado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Todos os campos são obrigatórios!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CPF ou CRP já cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "CPF ou CFP já cadastrado!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Auto-generated for PUT /api/internal/analize_psco",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Auto-generated for DELETE /api/internal/analize_psco",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/analize_psco/{cpf}": {
+      "put": {
+        "summary": "Habilita um psicólogo previamente pré-cadastrado",
+        "description": "Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.",
+        "tags": [
+          "Interno - Analise de Psicólogos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cpf"
+                ],
+                "properties": {
+                  "cpf": {
+                    "type": "string",
+                    "example": "12345678900"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Psicólogo habilitado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Psicólogo habilitado com sucesso"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Dados completos do psicólogo após habilitação."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CPF ausente ou sobrenome não definido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "examples": {
+                        "cpf_ausente": {
+                          "value": "CPF é obrigatório"
+                        },
+                        "lastname_ausente": {
+                          "value": "Sobrenome do psicólogo é obrigatório"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Psicólogo não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Psicólogo não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um pré-psicólogo do sistema",
+        "description": "Exclui o registro de um pré-psicólogo com base no CPF.  \nSe o psicólogo não estiver habilitado, envia notificação antes da exclusão.\n",
+        "tags": [
+          "Interno - Analise de Psicólogos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cpf"
+                ],
+                "properties": {
+                  "cpf": {
+                    "type": "string",
+                    "example": "12345678900"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Psicólogo removido com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Psicólogo removido com sucesso"
+                    },
+                    "deletedCpf": {
+                      "type": "string",
+                      "example": "12345678900"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CPF não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "CPF é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Psicólogo não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Psicólogo não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/[nome-da-rota]": {
+      "get": {
+        "summary": "Consulta os créditos de um usuário",
+        "description": "Retorna a quantidade de créditos disponíveis de um usuário específico no sistema.",
+        "tags": [
+          "Interno - Creditos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário que se deseja consultar os créditos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Créditos retornados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "creditos": {
+                      "type": "number",
+                      "example": 120
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "userId não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "userId é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao buscar créditos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao buscar créditos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma consulta existente",
+        "description": "Remove do banco de dados uma consulta específica pelo seu ID.",
+        "tags": [
+          "Interno - Consultas"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "consulta_12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta deletada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reunião deletada com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao deletar a consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao deletar reunião"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/gen-meet": {
+      "post": {
+        "summary": "Cria uma nova consulta",
+        "description": "Registra uma nova consulta associada a paciente e psicólogo.",
+        "tags": [
+          "Interno - Agendamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pacienteId",
+                  "name",
+                  "fantasy_name",
+                  "psicologoId",
+                  "data",
+                  "hora",
+                  "tipo_consulta",
+                  "duracao"
+                ],
+                "properties": {
+                  "pacienteId": {
+                    "type": "string",
+                    "example": "user_12345"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "João Silva"
+                  },
+                  "fantasy_name": {
+                    "type": "string",
+                    "example": "Clínica Exemplo"
+                  },
+                  "psicologoId": {
+                    "type": "string",
+                    "example": "psico_98765"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-11-20"
+                  },
+                  "hora": {
+                    "type": "string",
+                    "example": "14:30"
+                  },
+                  "tipo_consulta": {
+                    "type": "string",
+                    "example": "Online"
+                  },
+                  "observacao": {
+                    "type": "string",
+                    "example": "Consulta de avaliação inicial"
+                  },
+                  "recorrencia": {
+                    "type": "string",
+                    "example": "Semanal"
+                  },
+                  "duracao": {
+                    "type": "number",
+                    "example": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consulta criada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "consulta_123456"
+                    },
+                    "pacienteId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fantasy_name": {
+                      "type": "string"
+                    },
+                    "titulo": {
+                      "type": "string",
+                      "example": "Consulta"
+                    },
+                    "psicologoId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "hora": {
+                      "type": "string"
+                    },
+                    "tipo_consulta": {
+                      "type": "string"
+                    },
+                    "observacao": {
+                      "type": "string"
+                    },
+                    "recorrencia": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "duracao": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao criar reunião"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todas as consultas de um psicólogo",
+        "description": "Retorna todas as consultas associadas a um psicólogo específico.  \nCaso não existam consultas, retorna um exemplo de consulta fictícia para exibição.\n",
+        "tags": [
+          "Interno - Agendamentos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo cujas consultas serão listadas."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consultas retornadas com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "consulta_12345"
+                      },
+                      "pacienteId": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "fantasy_name": {
+                        "type": "string",
+                        "example": "Este agendamento é apenas um exemplo"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Consulta Demonstrativa"
+                      },
+                      "titulo": {
+                        "type": "string",
+                        "example": "Sessão de Demonstração"
+                      },
+                      "psicologoId": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-11-20"
+                      },
+                      "hora": {
+                        "type": "string",
+                        "example": "10:00"
+                      },
+                      "tipo_consulta": {
+                        "type": "string",
+                        "example": "online"
+                      },
+                      "observacao": {
+                        "type": "string",
+                        "example": "Esta é uma consulta fictícia para fins de exibição."
+                      },
+                      "recorrencia": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "code": {
+                        "type": "string",
+                        "example": "fake-code"
+                      },
+                      "duracao": {
+                        "type": "string",
+                        "example": "50min"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do psicólogo não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do psicólogo é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar reuniões.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar reuniões"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de uma consulta",
+        "description": "Permite atualizar qualquer campo de uma consulta existente, exceto o ID.",
+        "tags": [
+          "Interno - Agendamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "consulta_12345"
+                  },
+                  "pacienteId": {
+                    "type": "string",
+                    "example": "user_12345"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "João Silva"
+                  },
+                  "fantasy_name": {
+                    "type": "string",
+                    "example": "Clínica Exemplo"
+                  },
+                  "psicologoId": {
+                    "type": "string",
+                    "example": "psico_98765"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-11-20"
+                  },
+                  "hora": {
+                    "type": "string",
+                    "example": "14:30"
+                  },
+                  "tipo_consulta": {
+                    "type": "string",
+                    "example": "Online"
+                  },
+                  "observacao": {
+                    "type": "string",
+                    "example": "Consulta de avaliação inicial"
+                  },
+                  "recorrencia": {
+                    "type": "string",
+                    "example": "Semanal"
+                  },
+                  "duracao": {
+                    "type": "number",
+                    "example": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta atualizada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "pacienteId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fantasy_name": {
+                      "type": "string"
+                    },
+                    "psicologoId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "hora": {
+                      "type": "string"
+                    },
+                    "tipo_consulta": {
+                      "type": "string"
+                    },
+                    "observacao": {
+                      "type": "string"
+                    },
+                    "recorrencia": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "duracao": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao atualizar a consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao atualizar reunião"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Auto-generated for DELETE /api/internal/gen-meet",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/gerar-link-anamnese": {
+      "post": {
+        "summary": "Gera um link temporário de acesso à anamnese",
+        "description": "Cria um token temporário para o psicólogo acessar a anamnese de forma segura e retorna o link completo.",
+        "tags": [
+          "Interno - Anamnese"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "psicologoId"
+                ],
+                "properties": {
+                  "psicologoId": {
+                    "type": "string",
+                    "example": "psico_98765"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Link gerado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "link": {
+                      "type": "string",
+                      "example": "https://meusite.com/amnp/psico_98765/123e4567-e89b-12d3-a456-426614174000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros obrigatórios não informados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Campos obrigatórios: psicologoId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor ao gerar o link.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/history": {
+      "post": {
+        "summary": "Adiciona um registro ao histórico de um psicólogo",
+        "description": "Cria um novo registro no histórico de um psicólogo, com descrição, tipo e timestamp.",
+        "tags": [
+          "Interno - Histórico"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "psicologoId",
+                  "descricao"
+                ],
+                "properties": {
+                  "psicologoId": {
+                    "type": "string",
+                    "example": "psico_98765"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Consulta realizada com sucesso"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "example": "geral"
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-11-20T14:30:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Histórico criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "hist_123456"
+                    },
+                    "psicologoId": {
+                      "type": "string"
+                    },
+                    "descricao": {
+                      "type": "string"
+                    },
+                    "tipo": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros obrigatórios não informados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "psicologoId e descricao são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao salvar histórico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao salvar histórico"
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "Mensagem de erro detalhada do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista o histórico de um psicólogo",
+        "description": "Retorna todos os registros do histórico de um psicólogo, ordenados do mais recente para o mais antigo.",
+        "tags": [
+          "Interno - Histórico"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo cujos registros serão retornados."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico retornado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "hist_123456"
+                      },
+                      "psicologoId": {
+                        "type": "string"
+                      },
+                      "descricao": {
+                        "type": "string",
+                        "example": "Consulta realizada com sucesso"
+                      },
+                      "tipo": {
+                        "type": "string",
+                        "example": "geral"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-20T14:30:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro psicologoId não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "psicologoId é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar histórico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar histórico"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um registro do histórico de um psicólogo",
+        "description": "Remove um registro do histórico com base no ID fornecido.",
+        "tags": [
+          "Interno - Histórico"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do registro de histórico a ser deletado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico deletado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Histórico deletado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do histórico não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do histórico é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao deletar o histórico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao deletar histórico"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/location-verification": {
+      "get": {
+        "summary": "Consulta o status de pagamento de uma ordem",
+        "description": "Retorna o status de pagamento de uma ordem consultando a API do Pagar.me.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da ordem a ser consultada no Pagar.me."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status de pagamento retornado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "paid"
+                    },
+                    "orderId": {
+                      "type": "string",
+                      "example": "order_123456"
+                    },
+                    "order": {
+                      "type": "object",
+                      "description": "Retorna o objeto completo da ordem conforme API do Pagar.me"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro orderId não informado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "orderId é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao consultar status ou chave da API não configurada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao consultar status"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/products": {
+      "post": {
+        "summary": "Cadastra um novo produto",
+        "description": "Cria um produto com código, título, descrição, preço, valor unitário e quantidade.",
+        "tags": [
+          "Interno - Produtos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "codigo",
+                  "titulo",
+                  "preco",
+                  "valorUn",
+                  "quantidade"
+                ],
+                "properties": {
+                  "codigo": {
+                    "type": "string",
+                    "example": "PROD001"
+                  },
+                  "titulo": {
+                    "type": "string",
+                    "example": "Curso de Psicologia"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Curso avançado de psicologia clínica"
+                  },
+                  "preco": {
+                    "type": "number",
+                    "example": 150
+                  },
+                  "valorUn": {
+                    "type": "number",
+                    "example": 150
+                  },
+                  "quantidade": {
+                    "type": "number",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "prod_123456"
+                    },
+                    "codigo": {
+                      "type": "string"
+                    },
+                    "titulo": {
+                      "type": "string"
+                    },
+                    "descricao": {
+                      "type": "string"
+                    },
+                    "preco": {
+                      "type": "number"
+                    },
+                    "valorUn": {
+                      "type": "number"
+                    },
+                    "quantidade": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Campos obrigatórios ausentes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Código de produto já cadastrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Código de produto já cadastrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao cadastrar produto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao cadastrar produto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os produtos",
+        "description": "Retorna todos os produtos cadastrados, ordenados do mais recente para o mais antigo.",
+        "tags": [
+          "Interno - Produtos"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "prod_123456"
+                      },
+                      "codigo": {
+                        "type": "string",
+                        "example": "PROD001"
+                      },
+                      "titulo": {
+                        "type": "string",
+                        "example": "Curso de Psicologia"
+                      },
+                      "descricao": {
+                        "type": "string",
+                        "example": "Curso avançado de psicologia clínica"
+                      },
+                      "preco": {
+                        "type": "number",
+                        "example": 150
+                      },
+                      "valorUn": {
+                        "type": "number",
+                        "example": 150
+                      },
+                      "quantidade": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao listar produtos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao listar produtos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um produto existente",
+        "description": "Atualiza os dados de um produto cadastrado com base no ID fornecido.",
+        "tags": [
+          "Interno - Produtos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "codigo",
+                  "titulo",
+                  "descricao",
+                  "preco",
+                  "valorUn",
+                  "quantidade"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "prod_123456"
+                  },
+                  "codigo": {
+                    "type": "string",
+                    "example": "PROD001"
+                  },
+                  "titulo": {
+                    "type": "string",
+                    "example": "Curso de Psicologia"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Curso avançado de psicologia clínica"
+                  },
+                  "preco": {
+                    "type": "number",
+                    "example": 150
+                  },
+                  "valorUn": {
+                    "type": "number",
+                    "example": 150
+                  },
+                  "quantidade": {
+                    "type": "number",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "codigo": {
+                      "type": "string"
+                    },
+                    "titulo": {
+                      "type": "string"
+                    },
+                    "descricao": {
+                      "type": "string"
+                    },
+                    "preco": {
+                      "type": "number"
+                    },
+                    "valorUn": {
+                      "type": "number"
+                    },
+                    "quantidade": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados incompletos para atualização.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Envie todos os dados para edição do produto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao atualizar produto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao atualizar produto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um produto",
+        "description": "Deleta um produto existente a partir do código informado como parâmetro de query.",
+        "tags": [
+          "Interno - Produtos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "codigo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Código do produto a ser deletado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto removido com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Código do produto não fornecido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Código do produto é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao deletar produto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao deletar produto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/register_admins": {
+      "post": {
+        "summary": "Cadastra um novo usuário administrador",
+        "description": "Cria um usuário com papel de ADMIN, realizando validação de campos e hash da senha.",
+        "tags": [
+          "Interno - Admin"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "confirmPassword",
+                  "role"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Oscar Rodrigues"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "admin@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "senha123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "senha123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "ADMIN"
+                  },
+                  "vinculo_admin": {
+                    "type": "string",
+                    "description": "ID de outro admin ao qual este usuário está vinculado (opcional)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Admin cadastrado com sucesso"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "vinculo_admin": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação de campos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nome, email, senha e confirmação de senha são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao cadastrar admin.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro ao cadastrar admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/token-calculator": {
+      "post": {
+        "summary": "Calcula tokens e custo aproximado para uma requisição de modelo",
+        "description": "Retorna a quantidade de tokens utilizados e o custo estimado em USD com base no modelo selecionado.",
+        "tags": [
+          "Interno - gpt token calculator"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "inputText",
+                  "outputText",
+                  "model"
+                ],
+                "properties": {
+                  "inputText": {
+                    "type": "string",
+                    "example": "Escreva um resumo sobre Next.js"
+                  },
+                  "outputText": {
+                    "type": "string",
+                    "example": "Next.js é um framework React para SSR e SSG."
+                  },
+                  "model": {
+                    "type": "string",
+                    "example": "gpt-4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna tokens e custo estimado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model": {
+                      "type": "string"
+                    },
+                    "promptTokens": {
+                      "type": "number"
+                    },
+                    "completionTokens": {
+                      "type": "number"
+                    },
+                    "totalTokens": {
+                      "type": "number"
+                    },
+                    "costUSD": {
+                      "type": "number",
+                      "format": "float"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida ou modelo não suportado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "inputText, outputText e model são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/upbook": {
+      "post": {
+        "summary": "Cria um novo livro científico",
+        "description": "Adiciona um livro à base científica, vinculando opcionalmente a um psicólogo.",
+        "tags": [
+          "Interno - Livros"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "autor",
+                  "resumo"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Título do livro",
+                    "example": "Psicologia Moderna"
+                  },
+                  "psicologoId": {
+                    "type": "string",
+                    "description": "ID do psicólogo associado (opcional)",
+                    "example": "abc123"
+                  },
+                  "autor": {
+                    "type": "string",
+                    "description": "Nome do autor",
+                    "example": "Sigmund Freud"
+                  },
+                  "url_capa": {
+                    "type": "string",
+                    "description": "URL da imagem de capa (opcional)",
+                    "example": "https://example.com/capa.jpg"
+                  },
+                  "resumo": {
+                    "type": "string",
+                    "description": "Resumo do livro",
+                    "example": "Este livro explora os conceitos fundamentais da psicologia moderna."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "psicologoId": {
+                      "type": "string"
+                    },
+                    "autor": {
+                      "type": "string"
+                    },
+                    "url_capa": {
+                      "type": "string"
+                    },
+                    "resumo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Título, autor e resumo são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista livros científicos de um psicólogo",
+        "description": "Retorna todos os livros científicos associados a um psicólogo específico.",
+        "tags": [
+          "Interno - Livros"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de livros retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "psicologoId": {
+                        "type": "string"
+                      },
+                      "autor": {
+                        "type": "string"
+                      },
+                      "url_capa": {
+                        "type": "string"
+                      },
+                      "resumo": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro 'psicologoId' é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um livro científico pelo ID",
+        "description": "Remove um livro específico do banco de dados usando seu ID.",
+        "tags": [
+          "Interno - Livros"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do livro a ser deletado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Livro deletado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro 'bookId' é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Livro não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Livro não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/user-profile": {
+      "get": {
+        "summary": "Retorna um usuário pelo ID",
+        "description": "Busca no banco de dados um usuário específico pelo seu ID.",
+        "tags": [
+          "Interno - Usuários"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário a ser consultado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "abc123"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "João Silva"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "joao@email.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "ADMIN"
+                    },
+                    "vinculo_admin": {
+                      "type": "string",
+                      "example": "admin123"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-11-19T12:00:00.000Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-11-19T12:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do usuário não fornecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do usuário não fornecido."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário não encontrado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Auto-generated for PUT /api/internal/user-profile",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/users": {
+      "put": {
+        "summary": "Atualiza os dados de um usuário",
+        "description": "Atualiza as informações de um usuário existente no sistema pelo ID.",
+        "tags": [
+          "Interno - Usuários"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID do usuário a ser atualizado"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Nome do usuário"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email do usuário"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "Papel do usuário. Valores possíveis: ADMIN, PSICOLOGO, PSICOLOGO_ADM, PSYCHOLOGIST, COMMON"
+                  },
+                  "vinculo_admin": {
+                    "type": "string",
+                    "description": "ID do usuário administrador vinculado (opcional)"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "abc123",
+                    "name": "João Silva",
+                    "email": "joao@email.com",
+                    "role": "ADMIN",
+                    "vinculo_admin": null,
+                    "createdAt": "2025-11-19T12:00:00.000Z",
+                    "updatedAt": "2025-11-19T12:05:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do usuário não fornecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do usuário é obrigatório."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário não encontrado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/login": {
       "post": {
         "summary": "Auto-generated for POST /api/login",
@@ -1347,6 +3856,361 @@
         }
       }
     },
+    "/api/sua-rota": {
+      "post": {
+        "summary": "Realiza o pré-cadastro de um psicólogo",
+        "description": "Cria um registro preliminar de psicólogo no sistema antes da habilitação completa.",
+        "tags": [
+          "Psicólogos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cpf",
+                  "cfp",
+                  "crp",
+                  "nome",
+                  "lastname",
+                  "rg",
+                  "email",
+                  "data_nasc",
+                  "celular",
+                  "telefone"
+                ],
+                "properties": {
+                  "cpf": {
+                    "type": "string",
+                    "example": "12345678900"
+                  },
+                  "cfp": {
+                    "type": "string",
+                    "example": "000000"
+                  },
+                  "crp": {
+                    "type": "string",
+                    "example": "08/000000"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "João"
+                  },
+                  "lastname": {
+                    "type": "string",
+                    "example": "Silva"
+                  },
+                  "rg": {
+                    "type": "string",
+                    "example": "12345678-9"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "joao@email.com"
+                  },
+                  "data_nasc": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "1990-05-20"
+                  },
+                  "celular": {
+                    "type": "string",
+                    "example": "27999999999"
+                  },
+                  "telefone": {
+                    "type": "string",
+                    "example": "2733333333"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pré-cadastro criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Pré-cadastro realizado com sucesso!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Dados cadastrados do psicólogo."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Algum campo obrigatório não foi enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Todos os campos são obrigatórios!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CPF ou CRP já cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "CPF ou CRP já cadastrado!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/validar-anamnese": {
+      "get": {
+        "summary": "Verifica e autoriza acesso temporário à anamnese",
+        "description": "Valida o token de acesso temporário para visualizar a anamnese.  \nA autorização é baseada em:\n- Existência do token no banco\n- Registro do IP\n- Tempo máximo de 30 minutos desde o primeiro acesso\n",
+        "tags": [
+          "Anamnese"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo que gerou o acesso."
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token temporário de acesso à anamnese."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Acesso autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "autorizado": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetros ausentes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado (token expirado ou IP diferente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "autorizado": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/webhook/pagarme": {
+      "post": {
+        "summary": "Webhook de eventos do Pagar.me",
+        "description": "Endpoint que recebe e processa eventos de pagamento enviados pelo Pagar.me.  \nA autenticação é feita via Basic Auth utilizando credenciais definidas em variáveis de ambiente.\n",
+        "tags": [
+          "pagarme"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Corpo enviado pelo Pagar.me contendo o tipo de evento e dados da ordem.",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "order.paid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "ord_12345"
+                      },
+                      "charges": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "last_transaction": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "example": "tran_987654"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook recebido e processado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "received": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao processar o webhook.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Webhook error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autenticação falhou (Basic Auth incorreto).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Verifica o status do webhook",
+        "description": "Retorna uma mensagem confirmando que o endpoint do webhook está ativo e funcionando corretamente.",
+        "tags": [
+          "pagarme"
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook respondendo corretamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Webhook ativo e funcionando!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/analize_pcte": {
       "post": {
         "summary": "Auto-generated for POST /api/analize_pcte",
@@ -1367,113 +4231,9 @@
         }
       }
     },
-    "/api/internal/analize_psco": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/internal/creditos": {
       "get": {
         "summary": "Auto-generated for GET /api/internal/creditos",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/gen-meet": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/gen-meet",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/gen-meet",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/gen-meet",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/gen-meet",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/gerar-link-anamnese": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/gerar-link-anamnese",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/history": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/history",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/history",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/history",
         "responses": {
           "200": {
             "description": "OK"
@@ -1504,16 +4264,6 @@
     "/api/internal/insight/psicochat": {
       "post": {
         "summary": "Auto-generated for POST /api/internal/insight/psicochat",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/location-verification": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/location-verification",
         "responses": {
           "200": {
             "description": "OK"
@@ -1593,40 +4343,6 @@
         }
       }
     },
-    "/api/internal/products": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/products",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/products",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/products",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/products",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/internal/prontuario/analise-paciente": {
       "post": {
         "summary": "Auto-generated for POST /api/internal/prontuario/analise-paciente",
@@ -1666,16 +4382,6 @@
     "/api/internal/prontuario/save-transcription": {
       "put": {
         "summary": "Auto-generated for PUT /api/internal/prontuario/save-transcription",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/register_admins": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/register_admins",
         "responses": {
           "200": {
             "description": "OK"
@@ -1738,42 +4444,6 @@
       },
       "delete": {
         "summary": "Auto-generated for DELETE /api/internal/register_pacientes/transform",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/token-calculator": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/token-calculator",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/upbook": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/upbook",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/upbook",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/upbook",
         "responses": {
           "200": {
             "description": "OK"
@@ -1853,24 +4523,6 @@
         }
       }
     },
-    "/api/internal/user-profile": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/user-profile",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/user-profile",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/solicitar-acesso": {
       "post": {
         "summary": "Auto-generated for POST /api/solicitar-acesso",
@@ -1890,35 +4542,14 @@
           }
         }
       }
-    },
-    "/api/validar-anamnese": {
-      "get": {
-        "summary": "Auto-generated for GET /api/validar-anamnese",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/webhook/pagarme": {
-      "get": {
-        "summary": "Auto-generated for GET /api/webhook/pagarme",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/webhook/pagarme",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
-  "components": {}
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
 }

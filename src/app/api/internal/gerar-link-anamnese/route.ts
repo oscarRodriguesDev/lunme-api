@@ -4,6 +4,64 @@ import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
+
+/**
+ * @swagger
+ * /api/internal/gerar-link-anamnese:
+ *   post:
+ *     summary: Gera um link temporário de acesso à anamnese
+ *     description: Cria um token temporário para o psicólogo acessar a anamnese de forma segura e retorna o link completo.
+ *     tags:
+ *       - Interno - Anamnese
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - psicologoId
+ *             properties:
+ *               psicologoId:
+ *                 type: string
+ *                 example: "psico_98765"
+ *
+ *     responses:
+ *       201:
+ *         description: Link gerado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 link:
+ *                   type: string
+ *                   example: "https://meusite.com/amnp/psico_98765/123e4567-e89b-12d3-a456-426614174000"
+ *
+ *       400:
+ *         description: Parâmetros obrigatórios não informados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Campos obrigatórios: psicologoId"
+ *
+ *       500:
+ *         description: Erro interno do servidor ao gerar o link.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor"
+ */
+
 export async function POST(req: NextRequest) {
   console.log("Recebido POST em /api/internal/gerar-link-anamnese");
   try {

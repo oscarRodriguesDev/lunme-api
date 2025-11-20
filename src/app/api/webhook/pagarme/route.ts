@@ -83,6 +83,91 @@ async function atualizarStatusCompra(transactionId: string, status: "PENDING" | 
 
 
 
+/**
+ * @swagger
+ * /api/webhook/pagarme:
+ *   post:
+ *     summary: Webhook de eventos do Pagar.me
+ *     description: |
+ *       Endpoint que recebe e processa eventos de pagamento enviados pelo Pagar.me.  
+ *       A autenticação é feita via Basic Auth utilizando credenciais definidas em variáveis de ambiente.
+ *
+ *     tags:
+ *       - pagarme 
+ *     
+ *
+ *     security:
+ *       - basicAuth: []
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             description: Corpo enviado pelo Pagar.me contendo o tipo de evento e dados da ordem.
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 example: "order.paid"
+ *               data:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "ord_12345"
+ *                   charges:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         last_transaction:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                               example: "tran_987654"
+ *
+ *     responses:
+ *       200:
+ *         description: Webhook recebido e processado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 received:
+ *                   type: boolean
+ *                   example: true
+ *
+ *       401:
+ *         description: Autenticação falhou (Basic Auth incorreto).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized"
+ *
+ *       400:
+ *         description: Erro ao processar o webhook.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Webhook error"
+ *
+ * components:
+ *   securitySchemes:
+ *     basicAuth:
+ *       type: http
+ *       scheme: basic
+ */
 
 export async function POST(req: NextRequest) {
   try {
@@ -153,9 +238,30 @@ export async function POST(req: NextRequest) {
 
 
 
+/**
+ * @swagger
+ * /api/webhook/pagarme:
+ *   get:
+ *     summary: Verifica o status do webhook
+ *     description: Retorna uma mensagem confirmando que o endpoint do webhook está ativo e funcionando corretamente.
+ *     tags:
+ *       - pagarme
+ *
+ *     responses:
+ *       200:
+ *         description: Webhook respondendo corretamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Webhook ativo e funcionando!"
+ */
+
 
 export async function GET(req: NextRequest) {
   return NextResponse.json({ message: "Webhook ativo e funcionando!" });
 }
 
-//alteraçao de orde,

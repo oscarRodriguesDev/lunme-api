@@ -1,7 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
 
 
-//verifica o status da ordem no pagarme para pagar quando confirmar o pagamento
+/**
+ * @swagger
+ * /api/internal/location-verification:
+ *   get:
+ *     summary: Consulta o status de pagamento de uma ordem
+ *     description: Retorna o status de pagamento de uma ordem consultando a API do Pagar.me.
+ *     tags:
+ *       - Interno - Pagamentos
+ *
+ *     parameters:
+ *       - in: query
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID da ordem a ser consultada no Pagar.me.
+ *
+ *     responses:
+ *       200:
+ *         description: Status de pagamento retornado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "paid"
+ *                 orderId:
+ *                   type: string
+ *                   example: "order_123456"
+ *                 order:
+ *                   type: object
+ *                   description: Retorna o objeto completo da ordem conforme API do Pagar.me
+ *
+ *       400:
+ *         description: Parâmetro orderId não informado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "orderId é obrigatório"
+ *
+ *       500:
+ *         description: Erro interno ao consultar status ou chave da API não configurada.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno ao consultar status"
+ */
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);

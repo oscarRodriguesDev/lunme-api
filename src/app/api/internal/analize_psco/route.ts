@@ -9,6 +9,40 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 
+/**
+ * @swagger
+ * /api/internal/analize_psco:
+ *   get:
+ *     summary: Lista todos os pré-psicólogos cadastrados
+ *     description: Retorna todos os registros de pré-psicólogos armazenados no sistema.
+ *     tags:
+ *       - Interno - Psicólogos
+ *
+ *     responses:
+ *       200:
+ *         description: Lista retornada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     description: Dados de cada pré-psicólogo.
+ *
+ *       500:
+ *         description: Erro interno no servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor!"
+ */
 
 export async function GET(req: Request) {
   try {
@@ -21,6 +55,103 @@ export async function GET(req: Request) {
   }
 }
 
+
+/**
+ * @swagger
+ * /api/internal/analize_psco:
+ *   post:
+ *     summary: Realiza o pré-cadastro de um psicólogo
+ *     description: Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios.
+ *     tags:
+ *        - Interno - Analise de Psicólogos
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cpf
+ *               - crp
+ *               - nome
+ *               - lastname
+ *               - rg
+ *               - email
+ *               - data_nasc
+ *               - celular
+ *               - telefone
+ *             properties:
+ *               cpf:
+ *                 type: string
+ *               cfp:
+ *                 type: string
+ *               crp:
+ *                 type: string
+ *               nome:
+ *                 type: string
+ *               lastname:
+ *                 type: string
+ *               rg:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               data_nasc:
+ *                 type: string
+ *                 format: date
+ *               celular:
+ *                 type: string
+ *               telefone:
+ *                 type: string
+ *
+ *     responses:
+ *       201:
+ *         description: Pré-cadastro realizado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Pré-cadastro realizado com sucesso!"
+ *                 data:
+ *                   type: object
+ *                   description: Dados do psicólogo criado.
+ *
+ *       400:
+ *         description: Campos obrigatórios ausentes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Todos os campos são obrigatórios!"
+ *
+ *       409:
+ *         description: CPF ou CRP já cadastrados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "CPF ou CFP já cadastrado!"
+ *
+ *       500:
+ *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor!"
+ */
 
 export async function POST(req: Request) {
   try {
@@ -195,6 +326,81 @@ async function efetivarPsicologo(nome: string, lastname: string, email_confirm: 
 }
 
 
+/**
+ * @swagger
+ * /api/internal/analize_psco/{cpf}:
+ *   put:
+ *     summary: Habilita um psicólogo previamente pré-cadastrado
+ *     description: Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.
+ *     tags:
+ *         - Interno - Analise de Psicólogos
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cpf
+ *             properties:
+ *               cpf:
+ *                 type: string
+ *                 example: "12345678900"
+ *
+ *     responses:
+ *       200:
+ *         description: Psicólogo habilitado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Psicólogo habilitado com sucesso"
+ *                 data:
+ *                   type: object
+ *                   description: Dados completos do psicólogo após habilitação.
+ *
+ *       400:
+ *         description: CPF ausente ou sobrenome não definido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   examples:
+ *                     cpf_ausente:
+ *                       value: "CPF é obrigatório"
+ *                     lastname_ausente:
+ *                       value: "Sobrenome do psicólogo é obrigatório"
+ *
+ *       404:
+ *         description: Psicólogo não encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Psicólogo não encontrado"
+ *
+ *       500:
+ *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor!"
+ */
+
 
 export async function PUT(req: Request) {
   try {
@@ -250,6 +456,78 @@ export async function PUT(req: Request) {
 
 
 
+/**
+ * @swagger
+ * /api/internal/analize_psco/{cpf}:
+ *   delete:
+ *     summary: Remove um pré-psicólogo do sistema
+ *     description: |
+ *       Exclui o registro de um pré-psicólogo com base no CPF.  
+ *       Se o psicólogo não estiver habilitado, envia notificação antes da exclusão.
+ *     tags:
+ *       - Interno - Analise de Psicólogos
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cpf
+ *             properties:
+ *               cpf:
+ *                 type: string
+ *                 example: "12345678900"
+ *
+ *     responses:
+ *       200:
+ *         description: Psicólogo removido com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Psicólogo removido com sucesso"
+ *                 deletedCpf:
+ *                   type: string
+ *                   example: "12345678900"
+ *
+ *       400:
+ *         description: CPF não informado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "CPF é obrigatório"
+ *
+ *       404:
+ *         description: Psicólogo não encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Psicólogo não encontrado"
+ *
+ *       500:
+ *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno do servidor"
+ */
 
 export async function DELETE(req: Request) {
   try {
