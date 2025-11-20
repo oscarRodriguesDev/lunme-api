@@ -11,67 +11,1365 @@
     }
   ],
   "paths": {
-    ".//api/amnp/{token}": {
+    "/api/amnp/{token}": {
       "get": {
-        "summary": "Auto-generated for GET .//api/amnp/{token}",
+        "summary": "Valida o acesso temporário à anamnese por token",
+        "description": "Valida um token temporário de acesso à anamnese.   O link expira em 10 minutos e só pode ser acessado pelo mesmo IP após o primeiro acesso.\n",
+        "tags": [
+          "Anamnese"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token único de acesso enviado ao paciente."
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Acesso autorizado.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permitido": {
+                    "summary": "Token válido",
+                    "value": {
+                      "autorizado": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token não informado.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "autorizado": false,
+                  "erro": "Token ausente"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token expirado ou inválido após validações.",
+            "content": {
+              "application/json": {
+                "oneOf": [
+                  {
+                    "example": {
+                      "autorizado": false,
+                      "erro": "Link expirado (tempo excedido)"
+                    }
+                  },
+                  {
+                    "example": {
+                      "autorizado": false,
+                      "erro": "Link expirado ou IP diferente"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "Token inexistente no banco.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "autorizado": false,
+                  "erro": "Token inválido"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/amnp/{token}",
+        "summary": "Remove um registro de acesso temporário à anamnese",
+        "description": "Deleta manualmente um token temporário de acesso à anamnese.   Usado para revogação imediata do link.\n",
+        "tags": [
+          "Anamnese"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token temporário que será removido."
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Registro removido com sucesso.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "sucesso": true,
+                  "mensagem": "Registro removido com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta o token na URL.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "erro": "Token ausente"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum registro corresponde ao token informado.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "erro": "Registro não encontrado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro inesperado ao tentar remover o registro.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "erro": "Erro interno ao tentar deletar"
+                }
+              }
+            }
           }
         }
       }
     },
-    ".//api/analize_pcte": {
+    "/api/analise_pcte": {
       "post": {
-        "summary": "Auto-generated for POST .//api/analize_pcte",
+        "summary": "Cria um pré-cadastro de anamnese",
+        "description": "Recebe todas as informações iniciais fornecidas pelo paciente e cria um registro de pré-anamnese vinculado a um psicólogo responsável.\n",
+        "tags": [
+          "Anamnese"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nome",
+                  "email",
+                  "idade",
+                  "cpf",
+                  "preocupacao",
+                  "motivoAtendimento",
+                  "psicologoId"
+                ],
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "idade": {
+                    "type": "integer"
+                  },
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "telefone": {
+                    "type": "string"
+                  },
+                  "origemConhecimento": {
+                    "type": "string"
+                  },
+                  "preocupacao": {
+                    "type": "string"
+                  },
+                  "motivoAtendimento": {
+                    "type": "string"
+                  },
+                  "experienciaAnterior": {
+                    "type": "string"
+                  },
+                  "saudeFisica": {
+                    "type": "string"
+                  },
+                  "detalhesSaudeFisica": {
+                    "type": "string"
+                  },
+                  "medicamentos": {
+                    "type": "string"
+                  },
+                  "diagnosticoMental": {
+                    "type": "string"
+                  },
+                  "historicoFamiliar": {
+                    "type": "string"
+                  },
+                  "rotina": {
+                    "type": "string"
+                  },
+                  "sono": {
+                    "type": "string"
+                  },
+                  "atividadeFisica": {
+                    "type": "string"
+                  },
+                  "estresse": {
+                    "type": "string"
+                  },
+                  "convivencia": {
+                    "type": "string"
+                  },
+                  "relacaoFamiliar": {
+                    "type": "string"
+                  },
+                  "apoioSocial": {
+                    "type": "string"
+                  },
+                  "nivelFelicidade": {
+                    "type": "string"
+                  },
+                  "ansiedade": {
+                    "type": "string"
+                  },
+                  "pensamentosNegativos": {
+                    "type": "string"
+                  },
+                  "objetivoTerapia": {
+                    "type": "string"
+                  },
+                  "temasDelicados": {
+                    "type": "string"
+                  },
+                  "estiloAtendimento": {
+                    "type": "string"
+                  },
+                  "observacoesFinais": {
+                    "type": "string"
+                  },
+                  "autorizacaoLGPD": {
+                    "type": "boolean"
+                  },
+                  "psicologoId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "nome": "João da Silva",
+                "email": "joao@email.com",
+                "idade": 28,
+                "cpf": "12345678900",
+                "telefone": "27999999999",
+                "origemConhecimento": "Instagram",
+                "preocupacao": "Ansiedade e estresse",
+                "motivoAtendimento": "Quero ajuda profissional",
+                "experienciaAnterior": "Nenhuma",
+                "saudeFisica": "Boa",
+                "detalhesSaudeFisica": "",
+                "medicamentos": "",
+                "diagnosticoMental": "",
+                "historicoFamiliar": "",
+                "rotina": "Trabalho e estudo",
+                "sono": "Irregular",
+                "atividadeFisica": "Raramente",
+                "estresse": "Alto",
+                "convivencia": "Boa",
+                "relacaoFamiliar": "Boa",
+                "apoioSocial": "Moderado",
+                "nivelFelicidade": "Médio",
+                "ansiedade": "Alta",
+                "pensamentosNegativos": "Ocasional",
+                "objetivoTerapia": "Melhorar saúde emocional",
+                "temasDelicados": "Nenhum",
+                "estiloAtendimento": "Empático",
+                "observacoesFinais": "",
+                "autorizacaoLGPD": true,
+                "psicologoId": "uuid-do-psicologo"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Pré-cadastro criado com sucesso.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Pré-cadastro de anamnese realizado com sucesso!",
+                  "data": {
+                    "id": "uuid-gerado",
+                    "nome": "João da Silva",
+                    "cpf": "12345678900",
+                    "habilitado": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Todos os campos são obrigatórios!"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CPF já está cadastrado.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "CPF já cadastrado!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor."
+                }
+              }
+            }
           }
         }
       }
     },
-    ".//api/analize_psco": {
+    "/api/analise_psco": {
       "post": {
-        "summary": "Auto-generated for POST .//api/analize_psco",
+        "summary": "Realiza o pré-cadastro de um psicólogo",
+        "description": "Registra um psicólogo em estado preliminar (não habilitado) no sistema, armazenando todos os dados pessoais e profissionais necessários para análise interna.\n",
+        "tags": [
+          "Psicólogos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cpf",
+                  "crp",
+                  "nome",
+                  "lastname",
+                  "rg",
+                  "email",
+                  "data_nasc",
+                  "celular",
+                  "telefone"
+                ],
+                "properties": {
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "cfp": {
+                    "type": "string",
+                    "description": "Campo opcional adicional"
+                  },
+                  "crp": {
+                    "type": "string"
+                  },
+                  "nome": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "rg": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "data_nasc": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "celular": {
+                    "type": "string"
+                  },
+                  "telefone": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "cpf": "12345678900",
+                "cfp": "00011122233",
+                "crp": "08/123456",
+                "nome": "Maria",
+                "lastname": "Souza",
+                "rg": "12345678",
+                "email": "maria@example.com",
+                "data_nasc": "1990-05-12",
+                "celular": "27999999999",
+                "telefone": "2733333333"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Pré-cadastro realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Pré-cadastro realizado com sucesso!",
+                  "data": {
+                    "id": "uuid-gerado",
+                    "cpf": "12345678900",
+                    "crp": "08/123456",
+                    "habilitado": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Todos os campos são obrigatórios!"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflito — CPF ou CFP já cadastrados.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "CPF ou CFP já cadastrado!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno do servidor!"
+                }
+              }
+            }
           }
         }
       }
     },
-    ".//api/avaliacao": {
+    "/api/avaliacao": {
       "post": {
-        "summary": "Auto-generated for POST .//api/avaliacao",
+        "summary": "Registra uma nova avaliação sobre a reuniçao e o atendimento",
+        "description": "Permite que um paciente registre uma avaliação contendo notas sobre áudio, vídeo, experiência geral, avaliação profissional e um comentário opcional.\n",
+        "tags": [
+          "Avaliações"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "audio",
+                  "video",
+                  "experienciaGeral",
+                  "avaliacaoProfissional",
+                  "psicologoId"
+                ],
+                "properties": {
+                  "audio": {
+                    "type": "number",
+                    "description": "Nota de 1 a 5 referente à qualidade do áudio."
+                  },
+                  "video": {
+                    "type": "number",
+                    "description": "Nota de 1 a 5 referente à qualidade do vídeo."
+                  },
+                  "experienciaGeral": {
+                    "type": "number",
+                    "description": "Nota geral da experiência."
+                  },
+                  "avaliacaoProfissional": {
+                    "type": "number",
+                    "description": "Nota referente ao atendimento profissional."
+                  },
+                  "comentario": {
+                    "type": "string",
+                    "description": "Comentários adicionais (opcional)."
+                  },
+                  "psicologoId": {
+                    "type": "string",
+                    "description": "ID do psicólogo avaliado."
+                  }
+                }
+              },
+              "example": {
+                "audio": 5,
+                "video": 4,
+                "experienciaGeral": 5,
+                "avaliacaoProfissional": 5,
+                "comentario": "Atendimento excelente, muito acolhedor!",
+                "psicologoId": "clt9xpq1f0001x9z9a1cdefg"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Avaliação registrada com sucesso.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "clt9z03uc0000x9zg9dgd1234",
+                  "audio": 5,
+                  "video": 4,
+                  "experienciaGeral": 5,
+                  "avaliacaoProfissional": 5,
+                  "comentario": "Atendimento excelente, muito acolhedor!",
+                  "psicologoId": "clt9xpq1f0001x9z9a1cdefg",
+                  "createdAt": "2025-01-01T12:00:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados enviados inválidos.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Campos obrigatórios inválidos."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao criar a avaliação.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Erro interno ao criar avaliação."
+                }
+              }
+            }
           }
         }
       }
     },
-    ".//api/consent": {
+    "/api/consent": {
       "post": {
-        "summary": "Auto-generated for POST .//api/consent",
+        "summary": "Registra um novo consentimento do usuário.",
+        "description": "Salva no banco de dados a confirmação do termo de consentimento, incluindo IP, data, hora, nome e CPF.",
+        "tags": [
+          "Consentimento"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data",
+                  "hora",
+                  "ip",
+                  "nome",
+                  "cpf"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "example": "2025-11-17"
+                  },
+                  "hora": {
+                    "type": "string",
+                    "example": "23:55:12"
+                  },
+                  "ip": {
+                    "type": "string",
+                    "example": "192.168.0.10"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Oscar Rodrigues"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "123.456.789-00"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Consentimento registrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "clxyz0987"
+                    },
+                    "ipNumber": {
+                      "type": "string"
+                    },
+                    "data_consent": {
+                      "type": "string"
+                    },
+                    "hora_consent": {
+                      "type": "string"
+                    },
+                    "nome_consent": {
+                      "type": "string"
+                    },
+                    "cpf_consent": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao salvar consentimento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao salvar consentimento"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      }
-    },
-    ".//api/cookies-consent": {
+      },
       "get": {
-        "summary": "Auto-generated for GET .//api/cookies-consent",
+        "summary": "Verifica se o usuário já deu consentimento para cookies.",
+        "description": "Retorna o registro de consentimento baseado no IP do cliente. Se estiver expirado (mais de 30 dias), o registro é removido e retornado 404.",
+        "tags": [
+          "uso de cookies"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-forwarded-for",
+            "required": false,
+            "description": "IP real do usuário (usado quando a aplicação está atrás de proxy).",
+            "schema": {
+              "type": "string",
+              "example": "201.22.31.45"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consentimento encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "clxyzc12345"
+                    },
+                    "ipNumber": {
+                      "type": "string",
+                      "example": "201.22.31.45"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "17/11/2025"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Consentimento não encontrado ou expirado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Consentimento não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar consentimento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar consentimento"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cookies-consent": {
+      "post": {
+        "summary": "Registra o consentimento de cookies do usuário.",
+        "description": "Armazena no banco o consentimento baseado no IP do cliente, junto com data, hora e status (aceito ou não).",
+        "tags": [
+          "uso de cookies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "accepted",
+                  "timestamp"
+                ],
+                "properties": {
+                  "accepted": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Indica se o usuário aceitou os cookies."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-11-17T23:59:00.000Z",
+                    "description": "Momento exato do consentimento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consentimento salvo com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido."
+          },
+          "500": {
+            "description": "Erro interno ao salvar consentimento."
+          }
+        }
+      },
+      "get": {
+        "summary": "Auto-generated for GET /api/cookies-consent",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "Auto-generated for POST /api/login",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "get": {
+        "summary": "Realiza logout do usuário",
+        "description": "Retorna uma confirmação de logout. O cliente deve remover o token JWT manualmente.",
+        "tags": [
+          "Autenticação"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Logout realizado com sucesso"
+                    },
+                    "aviso": {
+                      "type": "string",
+                      "example": "Lembre-se de remover o token JWT do armazenamento do cliente (localStorage, cookies, etc.) para completar o logout."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message?sala={sala}": {
+      "get": {
+        "summary": "Recupera mensagens transcritas de uma sala",
+        "description": "Retorna a transcrição completa armazenada temporariamente para a sala informada.",
+        "tags": [
+          "Transcrição"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sala",
+            "required": true,
+            "description": "Identificador único da sala onde as mensagens foram armazenadas.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "sala_12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transcrição retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transcript": {
+                      "type": "string",
+                      "example": "Olá, tudo bem?\nPodemos começar a consulta agora."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Parâmetro \"sala\" é obrigatório."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro interno do servidor."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message": {
+      "post": {
+        "summary": "Adiciona um trecho de transcrição a uma sala",
+        "description": "Recebe texto transcrito e armazena temporariamente no servidor dentro da sala indicada.",
+        "tags": [
+          "Transcrição"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sala",
+                  "transcript"
+                ],
+                "properties": {
+                  "sala": {
+                    "type": "string",
+                    "description": "Identificador único da sala.",
+                    "example": "sala_12345"
+                  },
+                  "transcript": {
+                    "type": "string",
+                    "description": "Trecho de texto transcrito que será armazenado.",
+                    "example": "O paciente relatou melhora desde a última sessão."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transcrição adicionada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Transcrição salva com sucesso."
+                    },
+                    "transcript": {
+                      "type": "string",
+                      "example": "O paciente relatou melhora desde a última sessão."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos enviados ao servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dados inválidos. Informe \"sala\" e \"transcript\"."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao processar a requisição.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro interno do servidor."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Auto-generated for GET /api/message",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/recupera-senha": {
+      "put": {
+        "summary": "Recuperação de senha",
+        "description": "Envia uma nova senha provisória para o e-mail do usuário, caso o e-mail esteja cadastrado e confirmado.",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "E-mail cadastrado no sistema.",
+                    "example": "usuario@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha alterada com sucesso e enviada por e-mail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Senha alterada com sucesso. Verifique seu e-mail para a nova senha."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail não enviado ou e-mail não confirmado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "E-mail não confirmado. Não é possível realizar a recuperação de senha."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "E-mail não encontrado no sistema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "E-mail não encontrado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao tentar realizar a recuperação de senha.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro ao tentar recuperar a senha."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/register_admins": {
+      "post": {
+        "summary": "Criação de um administrador rota provisoria para criação de usuarios não deve ser exposta em produção",
+        "description": "Endpoint para registrar um administrador no sistema.",
+        "tags": [
+          "Administradores"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "role"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome completo do administrador",
+                    "example": "João da Silva"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do administrador",
+                    "example": "joao@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do administrador",
+                    "example": 123456
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "Papel do usuário",
+                    "enum": [
+                      "ADMIN",
+                      "SUPER_ADMIN"
+                    ],
+                    "example": "ADMIN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Administrador criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Administrador criado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação nos dados enviados"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/save_peer": {
+      "get": {
+        "summary": "Recupera o peerId associado a um iddinamico",
+        "description": "Retorna o peerId salvo no peerStorage a partir de um identificador dinâmico usado nas conexões P2P.",
+        "tags": [
+          "Peer"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "iddinamico",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID dinâmico usado para mapear um peerId no servidor."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PeerId encontrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "peerId": {
+                      "type": "string",
+                      "description": "Peer ID vinculado ao iddinamico."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Mesmo iddinamico fornecido."
+                    }
+                  }
+                },
+                "example": {
+                  "peerId": "peer-1287312-xas",
+                  "id": "abc123"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro iddinamico não fornecido.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Falta o parâmetro iddinamico."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum peerId encontrado.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Nenhum peerId encontrado para o iddinamico fornecido."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Registra ou atualiza o peerId associado a um iddinamico",
+        "description": "Salva um peerId no armazenamento interno (peerStorage) vinculado ao identificador dinâmico enviado pelo cliente.",
+        "tags": [
+          "Peer"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "iddinamico",
+                  "peerId"
+                ],
+                "properties": {
+                  "iddinamico": {
+                    "type": "string",
+                    "description": "Identificador dinâmico usado como chave."
+                  },
+                  "peerId": {
+                    "type": "string",
+                    "description": "Peer ID a ser associado ao iddinamico."
+                  }
+                }
+              },
+              "example": {
+                "iddinamico": "abc123",
+                "peerId": "peer-091283-asd"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PeerId salvo com sucesso.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "ID salvo com sucesso."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros ausentes.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Faltam parâmetros obrigatórios."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Erro interno do servidor."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analize_pcte": {
+      "post": {
+        "summary": "Auto-generated for POST /api/analize_pcte",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/analize_psco": {
+      "post": {
+        "summary": "Auto-generated for POST /api/analize_psco",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/analize_psco": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/analize_psco",
         "responses": {
           "200": {
             "description": "OK"
@@ -79,25 +1377,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/cookies-consent",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/analize_psco": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/analize_psco",
+        "summary": "Auto-generated for POST /api/internal/analize_psco",
         "responses": {
           "200": {
             "description": "OK"
@@ -105,7 +1385,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/analize_psco",
+        "summary": "Auto-generated for PUT /api/internal/analize_psco",
         "responses": {
           "200": {
             "description": "OK"
@@ -113,7 +1393,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/analize_psco",
+        "summary": "Auto-generated for DELETE /api/internal/analize_psco",
         "responses": {
           "200": {
             "description": "OK"
@@ -121,9 +1401,9 @@
         }
       }
     },
-    ".//api/internal/creditos": {
+    "/api/internal/creditos": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/creditos",
+        "summary": "Auto-generated for GET /api/internal/creditos",
         "responses": {
           "200": {
             "description": "OK"
@@ -131,9 +1411,9 @@
         }
       }
     },
-    ".//api/internal/gen-meet": {
+    "/api/internal/gen-meet": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/gen-meet",
+        "summary": "Auto-generated for GET /api/internal/gen-meet",
         "responses": {
           "200": {
             "description": "OK"
@@ -141,7 +1421,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/gen-meet",
+        "summary": "Auto-generated for POST /api/internal/gen-meet",
         "responses": {
           "200": {
             "description": "OK"
@@ -149,7 +1429,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/gen-meet",
+        "summary": "Auto-generated for PUT /api/internal/gen-meet",
         "responses": {
           "200": {
             "description": "OK"
@@ -157,7 +1437,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/gen-meet",
+        "summary": "Auto-generated for DELETE /api/internal/gen-meet",
         "responses": {
           "200": {
             "description": "OK"
@@ -165,9 +1445,9 @@
         }
       }
     },
-    ".//api/internal/gerar-link-anamnese": {
+    "/api/internal/gerar-link-anamnese": {
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/gerar-link-anamnese",
+        "summary": "Auto-generated for POST /api/internal/gerar-link-anamnese",
         "responses": {
           "200": {
             "description": "OK"
@@ -175,9 +1455,9 @@
         }
       }
     },
-    ".//api/internal/history": {
+    "/api/internal/history": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/history",
+        "summary": "Auto-generated for GET /api/internal/history",
         "responses": {
           "200": {
             "description": "OK"
@@ -185,119 +1465,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/history",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/history",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/insight/generate-anamnese": {
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/insight/generate-anamnese",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/insight/generateResume": {
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/insight/generateResume",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/insight/psicochat": {
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/insight/psicochat",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/location-verification": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/location-verification",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/payments/compra-status": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/payments/compra-status",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/payments/credit-card": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/payments/credit-card",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/payments/credit-card",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/payments/pix": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/payments/pix",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/payments/pix",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/internal/payments/savepay": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/internal/payments/savepay",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/internal/payments/savepay",
+        "summary": "Auto-generated for POST /api/internal/history",
         "responses": {
           "200": {
             "description": "OK"
@@ -305,7 +1473,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/payments/savepay",
+        "summary": "Auto-generated for DELETE /api/internal/history",
         "responses": {
           "200": {
             "description": "OK"
@@ -313,9 +1481,59 @@
         }
       }
     },
-    ".//api/internal/products": {
+    "/api/internal/insight/generate-anamnese": {
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/insight/generate-anamnese",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/insight/generateResume": {
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/insight/generateResume",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/insight/psicochat": {
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/insight/psicochat",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/location-verification": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/products",
+        "summary": "Auto-generated for GET /api/internal/location-verification",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/payments/compra-status": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/payments/compra-status",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/payments/credit-card": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/payments/credit-card",
         "responses": {
           "200": {
             "description": "OK"
@@ -323,7 +1541,69 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/products",
+        "summary": "Auto-generated for POST /api/internal/payments/credit-card",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/payments/pix": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/payments/pix",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/payments/pix",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/payments/savepay": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/payments/savepay",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/payments/savepay",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Auto-generated for DELETE /api/internal/payments/savepay",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/internal/products": {
+      "get": {
+        "summary": "Auto-generated for GET /api/internal/products",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Auto-generated for POST /api/internal/products",
         "responses": {
           "200": {
             "description": "OK"
@@ -331,7 +1611,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/products",
+        "summary": "Auto-generated for PUT /api/internal/products",
         "responses": {
           "200": {
             "description": "OK"
@@ -339,7 +1619,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/products",
+        "summary": "Auto-generated for DELETE /api/internal/products",
         "responses": {
           "200": {
             "description": "OK"
@@ -347,9 +1627,9 @@
         }
       }
     },
-    ".//api/internal/prontuario/analise-paciente": {
+    "/api/internal/prontuario/analise-paciente": {
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/prontuario/analise-paciente",
+        "summary": "Auto-generated for POST /api/internal/prontuario/analise-paciente",
         "responses": {
           "200": {
             "description": "OK"
@@ -357,9 +1637,9 @@
         }
       }
     },
-    ".//api/internal/prontuario": {
+    "/api/internal/prontuario": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/prontuario",
+        "summary": "Auto-generated for GET /api/internal/prontuario",
         "responses": {
           "200": {
             "description": "OK"
@@ -367,7 +1647,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/prontuario",
+        "summary": "Auto-generated for POST /api/internal/prontuario",
         "responses": {
           "200": {
             "description": "OK"
@@ -375,7 +1655,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/prontuario",
+        "summary": "Auto-generated for PUT /api/internal/prontuario",
         "responses": {
           "200": {
             "description": "OK"
@@ -383,9 +1663,9 @@
         }
       }
     },
-    ".//api/internal/prontuario/save-transcription": {
+    "/api/internal/prontuario/save-transcription": {
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/prontuario/save-transcription",
+        "summary": "Auto-generated for PUT /api/internal/prontuario/save-transcription",
         "responses": {
           "200": {
             "description": "OK"
@@ -393,9 +1673,9 @@
         }
       }
     },
-    ".//api/internal/register_admins": {
+    "/api/internal/register_admins": {
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/register_admins",
+        "summary": "Auto-generated for POST /api/internal/register_admins",
         "responses": {
           "200": {
             "description": "OK"
@@ -403,9 +1683,9 @@
         }
       }
     },
-    ".//api/internal/register_pacientes/pre-pacientes": {
+    "/api/internal/register_pacientes/pre-pacientes": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/register_pacientes/pre-pacientes",
+        "summary": "Auto-generated for GET /api/internal/register_pacientes/pre-pacientes",
         "responses": {
           "200": {
             "description": "OK"
@@ -413,9 +1693,9 @@
         }
       }
     },
-    ".//api/internal/register_pacientes": {
+    "/api/internal/register_pacientes": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/register_pacientes",
+        "summary": "Auto-generated for GET /api/internal/register_pacientes",
         "responses": {
           "200": {
             "description": "OK"
@@ -423,7 +1703,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/register_pacientes",
+        "summary": "Auto-generated for POST /api/internal/register_pacientes",
         "responses": {
           "200": {
             "description": "OK"
@@ -431,7 +1711,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/register_pacientes",
+        "summary": "Auto-generated for PUT /api/internal/register_pacientes",
         "responses": {
           "200": {
             "description": "OK"
@@ -439,7 +1719,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/register_pacientes",
+        "summary": "Auto-generated for DELETE /api/internal/register_pacientes",
         "responses": {
           "200": {
             "description": "OK"
@@ -447,9 +1727,9 @@
         }
       }
     },
-    ".//api/internal/register_pacientes/transform": {
+    "/api/internal/register_pacientes/transform": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/register_pacientes/transform",
+        "summary": "Auto-generated for GET /api/internal/register_pacientes/transform",
         "responses": {
           "200": {
             "description": "OK"
@@ -457,7 +1737,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/register_pacientes/transform",
+        "summary": "Auto-generated for DELETE /api/internal/register_pacientes/transform",
         "responses": {
           "200": {
             "description": "OK"
@@ -465,9 +1745,9 @@
         }
       }
     },
-    ".//api/internal/token-calculator": {
+    "/api/internal/token-calculator": {
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/token-calculator",
+        "summary": "Auto-generated for POST /api/internal/token-calculator",
         "responses": {
           "200": {
             "description": "OK"
@@ -475,9 +1755,9 @@
         }
       }
     },
-    ".//api/internal/upbook": {
+    "/api/internal/upbook": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/upbook",
+        "summary": "Auto-generated for GET /api/internal/upbook",
         "responses": {
           "200": {
             "description": "OK"
@@ -485,7 +1765,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/upbook",
+        "summary": "Auto-generated for POST /api/internal/upbook",
         "responses": {
           "200": {
             "description": "OK"
@@ -493,7 +1773,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/upbook",
+        "summary": "Auto-generated for DELETE /api/internal/upbook",
         "responses": {
           "200": {
             "description": "OK"
@@ -501,9 +1781,9 @@
         }
       }
     },
-    ".//api/internal/uploads/capa": {
+    "/api/internal/uploads/capa": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/uploads/capa",
+        "summary": "Auto-generated for GET /api/internal/uploads/capa",
         "responses": {
           "200": {
             "description": "OK"
@@ -511,7 +1791,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/uploads/capa",
+        "summary": "Auto-generated for POST /api/internal/uploads/capa",
         "responses": {
           "200": {
             "description": "OK"
@@ -519,9 +1799,9 @@
         }
       }
     },
-    ".//api/internal/uploads/doc-model": {
+    "/api/internal/uploads/doc-model": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/uploads/doc-model",
+        "summary": "Auto-generated for GET /api/internal/uploads/doc-model",
         "responses": {
           "200": {
             "description": "OK"
@@ -529,7 +1809,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/uploads/doc-model",
+        "summary": "Auto-generated for POST /api/internal/uploads/doc-model",
         "responses": {
           "200": {
             "description": "OK"
@@ -537,7 +1817,7 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE .//api/internal/uploads/doc-model",
+        "summary": "Auto-generated for DELETE /api/internal/uploads/doc-model",
         "responses": {
           "200": {
             "description": "OK"
@@ -545,9 +1825,9 @@
         }
       }
     },
-    ".//api/internal/uploads/my-models": {
+    "/api/internal/uploads/my-models": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/uploads/my-models",
+        "summary": "Auto-generated for GET /api/internal/uploads/my-models",
         "responses": {
           "200": {
             "description": "OK"
@@ -555,9 +1835,9 @@
         }
       }
     },
-    ".//api/internal/uploads/profile": {
+    "/api/internal/uploads/profile": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/uploads/profile",
+        "summary": "Auto-generated for GET /api/internal/uploads/profile",
         "responses": {
           "200": {
             "description": "OK"
@@ -565,7 +1845,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/internal/uploads/profile",
+        "summary": "Auto-generated for POST /api/internal/uploads/profile",
         "responses": {
           "200": {
             "description": "OK"
@@ -573,9 +1853,9 @@
         }
       }
     },
-    ".//api/internal/user-profile": {
+    "/api/internal/user-profile": {
       "get": {
-        "summary": "Auto-generated for GET .//api/internal/user-profile",
+        "summary": "Auto-generated for GET /api/internal/user-profile",
         "responses": {
           "200": {
             "description": "OK"
@@ -583,7 +1863,7 @@
         }
       },
       "put": {
-        "summary": "Auto-generated for PUT .//api/internal/user-profile",
+        "summary": "Auto-generated for PUT /api/internal/user-profile",
         "responses": {
           "200": {
             "description": "OK"
@@ -591,9 +1871,9 @@
         }
       }
     },
-    ".//api/login": {
+    "/api/solicitar-acesso": {
       "post": {
-        "summary": "Auto-generated for POST .//api/login",
+        "summary": "Auto-generated for POST /api/solicitar-acesso",
         "responses": {
           "200": {
             "description": "OK"
@@ -601,9 +1881,9 @@
         }
       }
     },
-    ".//api/logout": {
+    "/api/swagger": {
       "get": {
-        "summary": "Auto-generated for GET .//api/logout",
+        "summary": "Auto-generated for GET /api/swagger",
         "responses": {
           "200": {
             "description": "OK"
@@ -611,9 +1891,19 @@
         }
       }
     },
-    ".//api/message": {
+    "/api/validar-anamnese": {
       "get": {
-        "summary": "Auto-generated for GET .//api/message",
+        "summary": "Auto-generated for GET /api/validar-anamnese",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/webhook/pagarme": {
+      "get": {
+        "summary": "Auto-generated for GET /api/webhook/pagarme",
         "responses": {
           "200": {
             "description": "OK"
@@ -621,93 +1911,7 @@
         }
       },
       "post": {
-        "summary": "Auto-generated for POST .//api/message",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/recupera-senha": {
-      "put": {
-        "summary": "Auto-generated for PUT .//api/recupera-senha",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/register_admins": {
-      "post": {
-        "summary": "Auto-generated for POST .//api/register_admins",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/save_peer": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/save_peer",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/save_peer",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/solicitar-acesso": {
-      "post": {
-        "summary": "Auto-generated for POST .//api/solicitar-acesso",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/swagger": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/swagger",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/validar-anamnese": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/validar-anamnese",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    ".//api/webhook/pagarme": {
-      "get": {
-        "summary": "Auto-generated for GET .//api/webhook/pagarme",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST .//api/webhook/pagarme",
+        "summary": "Auto-generated for POST /api/webhook/pagarme",
         "responses": {
           "200": {
             "description": "OK"
@@ -715,5 +1919,6 @@
         }
       }
     }
-  }
+  },
+  "components": {}
 }

@@ -7,7 +7,8 @@ const prisma = new PrismaClient();
 
 /**
  * @swagger
- * @route POST /api/login
+ * /api/login:
+ *  post:
  * @summary Realiza login do usuário
  * @description Valida email e senha, checa permissões e retorna um token JWT.
  * @tags Autenticação
