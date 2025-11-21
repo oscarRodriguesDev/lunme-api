@@ -46,12 +46,15 @@ const prices: Record<string, ModelPrices> = {
  *             properties:
  *               inputText:
  *                 type: string
+ *                 description: Texto de entrada enviado ao modelo
  *                 example: "Escreva um resumo sobre Next.js"
  *               outputText:
  *                 type: string
+ *                 description: Texto esperado como resposta
  *                 example: "Next.js é um framework React para SSR e SSG."
  *               model:
  *                 type: string
+ *                 description: Modelo utilizado para o cálculo
  *                 example: "gpt-4"
  *
  *     responses:
