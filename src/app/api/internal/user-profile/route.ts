@@ -114,7 +114,7 @@ export async function GET(req: Request) {
 
 /**
  * @swagger
- * /api/internal/users:
+ * /api/internal/user-profile:
  *   put:
  *     summary: Atualiza os dados de um usuário
  *     description: Atualiza as informações de um usuário existente no sistema pelo ID.

@@ -441,7 +441,7 @@ export async function PUT(req: Request) {
 
 /**
  * @swagger
- * /api/internal/[nome-da-rota]:
+ * /api/internal/gen-meet:
  *   delete:
  *     summary: Exclui uma consulta existente
  *     description: Remove do banco de dados uma consulta específica pelo seu ID.

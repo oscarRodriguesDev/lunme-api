@@ -12,7 +12,72 @@ const openai = new OpenAI({
 
 
 
-// Rota para gerar resumo pelo gpt
+/**
+ * @swagger
+ * /api/internal/insight/generateResume:
+ *   post:
+ *     summary: Gera um resumo de livro usando IA
+ *     description: Recebe o título e o autor do livro, gera um prompt e retorna um resumo criado pela IA.
+ *     tags:
+ *       - Interno - IA / Livros
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do usuário que consumirá crédito
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *                 description: Título do livro
+ *                 example: "O Poder do Hábito"
+ *               autor:
+ *                 type: string
+ *                 description: Autor do livro
+ *                 example: "Charles Duhigg"
+ *             required:
+ *               - titulo
+ *               - autor
+ *     responses:
+ *       200:
+ *         description: Resumo gerado pela IA
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: string
+ *                   example: "O livro explica como os hábitos funcionam e como podem ser transformados..."
+ *       400:
+ *         description: Erro por dados ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Título e autor são obrigatórios."
+ *       500:
+ *         description: Erro interno ao gerar resposta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao gerar resposta do modelo."
+ */
+
 export async function POST(req: Request) {
   
   const { searchParams } = new URL(req.url);

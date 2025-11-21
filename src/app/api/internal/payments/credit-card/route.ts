@@ -1,6 +1,148 @@
 // src/app/api/payments/charge/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
+
+/**
+ * @swagger
+ * /api/internal/payments/credit-card:
+ *   post:
+ *     summary: Cria uma cobrança via cartão de crédito usando Pagar.me
+ *     description: Realiza a criação de uma ordem e pagamento por cartão de crédito diretamente via API do Pagar.me.
+ *     tags:
+ *       - Interno - Pagamentos
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - card_number
+ *               - card_holder_name
+ *               - card_expiration_date
+ *               - card_cvv
+ *               - customer
+ *               - items
+ *             properties:
+ *               card_number:
+ *                 type: string
+ *                 example: "4111111111111111"
+ *               card_holder_name:
+ *                 type: string
+ *                 example: "João da Silva"
+ *               card_expiration_date:
+ *                 type: string
+ *                 example: "1229"
+ *               card_cvv:
+ *                 type: string
+ *                 example: "123"
+ *               customer:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     example: "João Silva"
+ *                   email:
+ *                     type: string
+ *                     example: "joao@email.com"
+ *                   document:
+ *                     type: string
+ *                     example: "12345678900"
+ *                   address:
+ *                     type: object
+ *                     properties:
+ *                       street:
+ *                         type: string
+ *                         example: "Rua A"
+ *                       number:
+ *                         type: string
+ *                         example: "123"
+ *                       neighborhood:
+ *                         type: string
+ *                         example: "Centro"
+ *                       city:
+ *                         type: string
+ *                         example: "São Paulo"
+ *                       state:
+ *                         type: string
+ *                         example: "SP"
+ *                       zipCode:
+ *                         type: string
+ *                         example: "01000000"
+ *                   phones:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         countryCode:
+ *                           type: string
+ *                           example: "55"
+ *                         areaCode:
+ *                           type: string
+ *                           example: "11"
+ *                         number:
+ *                           type: string
+ *                           example: "987654321"
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - code
+ *                     - quantity
+ *                     - unit_price
+ *                   properties:
+ *                     code:
+ *                       type: string
+ *                       example: "PROD001"
+ *                     description:
+ *                       type: string
+ *                       example: "Créditos de IA"
+ *                     quantity:
+ *                       type: integer
+ *                       example: 1
+ *                     unit_price:
+ *                       type: number
+ *                       example: 1990
+ *     responses:
+ *       200:
+ *         description: Pagamento criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 order:
+ *                   type: object
+ *                   example:
+ *                     id: "ord_123"
+ *                     status: "paid"
+ *                     amount: 1990
+ *       400:
+ *         description: Dados incompletos ou inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Dados incompletos"
+ *       500:
+ *         description: Erro interno ao criar cobrança
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao processar pagamento."
+ */
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -94,7 +236,27 @@ const orderData = {
 }
 
 
-// Método GET apenas para testar se a API está funcionando
+/**
+ * @swagger
+ * /api/internal/payments/credit-card:
+ *   get:
+ *     summary: Teste de funcionamento da API de pagamentos
+ *     description: Retorna uma mensagem simples indicando que a API está ativa.
+ *     tags:
+ *       - Interno - Pagamentos
+ *     responses:
+ *       200:
+ *         description: API funcionando corretamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "API de pagamentos está funcionando!"
+ */
+
 export async function GET() {
   return NextResponse.json({ message: "API de pagamentos está funcionando!" });
 }

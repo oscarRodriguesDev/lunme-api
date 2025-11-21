@@ -4,6 +4,91 @@ import { Paciente } from "../../../../../types/paciente";
 
 const prisma = new PrismaClient();
 
+/**
+ * @swagger
+ * /api/internal/register_pacientes:
+ *   get:
+ *     summary: Lista todos os pacientes vinculados a um psicólogo
+ *     description: Retorna todos os pacientes associados ao psicólogo informado via query string.
+ *     tags:
+ *       - Interno - Pacientes
+ *     parameters:
+ *       - in: query
+ *         name: psicologoId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do psicólogo
+ *         example: "user_123"
+ *     responses:
+ *       200:
+ *         description: Lista de pacientes retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   nome:
+ *                     type: string
+ *                   fantasy_name:
+ *                     type: string
+ *                   idade:
+ *                     type: number
+ *                   telefone:
+ *                     type: string
+ *                   cidade:
+ *                     type: string
+ *                   estado:
+ *                     type: string
+ *                   convenio:
+ *                     type: string
+ *                   cpf:
+ *                     type: string
+ *                   sexo:
+ *                     type: string
+ *                   cep:
+ *                     type: string
+ *                   bairro:
+ *                     type: string
+ *                   numero:
+ *                     type: string
+ *                   pais:
+ *                     type: string
+ *                   complemento:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   rg:
+ *                     type: string
+ *                   sintomas:
+ *                     type: string
+ *                   rua:
+ *                     type: string
+ *       400:
+ *         description: Falta de parâmetros obrigatórios
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do psicólogo é obrigatório"
+ *       500:
+ *         description: Erro interno ao buscar pacientes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao buscar pacientes"
+ */
 
 export async function GET(req: Request) {
   try {
@@ -87,6 +172,123 @@ async function salvarProntuarioInicial(pacienteId: string, sintomas: string) {
 }
 
 
+/**
+ * @swagger
+ * /api/internal/register_pacientes:
+ *   post:
+ *     summary: Cria um novo paciente e gera automaticamente o prontuário inicial
+ *     description: Cria um paciente no sistema e já vincula um prontuário com dados iniciais.
+ *     tags:
+ *       - Interno - Pacientes
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nome
+ *               - fantasy_name
+ *               - sintomas
+ *               - telefone
+ *               - convenio
+ *               - cpf
+ *               - sexo
+ *               - cep
+ *               - cidade
+ *               - bairro
+ *               - rua
+ *               - numero
+ *               - pais
+ *               - estado
+ *               - email
+ *               - rg
+ *               - psicologoId
+ *             properties:
+ *               nome:
+ *                 type: string
+ *               fantasy_name:
+ *                 type: string
+ *               idade:
+ *                 type: number
+ *                 nullable: true
+ *               sintomas:
+ *                 type: string
+ *               telefone:
+ *                 type: string
+ *               convenio:
+ *                 type: string
+ *               cpf:
+ *                 type: string
+ *               sexo:
+ *                 type: string
+ *               cep:
+ *                 type: string
+ *               cidade:
+ *                 type: string
+ *               bairro:
+ *                 type: string
+ *               rua:
+ *                 type: string
+ *               numero:
+ *                 type: string
+ *               pais:
+ *                 type: string
+ *               complemento:
+ *                 type: string
+ *                 nullable: true
+ *               estado:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               rg:
+ *                 type: string
+ *               psicologoId:
+ *                 type: string
+ *               resumo_anmp:
+ *                 type: string
+ *                 nullable: true
+ *     responses:
+ *       201:
+ *         description: Paciente criado com sucesso junto ao prontuário inicial
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 message: "Paciente e prontuário criados com sucesso"
+ *                 data:
+ *                   id: "pac_abc123"
+ *                   nome: "Maria Souza"
+ *                   cpf: "12345678900"
+ *                   psicologoId: "user_123"
+ *                   prontuario:
+ *                     id: "pront_1"
+ *                     queixaPrincipal: "Ansiedade constante"
+ *                     historico: "Prontuário inicial criado automaticamente."
+ *                     conduta: null
+ *                     evolucao: null
+ *       400:
+ *         description: Erro de validação — campos obrigatórios ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Todos os campos obrigatórios devem ser preenchidos"
+ *       500:
+ *         description: Erro interno ao criar paciente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao processar a requisição"
+ */
 
 export async function POST(req: Request) {
   try {
@@ -179,6 +381,63 @@ export async function POST(req: Request) {
 
 
 
+/**
+ * @swagger
+ * /api/internal/register_pacientes:
+ *   delete:
+ *     summary: Remove um paciente e seu prontuário vinculado
+ *     description: Deleta um paciente pelo ID. Caso exista um prontuário associado, ele será removido automaticamente.
+ *     tags:
+ *       - Interno - Pacientes
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do paciente a ser deletado
+ *     responses:
+ *       200:
+ *         description: Paciente removido com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 message: "Paciente deletado com sucesso"
+ *       400:
+ *         description: Erro — ID não informado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do paciente é obrigatório"
+ *       404:
+ *         description: Paciente não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Paciente não encontrado"
+ *       500:
+ *         description: Erro interno ao deletar paciente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao deletar paciente"
+ *                 details:
+ *                   type: string
+ */
 
 export async function DELETE(request: Request) {
   try {
@@ -235,7 +494,111 @@ export async function DELETE(request: Request) {
 
 
 
-//edição de pacientes
+/**
+ * @swagger
+ * /api/internal/register_pacientes:
+ *   put:
+ *     summary: Atualiza os dados de um paciente
+ *     description: Atualiza qualquer campo do paciente a partir do ID informado. Apenas os campos enviados no corpo serão alterados.
+ *     tags:
+ *       - Interno - Pacientes
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 example: "clu1x0a9g0001z0t7i1s2abc"
+ *               nome:
+ *                 type: string
+ *                 example: "João da Silva"
+ *               fantasy_name:
+ *                 type: string
+ *                 example: "João S."
+ *               idade:
+ *                 type: number
+ *                 example: 32
+ *               telefone:
+ *                 type: string
+ *                 example: "27999998888"
+ *               sintomas:
+ *                 type: string
+ *                 example: "Ansiedade e insônia"
+ *               convenio:
+ *                 type: string
+ *                 example: "SulAmérica"
+ *               cpf:
+ *                 type: string
+ *                 example: "12345678900"
+ *               sexo:
+ *                 type: string
+ *                 example: "Masculino"
+ *               cidade:
+ *                 type: string
+ *                 example: "Vitória"
+ *               estado:
+ *                 type: string
+ *                 example: "ES"
+ *               email:
+ *                 type: string
+ *                 example: "joao@email.com"
+ *               rg:
+ *                 type: string
+ *                 example: "11223344"
+ *               resumo_anmp:
+ *                 type: string
+ *                 example: "Paciente demonstra sinais leves de ansiedade."
+ *             required:
+ *               - id
+ *     responses:
+ *       200:
+ *         description: Paciente atualizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 id: "clu1x0a9g0001z0t7i1s2abc"
+ *                 nome: "João da Silva"
+ *                 telefone: "27999998888"
+ *                 cidade: "Vitória"
+ *       400:
+ *         description: Erro — ID não informado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do paciente é obrigatório"
+ *       404:
+ *         description: Paciente não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Paciente não encontrado"
+ *       500:
+ *         description: Erro interno ao atualizar paciente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao atualizar paciente"
+ *                 details:
+ *                   type: string
+ */
+
 export async function PUT(request: Request) {
   try {
     const data = await request.json();

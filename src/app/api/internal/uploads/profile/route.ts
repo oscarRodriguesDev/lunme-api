@@ -17,38 +17,6 @@ const prisma = new PrismaClient();
 const supabase = getSupabaseClient();
  
 
-/* async function uploadFile(file: File, path: string, id: string) {
-  // Limpa o nome do arquivo: remove espaços, acentos e caracteres especiais
-  console.log('id', id)
-  const sanitizedFileName = file.name
-    .normalize("NFD") // Remove acentos
-    .replace(/[\u0300-\u036f]/g, "") // Remove marcas de acento
-    .replace(/\s+/g, '-') // Substitui espaços por hífen
-    .replace(/[^a-zA-Z0-9.-]/g, ''); // Remove caracteres não permitidos (exceto ponto e hífen)
-
-  const fileName = `photoprofile${id}`; // Nome único e limpo
-
-  const { data, error } = await supabase.storage
-    .from('tiviai-images')
-    .upload(`${path}/${fileName}`, file, {
-      cacheControl: '3600',
-      upsert: true,
-    });
-
-  if (error) {
-    return null;
-  }
-
-
-  const { data: publicUrl } = supabase
-    .storage
-    .from('tiviai-images')
-    .getPublicUrl(`${path}/${fileName}`);
-
-  return publicUrl?.publicUrl;
-} */
-
-
 
 async function uploadFile(file: File, path: string, id: string) {
   const bucket = supabase.storage.from('tiviai-images');
@@ -104,7 +72,88 @@ async function uploadFile(file: File, path: string, id: string) {
 
 
 
-// Função que recebe a requisição POST e chama `uploadFile`
+/**
+ * @swagger
+ * /api/internal/uploads/profile:
+ *   post:
+ *     summary: Faz upload de um arquivo para o storage
+ *     description: |
+ *       Realiza o upload de um arquivo para o bucket correto, dependendo do valor do parâmetro `path`.
+ *       - `profile-pictures` → envia para a pasta de fotos de perfil  
+ *       - `banner` → envia para a pasta de banners  
+ *       O parâmetro `id` é opcional e pode ser usado como nome ou referência do arquivo.
+ *
+ *     tags:
+ *       - Interno - files and uploads
+ *
+ *     parameters:
+ *       - in: query
+ *         name: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [profile-pictures, banner]
+ *         description: Pasta de destino do arquivo
+ *         example: "profile-pictures"
+ *
+ *       - in: query
+ *         name: id
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: ID opcional para identificar o arquivo
+ *         example: "clzw123abc987"
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Arquivo a ser enviado
+ *
+ *     responses:
+ *       200:
+ *         description: Upload realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Upload realizado com sucesso!"
+ *                 url:
+ *                   type: string
+ *                   example: "https://supabase.../profile-pictures/abc123.png"
+ *
+ *       400:
+ *         description: Erro de validação (arquivo ausente ou parâmetros inválidos)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Nenhum arquivo enviado"
+ *
+ *       500:
+ *         description: Erro interno no servidor ao processar o upload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor"
+ */
+
 export async function POST(req: Request) {
     const path = new URL(req.url).searchParams.get('path');
     const id = new URL(req.url).searchParams.get('id');
@@ -138,8 +187,73 @@ export async function POST(req: Request) {
 
 
 
-//buscar a image do usuaio
-// buscar a imagem do usuário
+/**
+ * @swagger
+ * /api/internal/uploads/profile:
+ *   get:
+ *     summary: Retorna a URL pública da foto de perfil do usuário
+ *     description: |
+ *       Busca a imagem de perfil salva no Supabase Storage e retorna a URL pública.
+ *       Caso o campo `photoprofile` contenha uma URL completa, apenas o path é extraído.
+ *
+ *     tags:
+ *       - Interno - files and uploads
+ *
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do usuário
+ *         example: "clzw0t3p8000dxoyxk2h4y1ab"
+ *
+ *     responses:
+ *       200:
+ *         description: URL pública da imagem retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 url:
+ *                   type: string
+ *                   example: "https://qfpygaqyldmthqakmisq.supabase.co/storage/v1/object/public/tiviai-images/profile-pictures/abc123.png"
+ *
+ *       400:
+ *         description: Erro de requisição (userId ausente)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do usuário não fornecido"
+ *
+ *       404:
+ *         description: Usuário não encontrado ou sem foto de perfil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário ou imagem não encontrada"
+ *
+ *       500:
+ *         description: Erro interno ao gerar a URL pública
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao obter URL da imagem"
+ */
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");

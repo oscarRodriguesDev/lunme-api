@@ -27,6 +27,25 @@ const options = {
   apis: apisGlobs,
 };
 
+
+/**
+ * @swagger
+ * /api/swagger:
+ *   get:
+ *     summary: Retorna o documento OpenAPI/Swagger da API
+ *     description: "Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc."
+ *     tags:
+ *       - Interno - Documentação
+ *     responses:
+ *       200:
+ *         description: "Documento OpenAPI gerado com sucesso"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               additionalProperties: true
+ */
+
 export async function GET() {
   // Gera na hora para refletir mudanças sem reiniciar o dev server
   const spec = swaggerJSDoc(options);

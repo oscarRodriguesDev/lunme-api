@@ -7,7 +7,75 @@ const IV_LENGTH = 16;
 
 
 const prisma = new PrismaClient();
-//put de pronturario
+
+/**
+ * @swagger
+ * /api/internal/prontuario/save-transcription:
+ *   put:
+ *     summary: Atualiza e concatena uma nova transcription ao prontuário do paciente
+ *     description: Busca o prontuário pelo pacienteId e adiciona uma nova entrada de transcription concatenada com as anteriores.
+ *     tags:
+ *       - Interno - Prontuário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - pacienteId
+ *               - transcription
+ *             properties:
+ *               pacienteId:
+ *                 type: string
+ *                 description: ID do paciente associado ao prontuário
+ *                 example: "user_123"
+ *               transcription:
+ *                 type: string
+ *                 description: Texto da nova transcrição a ser adicionada
+ *                 example: "Paciente relatou melhora no humor após início da medicação."
+ *     responses:
+ *       200:
+ *         description: Transcription atualizada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 pacienteId: "user_123"
+ *                 transcription: "Transcrição antiga...\n-- 20/11/2025\nNova transcrição"
+ *       400:
+ *         description: Erro — parâmetros obrigatórios ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do paciente e transcription são obrigatórios"
+ *       404:
+ *         description: Prontuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Prontuário não encontrado para o paciente"
+ *       500:
+ *         description: Erro interno ao atualizar transcription
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno ao atualizar transcription"
+ */
+
 export async function PUT(req: Request) {
   try {
     const body = await req.json();

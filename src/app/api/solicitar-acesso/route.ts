@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 /**
  * @swagger
- * /api/sua-rota:
+ * /api/solicitar-acesso:
  *   post:
  *     summary: Realiza o pré-cadastro de um psicólogo
  *     description: Cria um registro preliminar de psicólogo no sistema antes da habilitação completa.

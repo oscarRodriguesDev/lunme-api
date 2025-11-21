@@ -55,7 +55,76 @@ async function uploadFile(file: File, path: string) {
 
 
 
-// Função que recebe a requisição POST e chama `uploadFile`
+/**
+ * @swagger
+ * /api/internal/uploads/capa:
+ *   post:
+ *     summary: Realiza upload de arquivos
+ *     description: Envia um arquivo em formato multipart/form-data e retorna a URL final após o upload.
+ *     tags:
+ *       - Interno - files and uploads
+ *
+ *     parameters:
+ *       - in: query
+ *         name: path
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Caminho opcional onde o arquivo será salvo
+ *         example: "pacientes/123"
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - file
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Arquivo a ser enviado
+ *
+ *     responses:
+ *       200:
+ *         description: Upload realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Upload realizado com sucesso!"
+ *                 url:
+ *                   type: string
+ *                   example: "https://meuservidor.com/uploads/pasta/arquivo.png"
+ *
+ *       400:
+ *         description: Nenhum arquivo enviado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Nenhum arquivo enviado"
+ *
+ *       500:
+ *         description: Erro interno no servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor"
+ */
+
 export async function POST(req: Request) {
     const path = new URL(req.url).searchParams.get('path');
   try {
@@ -86,6 +155,70 @@ export async function POST(req: Request) {
 
 //buscar a image do usuaio
 // buscar a imagem do usuário
+/**
+ * @swagger
+ * /api/internal/uploads/capa:
+ *   get:
+ *     summary: Retorna a URL pública da foto da capa do livro
+ *     description: Busca a ulr da capa do livro do usuário pelo ID fornecido.
+ *     tags:
+ *       - Interno - files and uploads
+ *
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do usuário
+ *         example: "clvxyz123abc789"
+ *
+ *     responses:
+ *       200:
+ *         description: URL da imagem retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 url:
+ *                   type: string
+ *                   example: "https://supabase.storage.com/bucket/capa/user123.png"
+ *
+ *       400:
+ *         description: ID do usuário não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "ID do usuário não fornecido"
+ *
+ *       404:
+ *         description: capa não encontrado ou sem imagem cadastrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário ou imagem não encontrada"
+ *
+ *       500:
+ *         description: Erro interno no servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor"
+ */
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
@@ -100,7 +233,7 @@ export async function GET(req: Request) {
     });
 
     if (!user || !user.photoprofile) {
-      return NextResponse.json({ error: "Usuário ou imagem não encontrada" }, { status: 404 });
+      return NextResponse.json({ error: "Usuário ou capa não encontrada" }, { status: 404 });
     }
 
     // Se o campo photoprofile tiver URL completa, extrai só o path

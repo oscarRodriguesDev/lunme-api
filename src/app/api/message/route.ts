@@ -8,7 +8,7 @@ const transcriptionStorage: Record<string, Set<string>> = {};
 
 /**
  * @swagger
- * /api/message?sala={sala}:
+ * /api/message:
  *   get:
  *     summary: Recupera mensagens transcritas de uma sala
  *     description: Retorna a transcrição completa armazenada temporariamente para a sala informada.

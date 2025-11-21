@@ -8,8 +8,77 @@ const prisma = new PrismaClient();
 
 
 
-//retorna as compras do usuario
-// GET /api/internal/payments/savepay?userId=...
+/**
+ * @swagger
+ * /api/internal/payments/savepay:
+ *   get:
+ *     summary: Lista as compras de um usuário
+ *     description: Retorna todas as compras associadas a um usuário, ordenadas da mais recente para a mais antiga.
+ *     tags:
+ *       - Interno - Pagamentos
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do usuário para buscar compras
+ *     responses:
+ *       200:
+ *         description: Compras encontradas com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 compras:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       userId:
+ *                         type: string
+ *                       Status:
+ *                         type: string
+ *                         example: PAID
+ *                       qtdCreditos:
+ *                         type: number
+ *                         example: 10
+ *                       paymentId:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                       updatedAt:
+ *                         type: string
+ *                         format: date-time
+ *       400:
+ *         description: userId não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: userId é obrigatório
+ *       500:
+ *         description: Erro interno ao buscar compras
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Erro interno ao buscar compras
+ */
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -38,7 +107,90 @@ export async function GET(req: Request) {
 
 
 
-//salvar papgamento salvo
+/**
+ * @swagger
+ * /api/internal/payments/savepay:
+ *   post:
+ *     summary: Salva uma compra/pagamento no sistema
+ *     description: Registra uma nova compra no banco de dados com status e créditos adquiridos.
+ *     tags:
+ *       - Interno - Pagamentos
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 description: ID do usuário que realizou a compra
+ *               paymentId:
+ *                 type: string
+ *                 description: ID do pagamento gerado pelo gateway
+ *               stats:
+ *                 type: string
+ *                 description: Status da compra (PENDING, FAILED, PAID)
+ *                 example: PENDING
+ *               qtdCreditos:
+ *                 type: number
+ *                 description: Quantidade de créditos adquiridos
+ *             required:
+ *               - userId
+ *               - paymentId
+ *     responses:
+ *       201:
+ *         description: Compra registrada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 compra:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     userId:
+ *                       type: string
+ *                     paymentId:
+ *                       type: string
+ *                     Status:
+ *                       type: string
+ *                       example: PENDING
+ *                     qtdCreditos:
+ *                       type: number
+ *                       example: 10
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *       400:
+ *         description: Parâmetros obrigatórios ausentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "userId e paymentId são obrigatórios"
+ *       500:
+ *         description: Erro interno ao criar compra
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno ao criar compra"
+ */
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -77,7 +229,72 @@ export async function POST(req: Request) {
 }
 
 
-//deletar pagamnto salvo
+/**
+ * @swagger
+ * /api/internal/payments/savepay:
+ *   delete:
+ *     summary: Remove uma compra salva pelo paymentId
+ *     description: Deleta todas as compras associadas ao paymentId informado.
+ *     tags:
+ *       - Interno - Pagamentos
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paymentId:
+ *                 type: string
+ *                 description: ID do pagamento a ser removido
+ *             required:
+ *               - paymentId
+ *     responses:
+ *       200:
+ *         description: Compras deletadas com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 deletedCount:
+ *                   type: number
+ *                   description: Quantidade de registros removidos
+ *                   example: 1
+ *       400:
+ *         description: paymentId ausente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "paymentId é obrigatório"
+ *       404:
+ *         description: Nenhuma compra encontrada para o paymentId informado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Nenhuma compra encontrada para esse paymentId"
+ *       500:
+ *         description: Erro interno ao deletar compra
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno ao deletar compra"
+ */
+
 export async function DELETE(req: Request) {
   try {
     const body = await req.json();
@@ -116,4 +333,3 @@ export async function DELETE(req: Request) {
 }
 
 
-//recuperar tod

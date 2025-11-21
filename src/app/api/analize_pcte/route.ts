@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 /**
  * @swagger
- * /api/analise_pcte:
+ * /api/analize_pcte:
  *   post:
  *     summary: Cria um pré-cadastro de anamnese
  *     description: >

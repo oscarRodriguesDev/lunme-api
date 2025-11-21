@@ -155,7 +155,7 @@
         }
       }
     },
-    "/api/analise_pcte": {
+    "/api/analize_pcte": {
       "post": {
         "summary": "Cria um pré-cadastro de anamnese",
         "description": "Recebe todas as informações iniciais fornecidas pelo paciente e cria um registro de pré-anamnese vinculado a um psicólogo responsável.\n",
@@ -355,7 +355,7 @@
         }
       }
     },
-    "/api/analise_psco": {
+    "/api/analize_psco": {
       "post": {
         "summary": "Realiza o pré-cadastro de um psicólogo",
         "description": "Registra um psicólogo em estado preliminar (não habilitado) no sistema, armazenando todos os dados pessoais e profissionais necessários para análise interna.\n",
@@ -673,7 +673,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/cookies-consent": {
       "get": {
         "summary": "Verifica se o usuário já deu consentimento para cookies.",
         "description": "Retorna o registro de consentimento baseado no IP do cliente. Se estiver expirado (mais de 30 dias), o registro é removido e retornado 404.",
@@ -750,9 +752,7 @@
             }
           }
         }
-      }
-    },
-    "/api/cookies-consent": {
+      },
       "post": {
         "summary": "Registra o consentimento de cookies do usuário.",
         "description": "Armazena no banco o consentimento baseado no IP do cliente, junto com data, hora e status (aceito ou não).",
@@ -808,14 +808,6 @@
           },
           "500": {
             "description": "Erro interno ao salvar consentimento."
-          }
-        }
-      },
-      "get": {
-        "summary": "Auto-generated for GET /api/cookies-consent",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -996,24 +988,6 @@
           }
         }
       },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/analize_psco/{cpf}": {
       "put": {
         "summary": "Habilita um psicólogo previamente pré-cadastrado",
         "description": "Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.",
@@ -1214,7 +1188,7 @@
         }
       }
     },
-    "/api/internal/[nome-da-rota]": {
+    "/api/internal/creditos": {
       "get": {
         "summary": "Consulta os créditos de um usuário",
         "description": "Retorna a quantidade de créditos disponíveis de um usuário específico no sistema.",
@@ -1295,66 +1269,6 @@
                     "error": {
                       "type": "string",
                       "example": "Erro interno ao buscar créditos"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Exclui uma consulta existente",
-        "description": "Remove do banco de dados uma consulta específica pelo seu ID.",
-        "tags": [
-          "Interno - Consultas"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "id"
-                ],
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "example": "consulta_12345"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Consulta deletada com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Reunião deletada com sucesso"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro ao deletar a consulta.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Erro ao deletar reunião"
                     }
                   }
                 }
@@ -1759,10 +1673,62 @@
         }
       },
       "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/gen-meet",
+        "summary": "Exclui uma consulta existente",
+        "description": "Remove do banco de dados uma consulta específica pelo seu ID.",
+        "tags": [
+          "Interno - Consultas"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "consulta_12345"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Consulta deletada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reunião deletada com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao deletar a consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao deletar reunião"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2109,6 +2075,309 @@
         }
       }
     },
+    "/api/internal/insight/generate-anamnese": {
+      "post": {
+        "summary": "Gera uma análise de anamnese usando IA",
+        "description": "Recebe respostas do usuário, gera um prompt para análise psicológica e retorna a resposta do modelo de IA.",
+        "tags": [
+          "Interno - IA / Anamnese"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário que irá consumir crédito"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "object",
+                    "description": "Objeto contendo as respostas fornecidas pelo paciente",
+                    "example": {
+                      "pergunta1": "Tenho dificuldades para dormir",
+                      "pergunta2": "Ando muito ansioso"
+                    }
+                  }
+                },
+                "required": [
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resposta gerada pela IA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "Com base nas informações, é possível observar sinais de ansiedade..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de requisição (dados ausentes)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Mensagem não fornecida."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar a resposta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao gerar resposta do modelo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/insight/generateResume": {
+      "post": {
+        "summary": "Gera um resumo de livro usando IA",
+        "description": "Recebe o título e o autor do livro, gera um prompt e retorna um resumo criado pela IA.",
+        "tags": [
+          "Interno - IA / Livros"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário que consumirá crédito"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string",
+                    "description": "Título do livro",
+                    "example": "O Poder do Hábito"
+                  },
+                  "autor": {
+                    "type": "string",
+                    "description": "Autor do livro",
+                    "example": "Charles Duhigg"
+                  }
+                },
+                "required": [
+                  "titulo",
+                  "autor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resumo gerado pela IA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "string",
+                      "example": "O livro explica como os hábitos funcionam e como podem ser transformados..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro por dados ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Título e autor são obrigatórios."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar resposta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao gerar resposta do modelo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/insight/psicochat": {
+      "post": {
+        "summary": "Gera texto clínico baseado na transcrição e informações do paciente usando IA",
+        "description": "Recebe transcrição, modelo, nome do psicólogo, CRP e nome do paciente. Gera texto estruturado com base no modelo informado.",
+        "tags": [
+          "Interno - IA / Documentos Clínicos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário responsável pela geração e consumo de créditos"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Transcrição recebida (texto base)",
+                    "example": "Paciente relata ansiedade frequente e dificuldade para dormir..."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Modelo de documento desejado, por exemplo: relatório, evolução, anamnese",
+                    "example": "modelo_evolucao"
+                  },
+                  "nomePaciente": {
+                    "type": "string",
+                    "description": "Nome do paciente",
+                    "example": "João Silva"
+                  },
+                  "nomePsicologo": {
+                    "type": "string",
+                    "description": "Nome do psicólogo",
+                    "example": "Dra. Ana Souza"
+                  },
+                  "crpPsicologo": {
+                    "type": "string",
+                    "description": "Número do CRP do psicólogo",
+                    "example": "CRP-12/12345"
+                  }
+                },
+                "required": [
+                  "message",
+                  "prompt",
+                  "nomePaciente",
+                  "nomePsicologo",
+                  "crpPsicologo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Texto clínico gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "Paciente apresentou evolução positiva..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro por parâmetros insuficientes ou créditos indisponíveis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Creditos insuficientes ou invalidos, favor verificar seu saldo."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar o texto com IA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao gerar resposta do modelo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/internal/location-verification": {
       "get": {
         "summary": "Consulta o status de pagamento de uma ordem",
@@ -2178,6 +2447,852 @@
                     "error": {
                       "type": "string",
                       "example": "Erro interno ao consultar status"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/payments/compra-status": {
+      "get": {
+        "summary": "Consulta o status de uma compra",
+        "description": "Retorna o status e informações de uma compra específica com base no userId e paymentId.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário relacionado à compra"
+          },
+          {
+            "in": "query",
+            "name": "paymentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pagamento gerado no checkout"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status da compra encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "PAID"
+                    },
+                    "compra": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "4fd872ab91"
+                        },
+                        "Status": {
+                          "type": "string",
+                          "example": "PAID"
+                        },
+                        "qtdCreditos": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetros 'userId' e 'paymentId' são obrigatórios."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Compra não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Compra não encontrada para os parâmetros fornecidos."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao consultar status da compra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar status da compra."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "Error: conexão com banco falhou"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/payments/credit-card": {
+      "post": {
+        "summary": "Cria uma cobrança via cartão de crédito usando Pagar.me",
+        "description": "Realiza a criação de uma ordem e pagamento por cartão de crédito diretamente via API do Pagar.me.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "card_number",
+                  "card_holder_name",
+                  "card_expiration_date",
+                  "card_cvv",
+                  "customer",
+                  "items"
+                ],
+                "properties": {
+                  "card_number": {
+                    "type": "string",
+                    "example": "4111111111111111"
+                  },
+                  "card_holder_name": {
+                    "type": "string",
+                    "example": "João da Silva"
+                  },
+                  "card_expiration_date": {
+                    "type": "string",
+                    "example": "1229"
+                  },
+                  "card_cvv": {
+                    "type": "string",
+                    "example": "123"
+                  },
+                  "customer": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "João Silva"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "joao@email.com"
+                      },
+                      "document": {
+                        "type": "string",
+                        "example": "12345678900"
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {
+                            "type": "string",
+                            "example": "Rua A"
+                          },
+                          "number": {
+                            "type": "string",
+                            "example": "123"
+                          },
+                          "neighborhood": {
+                            "type": "string",
+                            "example": "Centro"
+                          },
+                          "city": {
+                            "type": "string",
+                            "example": "São Paulo"
+                          },
+                          "state": {
+                            "type": "string",
+                            "example": "SP"
+                          },
+                          "zipCode": {
+                            "type": "string",
+                            "example": "01000000"
+                          }
+                        }
+                      },
+                      "phones": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "countryCode": {
+                              "type": "string",
+                              "example": "55"
+                            },
+                            "areaCode": {
+                              "type": "string",
+                              "example": "11"
+                            },
+                            "number": {
+                              "type": "string",
+                              "example": "987654321"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "quantity",
+                        "unit_price"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "example": "PROD001"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Créditos de IA"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "unit_price": {
+                          "type": "number",
+                          "example": 1990
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pagamento criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "order": {
+                      "type": "object",
+                      "example": {
+                        "id": "ord_123",
+                        "status": "paid",
+                        "amount": 1990
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados incompletos ou inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Dados incompletos"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao criar cobrança",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao processar pagamento."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Teste de funcionamento da API de pagamentos",
+        "description": "Retorna uma mensagem simples indicando que a API está ativa.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "responses": {
+          "200": {
+            "description": "API funcionando corretamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "API de pagamentos está funcionando!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/payments/pix": {
+      "post": {
+        "summary": "Cria uma cobrança PIX via Pagar.me",
+        "description": "Gera uma ordem de pagamento PIX no Pagar.me e retorna o QR Code e dados da transação.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer": {
+                    "type": "object",
+                    "description": "Dados do comprador",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "document": {
+                        "type": "string",
+                        "description": "CPF do cliente"
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "neighborhood": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "zipCode": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "phones": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "countryCode": {
+                              "type": "string"
+                            },
+                            "areaCode": {
+                              "type": "string"
+                            },
+                            "number": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "items": {
+                    "type": "array",
+                    "description": "Lista de produtos ou créditos",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "integer"
+                        },
+                        "unit_price": {
+                          "type": "number"
+                        },
+                        "price": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "customer",
+                  "items"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PIX criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "order": {
+                      "type": "object",
+                      "description": "Retorno completo da API da Pagar.me"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados ausentes ou inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar o PIX",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Verifica se a API de pagamentos está funcionando",
+        "description": "Retorna uma mensagem simples confirmando o funcionamento da API.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "responses": {
+          "200": {
+            "description": "API funcionando corretamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "API de pagamentos está funcionando!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/payments/savepay": {
+      "get": {
+        "summary": "Lista as compras de um usuário",
+        "description": "Retorna todas as compras associadas a um usuário, ordenadas da mais recente para a mais antiga.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário para buscar compras"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Compras encontradas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "compras": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "Status": {
+                            "type": "string",
+                            "example": "PAID"
+                          },
+                          "qtdCreditos": {
+                            "type": "number",
+                            "example": 10
+                          },
+                          "paymentId": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "userId não fornecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "userId é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao buscar compras",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao buscar compras"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Salva uma compra/pagamento no sistema",
+        "description": "Registra uma nova compra no banco de dados com status e créditos adquiridos.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "ID do usuário que realizou a compra"
+                  },
+                  "paymentId": {
+                    "type": "string",
+                    "description": "ID do pagamento gerado pelo gateway"
+                  },
+                  "stats": {
+                    "type": "string",
+                    "description": "Status da compra (PENDING, FAILED, PAID)",
+                    "example": "PENDING"
+                  },
+                  "qtdCreditos": {
+                    "type": "number",
+                    "description": "Quantidade de créditos adquiridos"
+                  }
+                },
+                "required": [
+                  "userId",
+                  "paymentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Compra registrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "compra": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "paymentId": {
+                          "type": "string"
+                        },
+                        "Status": {
+                          "type": "string",
+                          "example": "PENDING"
+                        },
+                        "qtdCreditos": {
+                          "type": "number",
+                          "example": 10
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "userId e paymentId são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao criar compra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao criar compra"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove uma compra salva pelo paymentId",
+        "description": "Deleta todas as compras associadas ao paymentId informado.",
+        "tags": [
+          "Interno - Pagamentos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string",
+                    "description": "ID do pagamento a ser removido"
+                  }
+                },
+                "required": [
+                  "paymentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Compras deletadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "deletedCount": {
+                      "type": "number",
+                      "description": "Quantidade de registros removidos",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "paymentId ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "paymentId é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhuma compra encontrada para o paymentId informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nenhuma compra encontrada para esse paymentId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao deletar compra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao deletar compra"
                     }
                   }
                 }
@@ -2590,6 +3705,475 @@
         }
       }
     },
+    "/api/internal/prontuario/analise-paciente": {
+      "post": {
+        "summary": "Gera uma avaliação baseada no prompt enviado",
+        "description": "Recebe um prompt, concatena com instruções internas e envia ao modelo de IA para gerar uma avaliação estruturada.",
+        "tags": [
+          "Interno - Avaliações"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "prompt"
+                ],
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "example": "Paciente demonstra sinais de melhora no tratamento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Avaliação gerada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "string",
+                      "example": "Avaliação detalhada gerada pelo modelo."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro — campo prompt não enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Título e autor são obrigatórios."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar resposta do modelo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao gerar resposta do modelo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/prontuario": {
+      "get": {
+        "summary": "Retorna o prontuário de um paciente",
+        "description": "Busca um prontuário usando o pacienteId informado na URL.",
+        "tags": [
+          "Interno - Prontuário"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pacienteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do paciente associado ao prontuário"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prontuário encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "pacienteId não informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente não informado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prontuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Prontuário não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um prontuário para um paciente",
+        "description": "Registra um novo prontuário vinculado a um paciente. Cada paciente só pode ter um prontuário.",
+        "tags": [
+          "Interno - Prontuário"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pacienteId"
+                ],
+                "properties": {
+                  "pacienteId": {
+                    "type": "string",
+                    "example": "cltxyz12345"
+                  },
+                  "queixaPrincipal": {
+                    "type": "string",
+                    "example": "Ansiedade constante e dificuldade para dormir."
+                  },
+                  "historico": {
+                    "type": "string",
+                    "example": "Paciente relata histórico de ansiedade desde a adolescência."
+                  },
+                  "conduta": {
+                    "type": "string",
+                    "example": "Aplicação de técnicas de respiração e exercícios cognitivos."
+                  },
+                  "transcription": {
+                    "type": "string",
+                    "example": "Transcrição da última sessão..."
+                  },
+                  "evolucao": {
+                    "type": "string",
+                    "example": "Paciente apresentou melhora após técnicas aplicadas."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Prontuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados ausentes — pacienteId é obrigatório",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "O paciente já possui prontuário registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Paciente já possui prontuário"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao criar prontuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao criar prontuário"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza o prontuário de um paciente",
+        "description": "Atualiza os campos do prontuário existente. Caso um campo não seja enviado, o valor atual é mantido. O campo \"evolucao\" é concatenado ao valor anterior.",
+        "tags": [
+          "Interno - Prontuário"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pacienteId"
+                ],
+                "properties": {
+                  "pacienteId": {
+                    "type": "string",
+                    "example": "cltxyz12345"
+                  },
+                  "queixaPrincipal": {
+                    "type": "string",
+                    "example": "Paciente relata melhora nos sintomas de ansiedade."
+                  },
+                  "historico": {
+                    "type": "string",
+                    "example": "Histórico atualizado conforme sessão mais recente."
+                  },
+                  "conduta": {
+                    "type": "string",
+                    "example": "Aplicação de nova técnica cognitiva."
+                  },
+                  "transcription": {
+                    "type": "string",
+                    "example": "Transcrição atualizada da sessão."
+                  },
+                  "evolucao": {
+                    "type": "string",
+                    "example": "Paciente demonstrou maior controle emocional na sessão."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prontuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro – pacienteId não enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prontuário não encontrado para o paciente informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Prontuário não encontrado para o paciente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao atualizar prontuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao atualizar prontuário"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/prontuario/save-transcription": {
+      "put": {
+        "summary": "Atualiza e concatena uma nova transcription ao prontuário do paciente",
+        "description": "Busca o prontuário pelo pacienteId e adiciona uma nova entrada de transcription concatenada com as anteriores.",
+        "tags": [
+          "Interno - Prontuário"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pacienteId",
+                  "transcription"
+                ],
+                "properties": {
+                  "pacienteId": {
+                    "type": "string",
+                    "description": "ID do paciente associado ao prontuário",
+                    "example": "user_123"
+                  },
+                  "transcription": {
+                    "type": "string",
+                    "description": "Texto da nova transcrição a ser adicionada",
+                    "example": "Paciente relatou melhora no humor após início da medicação."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transcription atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "pacienteId": "user_123",
+                    "transcription": "Transcrição antiga...\n-- 20/11/2025\nNova transcrição"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro — parâmetros obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente e transcription são obrigatórios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prontuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Prontuário não encontrado para o paciente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao atualizar transcription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao atualizar transcription"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/internal/register_admins": {
       "post": {
         "summary": "Cadastra um novo usuário administrador",
@@ -2703,6 +4287,1075 @@
                     "message": {
                       "type": "string",
                       "example": "Erro ao cadastrar admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/register_pacientes/pre-pacientes": {
+      "get": {
+        "summary": "Lista pré-pacientes ainda não habilitados de um psicólogo",
+        "description": "Retorna todos os registros de pré-pacientes vinculados ao psicólogo informado, filtrando apenas os não habilitados.",
+        "tags": [
+          "Interno - Pré-Pacientes"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo responsável",
+            "example": "clu1x0a9g0001z0t7i1s2abc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pré-pacientes retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "prp_123"
+                      },
+                      "nome": {
+                        "type": "string",
+                        "example": "Maria Oliveira"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "maria@email.com"
+                      },
+                      "endereco": {
+                        "type": "string",
+                        "example": "Rua das Flores, 123"
+                      },
+                      "nascimento": {
+                        "type": "string",
+                        "example": "1995-08-12"
+                      },
+                      "idade": {
+                        "type": "number",
+                        "example": 29
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "example": "12345678900"
+                      },
+                      "telefone": {
+                        "type": "string",
+                        "example": "27999998888"
+                      },
+                      "emergencia": {
+                        "type": "string",
+                        "example": "Mãe - 27988887777"
+                      },
+                      "generoOrientacao": {
+                        "type": "string",
+                        "example": "Feminino"
+                      },
+                      "estadoCivil": {
+                        "type": "string",
+                        "example": "Solteira"
+                      },
+                      "origemConhecimento": {
+                        "type": "string",
+                        "example": "Instagram"
+                      },
+                      "preocupacao": {
+                        "type": "string",
+                        "example": "Ansiedade constante"
+                      },
+                      "motivoAtendimento": {
+                        "type": "string",
+                        "example": "Crises de ansiedade"
+                      },
+                      "experienciaAnterior": {
+                        "type": "string",
+                        "example": "Já fez terapia 1 ano"
+                      },
+                      "saudeFisica": {
+                        "type": "string",
+                        "example": "Boa"
+                      },
+                      "detalhesSaudeFisica": {
+                        "type": "string",
+                        "example": "Sem condições graves"
+                      },
+                      "medicamentos": {
+                        "type": "string",
+                        "example": "Nenhum"
+                      },
+                      "diagnosticoMental": {
+                        "type": "string",
+                        "example": "Não possui"
+                      },
+                      "historicoFamiliar": {
+                        "type": "string",
+                        "example": "Histórico de ansiedade na família"
+                      },
+                      "rotina": {
+                        "type": "string",
+                        "example": "Trabalho intenso, pouco lazer"
+                      },
+                      "sono": {
+                        "type": "string",
+                        "example": "Dorme 5h por noite"
+                      },
+                      "atividadeFisica": {
+                        "type": "string",
+                        "example": "Raramente"
+                      },
+                      "estresse": {
+                        "type": "string",
+                        "example": "Alto"
+                      },
+                      "convivencia": {
+                        "type": "string",
+                        "example": "Boa"
+                      },
+                      "relacaoFamiliar": {
+                        "type": "string",
+                        "example": "Distante"
+                      },
+                      "apoioSocial": {
+                        "type": "string",
+                        "example": "Poucos amigos"
+                      },
+                      "nivelFelicidade": {
+                        "type": "number",
+                        "example": 4
+                      },
+                      "ansiedade": {
+                        "type": "number",
+                        "example": 8
+                      },
+                      "pensamentosNegativos": {
+                        "type": "string",
+                        "example": "Constantes"
+                      },
+                      "objetivoTerapia": {
+                        "type": "string",
+                        "example": "Melhorar crises de ansiedade"
+                      },
+                      "temasDelicados": {
+                        "type": "string",
+                        "example": "Relacionamentos"
+                      },
+                      "estiloAtendimento": {
+                        "type": "string",
+                        "example": "Acolhedor"
+                      },
+                      "observacoesFinais": {
+                        "type": "string",
+                        "example": "Paciente muito retraída"
+                      },
+                      "autorizacaoLGPD": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "habilitado": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2025-01-10T12:34:56.000Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2025-01-10T14:21:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do psicólogo não informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do psicólogo é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao buscar pré-pacientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/register_pacientes": {
+      "get": {
+        "summary": "Lista todos os pacientes vinculados a um psicólogo",
+        "description": "Retorna todos os pacientes associados ao psicólogo informado via query string.",
+        "tags": [
+          "Interno - Pacientes"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo",
+            "example": "user_123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "nome": {
+                        "type": "string"
+                      },
+                      "fantasy_name": {
+                        "type": "string"
+                      },
+                      "idade": {
+                        "type": "number"
+                      },
+                      "telefone": {
+                        "type": "string"
+                      },
+                      "cidade": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "string"
+                      },
+                      "convenio": {
+                        "type": "string"
+                      },
+                      "cpf": {
+                        "type": "string"
+                      },
+                      "sexo": {
+                        "type": "string"
+                      },
+                      "cep": {
+                        "type": "string"
+                      },
+                      "bairro": {
+                        "type": "string"
+                      },
+                      "numero": {
+                        "type": "string"
+                      },
+                      "pais": {
+                        "type": "string"
+                      },
+                      "complemento": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "rg": {
+                        "type": "string"
+                      },
+                      "sintomas": {
+                        "type": "string"
+                      },
+                      "rua": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta de parâmetros obrigatórios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do psicólogo é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao buscar pacientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar pacientes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo paciente e gera automaticamente o prontuário inicial",
+        "description": "Cria um paciente no sistema e já vincula um prontuário com dados iniciais.",
+        "tags": [
+          "Interno - Pacientes"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nome",
+                  "fantasy_name",
+                  "sintomas",
+                  "telefone",
+                  "convenio",
+                  "cpf",
+                  "sexo",
+                  "cep",
+                  "cidade",
+                  "bairro",
+                  "rua",
+                  "numero",
+                  "pais",
+                  "estado",
+                  "email",
+                  "rg",
+                  "psicologoId"
+                ],
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  },
+                  "fantasy_name": {
+                    "type": "string"
+                  },
+                  "idade": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "sintomas": {
+                    "type": "string"
+                  },
+                  "telefone": {
+                    "type": "string"
+                  },
+                  "convenio": {
+                    "type": "string"
+                  },
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "sexo": {
+                    "type": "string"
+                  },
+                  "cep": {
+                    "type": "string"
+                  },
+                  "cidade": {
+                    "type": "string"
+                  },
+                  "bairro": {
+                    "type": "string"
+                  },
+                  "rua": {
+                    "type": "string"
+                  },
+                  "numero": {
+                    "type": "string"
+                  },
+                  "pais": {
+                    "type": "string"
+                  },
+                  "complemento": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "estado": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "rg": {
+                    "type": "string"
+                  },
+                  "psicologoId": {
+                    "type": "string"
+                  },
+                  "resumo_anmp": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Paciente criado com sucesso junto ao prontuário inicial",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Paciente e prontuário criados com sucesso",
+                    "data": {
+                      "id": "pac_abc123",
+                      "nome": "Maria Souza",
+                      "cpf": "12345678900",
+                      "psicologoId": "user_123",
+                      "prontuario": {
+                        "id": "pront_1",
+                        "queixaPrincipal": "Ansiedade constante",
+                        "historico": "Prontuário inicial criado automaticamente.",
+                        "conduta": null,
+                        "evolucao": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação — campos obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Todos os campos obrigatórios devem ser preenchidos"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao criar paciente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao processar a requisição"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um paciente e seu prontuário vinculado",
+        "description": "Deleta um paciente pelo ID. Caso exista um prontuário associado, ele será removido automaticamente.",
+        "tags": [
+          "Interno - Pacientes"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do paciente a ser deletado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente removido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Paciente deletado com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro — ID não informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Paciente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Paciente não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao deletar paciente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao deletar paciente"
+                    },
+                    "details": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um paciente",
+        "description": "Atualiza qualquer campo do paciente a partir do ID informado. Apenas os campos enviados no corpo serão alterados.",
+        "tags": [
+          "Interno - Pacientes"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "clu1x0a9g0001z0t7i1s2abc"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "João da Silva"
+                  },
+                  "fantasy_name": {
+                    "type": "string",
+                    "example": "João S."
+                  },
+                  "idade": {
+                    "type": "number",
+                    "example": 32
+                  },
+                  "telefone": {
+                    "type": "string",
+                    "example": "27999998888"
+                  },
+                  "sintomas": {
+                    "type": "string",
+                    "example": "Ansiedade e insônia"
+                  },
+                  "convenio": {
+                    "type": "string",
+                    "example": "SulAmérica"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "12345678900"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "Masculino"
+                  },
+                  "cidade": {
+                    "type": "string",
+                    "example": "Vitória"
+                  },
+                  "estado": {
+                    "type": "string",
+                    "example": "ES"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "joao@email.com"
+                  },
+                  "rg": {
+                    "type": "string",
+                    "example": "11223344"
+                  },
+                  "resumo_anmp": {
+                    "type": "string",
+                    "example": "Paciente demonstra sinais leves de ansiedade."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paciente atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "clu1x0a9g0001z0t7i1s2abc",
+                    "nome": "João da Silva",
+                    "telefone": "27999998888",
+                    "cidade": "Vitória"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro — ID não informado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do paciente é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Paciente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Paciente não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao atualizar paciente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao atualizar paciente"
+                    },
+                    "details": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/register_pacientes/transform": {
+      "get": {
+        "summary": "Busca um pré-paciente pelo ID",
+        "description": "Retorna as informações completas de um pré-paciente específico.",
+        "tags": [
+          "Interno - Pré-Pacientes"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "idpac",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pré-paciente",
+            "example": "prp_abc123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pré-paciente encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "prp_abc123"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "João Silva"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "joao@mail.com"
+                    },
+                    "endereco": {
+                      "type": "string",
+                      "example": "Rua Flores, 100"
+                    },
+                    "nascimento": {
+                      "type": "string",
+                      "example": "1990-02-17"
+                    },
+                    "idade": {
+                      "type": "number",
+                      "example": 34
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "example": "12345678900"
+                    },
+                    "telefone": {
+                      "type": "string",
+                      "example": "27999998888"
+                    },
+                    "emergencia": {
+                      "type": "string",
+                      "example": "Maria - 27999997777"
+                    },
+                    "generoOrientacao": {
+                      "type": "string",
+                      "example": "Masculino"
+                    },
+                    "estadoCivil": {
+                      "type": "string",
+                      "example": "Solteiro"
+                    },
+                    "origemConhecimento": {
+                      "type": "string",
+                      "example": "Indicação"
+                    },
+                    "preocupacao": {
+                      "type": "string",
+                      "example": "Ansiedade"
+                    },
+                    "motivoAtendimento": {
+                      "type": "string",
+                      "example": "Crises recorrentes"
+                    },
+                    "experienciaAnterior": {
+                      "type": "string",
+                      "example": "Nunca fez terapia"
+                    },
+                    "saudeFisica": {
+                      "type": "string",
+                      "example": "Boa"
+                    },
+                    "detalhesSaudeFisica": {
+                      "type": "string",
+                      "example": "Sem observações"
+                    },
+                    "medicamentos": {
+                      "type": "string",
+                      "example": "Nenhum"
+                    },
+                    "diagnosticoMental": {
+                      "type": "string",
+                      "example": "Nenhum"
+                    },
+                    "historicoFamiliar": {
+                      "type": "string",
+                      "example": "Ansiedade na mãe"
+                    },
+                    "rotina": {
+                      "type": "string",
+                      "example": "Trabalho intenso"
+                    },
+                    "sono": {
+                      "type": "string",
+                      "example": "Dorme 6h/dia"
+                    },
+                    "atividadeFisica": {
+                      "type": "string",
+                      "example": "Sedentário"
+                    },
+                    "estresse": {
+                      "type": "string",
+                      "example": "Alto"
+                    },
+                    "convivencia": {
+                      "type": "string",
+                      "example": "Boa"
+                    },
+                    "relacaoFamiliar": {
+                      "type": "string",
+                      "example": "Neutra"
+                    },
+                    "apoioSocial": {
+                      "type": "string",
+                      "example": "Poucos amigos"
+                    },
+                    "nivelFelicidade": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "ansiedade": {
+                      "type": "number",
+                      "example": 8
+                    },
+                    "pensamentosNegativos": {
+                      "type": "string",
+                      "example": "Frequentes"
+                    },
+                    "objetivoTerapia": {
+                      "type": "string",
+                      "example": "Controle emocional"
+                    },
+                    "temasDelicados": {
+                      "type": "string",
+                      "example": "Relacionamento"
+                    },
+                    "estiloAtendimento": {
+                      "type": "string",
+                      "example": "Direto e acolhedor"
+                    },
+                    "observacoesFinais": {
+                      "type": "string",
+                      "example": "Paciente retraído"
+                    },
+                    "autorizacaoLGPD": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "habilitado": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "psicologoId": {
+                      "type": "string",
+                      "example": "psi_777aaa"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2025-01-10T10:15:00.000Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2025-01-10T12:20:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro ausente ou inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro \"idpac\" ausente ou inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pré-paciente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "PrePaciente não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um pré-paciente pelo ID",
+        "description": "Deleta permanentemente um registro de pré-paciente.",
+        "tags": [
+          "Interno - Pré-Pacientes"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "idpac",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pré-paciente a ser removido",
+            "example": "prp_abc123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pré-paciente deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "PrePaciente removido com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro \"idpac\" ausente ou inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pré-paciente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "PrePaciente não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
                     }
                   }
                 }
@@ -3096,6 +5749,705 @@
         }
       }
     },
+    "/api/internal/uploads/capa": {
+      "post": {
+        "summary": "Realiza upload de arquivos",
+        "description": "Envia um arquivo em formato multipart/form-data e retorna a URL final após o upload.",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "path",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Caminho opcional onde o arquivo será salvo",
+            "example": "pacientes/123"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo a ser enviado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Upload realizado com sucesso!"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://meuservidor.com/uploads/pasta/arquivo.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nenhum arquivo enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nenhum arquivo enviado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retorna a URL pública da foto da capa do livro",
+        "description": "Busca a ulr da capa do livro do usuário pelo ID fornecido.",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário",
+            "example": "clvxyz123abc789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "URL da imagem retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://supabase.storage.com/bucket/capa/user123.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do usuário não fornecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do usuário não fornecido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "capa não encontrado ou sem imagem cadastrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou imagem não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/uploads/doc-model": {
+      "post": {
+        "summary": "Cria um novo modelo de documento",
+        "description": "Registra um novo model_doc vinculado a um psicólogo, contendo nome, prompt e ferramenta utilizada.",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "psicologoId",
+                  "prompt",
+                  "tool"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Modelo de Anamnese"
+                  },
+                  "psicologoId": {
+                    "type": "string",
+                    "example": "clxyz123abc"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "example": "Gere uma anamnese estruturada com base nas respostas do paciente."
+                  },
+                  "tool": {
+                    "type": "string",
+                    "example": "gpt-4o"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Documento criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "clzy987asd",
+                    "name": "Modelo de Anamnese",
+                    "psicologoId": "clxyz123abc",
+                    "prompt": "Gere uma anamnese estruturada...",
+                    "tool": "gpt-4o",
+                    "createdAt": "2025-01-01T12:00:00.000Z",
+                    "updatedAt": "2025-01-01T12:00:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha de validação (campos obrigatórios ausentes)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Campos obrigatórios: name, psicologoId, prompt"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os modelos de documentos do psicólogo",
+        "description": "Retorna os modelos de documentos salvos no banco e também os modelos mockados carregados automaticamente.",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do psicólogo",
+            "example": "clxyz123abc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista completa de modelos (reais + mock)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "example": [
+                    {
+                      "id": "clzw987asd",
+                      "name": "Modelo de Evolução",
+                      "psicologoId": "clxyz123abc",
+                      "prompt": "Gerar evolução com base nas observações...",
+                      "tool": "gpt-4o-mini",
+                      "createdAt": "2025-01-01T12:00:00.000Z",
+                      "updatedAt": "2025-01-01T12:00:00.000Z"
+                    },
+                    {
+                      "id": "mock-1",
+                      "name": "Relatório Inicial",
+                      "psicologoId": "clxyz123abc",
+                      "prompt": "Gerar relatório inicial...",
+                      "tool": "mock"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campo obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Campo obrigatório: psicologoId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um modelo de documento",
+        "description": "Deleta um registro de modelo de documento pelo ID fornecido.",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "docId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do documento a ser deletado",
+            "example": "clzw987asd123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documento removido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Documento deletado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campo obrigatório não fornecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Campo obrigatório: docId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao deletar o documento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/uploads/my-models": {
+      "get": {
+        "summary": "Lista modelos de documentos",
+        "description": "Retorna todos os documentos cadastrados. Se for informado um psicologoId, retorna apenas os documentos associados a esse profissional.",
+        "tags": [
+          "Interno - Model Docs"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "psicologoId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra os documentos pelo ID do psicólogo",
+            "example": "clzw987asd123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de documentos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "clzw987asd123"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Relatório clínico"
+                      },
+                      "prompt": {
+                        "type": "string",
+                        "example": "Gerar relatório detalhado..."
+                      },
+                      "tool": {
+                        "type": "string",
+                        "example": "openai"
+                      },
+                      "psicologoId": {
+                        "type": "string",
+                        "example": "abcd1234"
+                      },
+                      "criado_em": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-15T18:23:11.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar documentos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao buscar documentos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/internal/uploads/profile": {
+      "post": {
+        "summary": "Faz upload de um arquivo para o storage",
+        "description": "Realiza o upload de um arquivo para o bucket correto, dependendo do valor do parâmetro `path`.\n- `profile-pictures` → envia para a pasta de fotos de perfil  \n- `banner` → envia para a pasta de banners  \nO parâmetro `id` é opcional e pode ser usado como nome ou referência do arquivo.\n",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "profile-pictures",
+                "banner"
+              ]
+            },
+            "description": "Pasta de destino do arquivo",
+            "example": "profile-pictures"
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID opcional para identificar o arquivo",
+            "example": "clzw123abc987"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo a ser enviado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Upload realizado com sucesso!"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://supabase.../profile-pictures/abc123.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação (arquivo ausente ou parâmetros inválidos)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nenhum arquivo enviado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor ao processar o upload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retorna a URL pública da foto de perfil do usuário",
+        "description": "Busca a imagem de perfil salva no Supabase Storage e retorna a URL pública.\nCaso o campo `photoprofile` contenha uma URL completa, apenas o path é extraído.\n",
+        "tags": [
+          "Interno - files and uploads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário",
+            "example": "clzw0t3p8000dxoyxk2h4y1ab"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "URL pública da imagem retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://qfpygaqyldmthqakmisq.supabase.co/storage/v1/object/public/tiviai-images/profile-pictures/abc123.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de requisição (userId ausente)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID do usuário não fornecido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado ou sem foto de perfil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou imagem não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao gerar a URL pública",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao obter URL da imagem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/internal/user-profile": {
       "get": {
         "summary": "Retorna um usuário pelo ID",
@@ -3207,16 +6559,6 @@
           }
         }
       },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/user-profile",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/users": {
       "put": {
         "summary": "Atualiza os dados de um usuário",
         "description": "Atualiza as informações de um usuário existente no sistema pelo ID.",
@@ -3374,7 +6716,7 @@
         }
       }
     },
-    "/api/message?sala={sala}": {
+    "/api/message": {
       "get": {
         "summary": "Recupera mensagens transcritas de uma sala",
         "description": "Retorna a transcrição completa armazenada temporariamente para a sala informada.",
@@ -3443,9 +6785,7 @@
             }
           }
         }
-      }
-    },
-    "/api/message": {
+      },
       "post": {
         "summary": "Adiciona um trecho de transcrição a uma sala",
         "description": "Recebe texto transcrito e armazena temporariamente no servidor dentro da sala indicada.",
@@ -3530,14 +6870,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "get": {
-        "summary": "Auto-generated for GET /api/message",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -3856,7 +7188,7 @@
         }
       }
     },
-    "/api/sua-rota": {
+    "/api/solicitar-acesso": {
       "post": {
         "summary": "Realiza o pré-cadastro de um psicólogo",
         "description": "Cria um registro preliminar de psicólogo no sistema antes da habilitação completa.",
@@ -3993,6 +7325,28 @@
                       "example": "Erro interno do servidor!"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/swagger": {
+      "get": {
+        "summary": "Retorna o documento OpenAPI/Swagger da API",
+        "description": "Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc.",
+        "tags": [
+          "Interno - Documentação"
+        ],
+        "responses": {
+          "200": {
+            "description": "Documento OpenAPI gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
                 }
               }
             }
@@ -4207,338 +7561,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/analize_pcte": {
-      "post": {
-        "summary": "Auto-generated for POST /api/analize_pcte",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/analize_psco": {
-      "post": {
-        "summary": "Auto-generated for POST /api/analize_psco",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/creditos": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/creditos",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/insight/generate-anamnese": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/insight/generate-anamnese",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/insight/generateResume": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/insight/generateResume",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/insight/psicochat": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/insight/psicochat",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/payments/compra-status": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/payments/compra-status",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/payments/credit-card": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/payments/credit-card",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/payments/credit-card",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/payments/pix": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/payments/pix",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/payments/pix",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/payments/savepay": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/payments/savepay",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/payments/savepay",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/payments/savepay",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/prontuario/analise-paciente": {
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/prontuario/analise-paciente",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/prontuario": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/prontuario",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/prontuario",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/prontuario",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/prontuario/save-transcription": {
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/prontuario/save-transcription",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/register_pacientes/pre-pacientes": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/register_pacientes/pre-pacientes",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/register_pacientes": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/register_pacientes",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/register_pacientes",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "summary": "Auto-generated for PUT /api/internal/register_pacientes",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/register_pacientes",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/register_pacientes/transform": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/register_pacientes/transform",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/register_pacientes/transform",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/uploads/capa": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/uploads/capa",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/uploads/capa",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/uploads/doc-model": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/uploads/doc-model",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/uploads/doc-model",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Auto-generated for DELETE /api/internal/uploads/doc-model",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/uploads/my-models": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/uploads/my-models",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/internal/uploads/profile": {
-      "get": {
-        "summary": "Auto-generated for GET /api/internal/uploads/profile",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "summary": "Auto-generated for POST /api/internal/uploads/profile",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/solicitar-acesso": {
-      "post": {
-        "summary": "Auto-generated for POST /api/solicitar-acesso",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/swagger": {
-      "get": {
-        "summary": "Auto-generated for GET /api/swagger",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }

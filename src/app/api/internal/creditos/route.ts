@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 /**
  * @swagger
- * /api/internal/creditos?userId={userId}:
+ * /api/internal/creditos:
  *   get:
  *     summary: Consulta os créditos de um usuário
  *     description: Retorna a quantidade de créditos disponíveis de um usuário específico no sistema.

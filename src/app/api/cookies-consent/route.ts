@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 /**
  * @swagger
- * /api/consent:
+ * /api/cookies-consent:
  *   get:
  *     summary: Verifica se o usuário já deu consentimento para cookies.
  *     description: Retorna o registro de consentimento baseado no IP do cliente. Se estiver expirado (mais de 30 dias), o registro é removido e retornado 404.

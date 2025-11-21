@@ -13,8 +13,88 @@ const openai = new OpenAI({
 });
 
 
+/**
+ * @swagger
+ * /api/internal/insight/psicochat:
+ *   post:
+ *     summary: Gera texto clínico baseado na transcrição e informações do paciente usando IA
+ *     description: "Recebe transcrição, modelo, nome do psicólogo, CRP e nome do paciente. Gera texto estruturado com base no modelo informado."
+ *     tags:
+ *       - Interno - IA / Documentos Clínicos
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: "ID do usuário responsável pela geração e consumo de créditos"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 description: "Transcrição recebida (texto base)"
+ *                 example: "Paciente relata ansiedade frequente e dificuldade para dormir..."
+ *               prompt:
+ *                 type: string
+ *                 description: "Modelo de documento desejado, por exemplo: relatório, evolução, anamnese"
+ *                 example: "modelo_evolucao"
+ *               nomePaciente:
+ *                 type: string
+ *                 description: "Nome do paciente"
+ *                 example: "João Silva"
+ *               nomePsicologo:
+ *                 type: string
+ *                 description: "Nome do psicólogo"
+ *                 example: "Dra. Ana Souza"
+ *               crpPsicologo:
+ *                 type: string
+ *                 description: "Número do CRP do psicólogo"
+ *                 example: "CRP-12/12345"
+ *             required:
+ *               - message
+ *               - prompt
+ *               - nomePaciente
+ *               - nomePsicologo
+ *               - crpPsicologo
+ *     responses:
+ *       200:
+ *         description: "Texto clínico gerado com sucesso"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 response:
+ *                   type: string
+ *                   example: "Paciente apresentou evolução positiva..."
+ *       400:
+ *         description: "Erro por parâmetros insuficientes ou créditos indisponíveis"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Creditos insuficientes ou invalidos, favor verificar seu saldo."
+ *       500:
+ *         description: "Erro interno ao gerar o texto com IA"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao gerar resposta do modelo."
+ */
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse<{ error: string; }> | NextResponse<{ response: string; }>> {
   //var retorno = ''
 
   const { searchParams } = new URL(req.url);

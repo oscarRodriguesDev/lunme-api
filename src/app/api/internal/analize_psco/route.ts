@@ -328,7 +328,7 @@ async function efetivarPsicologo(nome: string, lastname: string, email_confirm: 
 
 /**
  * @swagger
- * /api/internal/analize_psco/{cpf}:
+ * /api/internal/analize_psco:
  *   put:
  *     summary: Habilita um psicólogo previamente pré-cadastrado
  *     description: Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.
@@ -458,7 +458,7 @@ export async function PUT(req: Request) {
 
 /**
  * @swagger
- * /api/internal/analize_psco/{cpf}:
+ * /api/internal/analize_psco:
  *   delete:
  *     summary: Remove um pré-psicólogo do sistema
  *     description: |
@@ -529,7 +529,7 @@ export async function PUT(req: Request) {
  *                   example: "Erro interno do servidor"
  */
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: Request): Promise<NextResponse<{ error: string; }> | NextResponse<{ message: string; deletedCpf: any; }>> {
   try {
     const { cpf } = await req.json();
 

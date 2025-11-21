@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 /**
  * @swagger
- * /api/analise_psco:
+ * /api/analize_psco:
  *   post:
  *     summary: Realiza o pré-cadastro de um psicólogo
  *     description: >
