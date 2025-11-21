@@ -9,7 +9,7 @@
     "lint": "next lint",
     "generate-swagger": "node scripts/generate-swagger.js",
     "build": "npm run generate-swagger && next build",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "prisma generate && npm run generate-swagger && next build"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
