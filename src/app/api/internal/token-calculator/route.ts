@@ -26,6 +26,8 @@ const prices: Record<string, ModelPrices> = {
  * @swagger
  * /api/internal/token-calculator:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Calcula tokens e custo aproximado para uma requisição de modelo
  *     description: Retorna a quantidade de tokens utilizados e o custo estimado em USD com base no modelo selecionado.
  *     tags:

@@ -1,5 +1,6 @@
 import swaggerJsdoc from "swagger-jsdoc";
-const url = process.env.NEXT_PUBLIC_URL+"/api";
+
+const url = process.env.NEXT_PUBLIC_URL + "/api";
 
 const options = {
   definition: {
@@ -11,12 +12,24 @@ const options = {
     },
     servers: [
       {
-        url: url, // base da sua API
+        url, // base da sua API
       },
     ],
+
+    // 🔥 Aqui ativamos Bearer Token
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
-  // caminhos para arquivos que contêm comentários Swagger
-  apis: ["./app/api/**/*.ts"], 
+
+  // caminhos onde estão os comentários @swagger
+  apis: ["./app/api/**/*.ts"],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
