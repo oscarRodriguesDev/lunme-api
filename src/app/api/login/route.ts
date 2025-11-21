@@ -8,80 +8,119 @@ const prisma = new PrismaClient();
 /**
  * @swagger
  * /api/login:
- *  post:
- * @summary Realiza login do usuário
- * @description Valida email e senha, checa permissões e retorna um token JWT.
- * @tags Autenticação
- *
- * @requestBody
- *   required: true
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - email
- *           - password
- *         properties:
- *           email:
- *             type: string
- *             format: email
- *             example: "usuario@exemplo.com"
- *           password:
- *             type: string
- *             example: "senhaSegura123"
- *
- * @response 200
- *   description: Login realizado com sucesso
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         properties:
- *           success:
- *             type: boolean
- *             example: true
- *           user:
+ *   post:
+ *     summary: Realiza login e retorna um JWT
+ *     description: Autentica um usuário pelo email e senha, valida permissões e retorna um token JWT válido por 7 dias.
+ *     tags:
+ *       - Autenticação
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
  *             type: object
  *             properties:
- *               id:
- *                 type: string
- *                 example: "clx123456"
- *               name:
- *                 type: string
- *                 example: "Maria Silva"
- *               role:
- *                 type: string
- *                 example: "PSYCHOLOGIST"
  *               email:
  *                 type: string
- *                 example: "maria@exemplo.com"
- *               crp:
+ *                 description: Email cadastrado do usuário
+ *                 example: "usuario@clinica.com"
+ *               password:
  *                 type: string
- *                 nullable: true
- *           token:
- *             type: string
- *             example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *           expiresIn:
- *             type: string
- *             example: "3h"
- *
- * @response 400
- *   description: Campos obrigatórios ausentes
- *
- * @response 401
- *   description: Senha incorreta ou usuário inválido
- *
- * @response 403
- *   description: Usuário sem permissão
- *
- * @response 404
- *   description: Usuário não encontrado
- *
- * @response 500
- *   description: Erro interno no servidor
+ *                 description: Senha do usuário
+ *                 example: "minhasenha123"
+ *             required:
+ *               - email
+ *               - password
+ *           example:
+ *             email: "usuario@clinica.com"
+ *             password: "minhasenha123"
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso. Retorna informações do usuário e token JWT.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "clu12abc90387xyz"
+ *                     name:
+ *                       type: string
+ *                       example: "João Silva"
+ *                     role:
+ *                       type: string
+ *                       example: "PSYCHOLOGIST"
+ *                     email:
+ *                       type: string
+ *                       example: "usuario@clinica.com"
+ *                     crp:
+ *                       type: string
+ *                       example: "CRP-12/12345"
+ *                 token:
+ *                   type: string
+ *                   description: JWT válido por 7 dias
+ *                   example: "eyJhbGciOiJIUzI1..."
+ *                 expiresIn:
+ *                   type: string
+ *                   example: "3h"
+ *       400:
+ *         description: Email ou senha não enviados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Email e senha são obrigatórios."
+ *       401:
+ *         description: Senha incorreta.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário ou senha incorretos."
+ *       403:
+ *         description: Usuário sem permissão para acessar o sistema.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Acesso negado: este usuário não tem permissão."
+ *       404:
+ *         description: Usuário não encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Usuário não existe no sistema."
+ *       500:
+ *         description: Erro inesperado ao autenticar o usuário.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erro interno no servidor."
  */
-
 
 export async function POST(req: Request) {
   try {
