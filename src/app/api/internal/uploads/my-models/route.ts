@@ -7,6 +7,8 @@ const prisma = new PrismaClient()
  * @swagger
  * /api/internal/uploads/my-models:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista modelos de documentos
  *     description: Retorna todos os documentos cadastrados. Se for informado um psicologoId, retorna apenas os documentos associados a esse profissional.
  *     tags:

@@ -10,6 +10,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/uploads/doc-model:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria um novo modelo de documento
  *     description: Registra um novo model_doc vinculado a um psicólogo, contendo nome, prompt e ferramenta utilizada.
  *     tags:
@@ -156,6 +158,8 @@ const Relatorios = (idP: string) => [
  * @swagger
  * /api/internal/uploads/doc-model:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista todos os modelos de documentos do psicólogo
  *     description: Retorna os modelos de documentos salvos no banco e também os modelos mockados carregados automaticamente.
  *     tags:
@@ -255,6 +259,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/uploads/doc-model:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove um modelo de documento
  *     description: Deleta um registro de modelo de documento pelo ID fornecido.
  *     tags:

@@ -16,6 +16,8 @@ const openai = new OpenAI({
  * @swagger
  * /api/internal/insight/generateResume:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Gera um resumo de livro usando IA
  *     description: Recebe o título e o autor do livro, gera um prompt e retorna um resumo criado pela IA.
  *     tags:

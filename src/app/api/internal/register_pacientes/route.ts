@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/register_pacientes:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista todos os pacientes vinculados a um psicólogo
  *     description: Retorna todos os pacientes associados ao psicólogo informado via query string.
  *     tags:
@@ -176,6 +178,8 @@ async function salvarProntuarioInicial(pacienteId: string, sintomas: string) {
  * @swagger
  * /api/internal/register_pacientes:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria um novo paciente e gera automaticamente o prontuário inicial
  *     description: Cria um paciente no sistema e já vincula um prontuário com dados iniciais.
  *     tags:
@@ -385,6 +389,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/register_pacientes:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove um paciente e seu prontuário vinculado
  *     description: Deleta um paciente pelo ID. Caso exista um prontuário associado, ele será removido automaticamente.
  *     tags:
@@ -498,6 +504,8 @@ export async function DELETE(request: Request) {
  * @swagger
  * /api/internal/register_pacientes:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza os dados de um paciente
  *     description: Atualiza qualquer campo do paciente a partir do ID informado. Apenas os campos enviados no corpo serão alterados.
  *     tags:

@@ -10,7 +10,7 @@
  * @swagger
  * /api/consent:
  *   post:
- *     summary: Registra um novo consentimento do usuário.
+ *     summary: Registra o consentimento lgpd do usuario.
  *     description: Salva no banco de dados a confirmação do termo de consentimento, incluindo IP, data, hora, nome e CPF.
  *     tags:
  *       - Consentimento
@@ -38,7 +38,7 @@
  *                 example: "192.168.0.10"
  *               nome:
  *                 type: string
- *                 example: "Oscar Rodrigues"
+ *                 example: "Jhon Doe"
  *               cpf:
  *                 type: string
  *                 example: "123.456.789-00"

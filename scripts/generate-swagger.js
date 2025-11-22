@@ -138,13 +138,26 @@ const swaggerSpec = {
   openapi: "3.0.0",
   info: jsdocSpec.info,
   servers: [
-    {
-      url: process.env.API_BASE_URL || "http://localhost:3000"
-    }
+    { url: process.env.API_BASE_URL || "http://localhost:3000" }
   ],
   paths: finalPaths,
-  components: jsdocSpec.components || {}
+  components: {
+    // mantém qualquer componente existente
+    ...(jsdocSpec.components || {}),
+    securitySchemes: {
+      BearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  // opcional: aplica BearerAuth a todas as rotas
+  security: [
+   // { BearerAuth: [] }
+  ],
 };
+
 
 // ---------------------------------------------------------------------------
 // 📌 5. Exporta arquivo

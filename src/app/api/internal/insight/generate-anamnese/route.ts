@@ -17,6 +17,8 @@ const openai = new OpenAI({
  * @swagger
  * /api/internal/insight/generate-anamnese:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Gera uma análise de anamnese usando IA
  *     description: Recebe respostas do usuário, gera um prompt para análise psicológica e retorna a resposta do modelo de IA.
  *     tags:

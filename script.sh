@@ -9,4 +9,11 @@ git add *
 git commit -m "Atualização da aplicação"
 git push origin main
 clear
+echo "Deploy finalizado com sucesso!"
 npm run dev
+
+clear
+npm run build
+clear
+npm run dev
+echo "Deploy finalizado com sucesso!"

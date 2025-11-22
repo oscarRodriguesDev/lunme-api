@@ -17,6 +17,8 @@ const openai = new OpenAI({
  * @swagger
  * /api/internal/insight/psicochat:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Gera texto clínico baseado na transcrição e informações do paciente usando IA
  *     description: "Recebe transcrição, modelo, nome do psicólogo, CRP e nome do paciente. Gera texto estruturado com base no modelo informado."
  *     tags:

@@ -4,6 +4,7 @@ import path from "path";
 
 export const runtime = "nodejs"; // swagger-jsdoc precisa de Node (fs/glob)
 
+// Define os globs para capturar todos os arquivos com comentários @swagger
 const apisGlobs = [
   path.join(process.cwd(), "src", "app", "api", "**/*.{js,ts,jsx,tsx}"),
   path.join(process.cwd(), "app", "api", "**/*.{js,ts,jsx,tsx}"),
@@ -19,26 +20,40 @@ const options = {
     },
     servers: [
       {
-        // deixe SEM /api aqui; nos @swagger você usa caminhos começando com /api
+        // Base da sua API
         url: process.env.NEXT_PUBLIC_URL,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    // Aplica BearerAuth globalmente (apenas para rotas que precisam de token)
+    security: [
+      {
+        BearerAuth: [],
       },
     ],
   },
   apis: apisGlobs,
 };
 
-
 /**
  * @swagger
  * /api/swagger:
  *   get:
  *     summary: Retorna o documento OpenAPI/Swagger da API
- *     description: "Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc."
+ *     description: Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc
  *     tags:
  *       - Interno - Documentação
  *     responses:
  *       200:
- *         description: "Documento OpenAPI gerado com sucesso"
+ *         description: Documento OpenAPI gerado com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -47,7 +62,14 @@ const options = {
  */
 
 export async function GET() {
-  // Gera na hora para refletir mudanças sem reiniciar o dev server
-  const spec = swaggerJSDoc(options);
-  return NextResponse.json(spec);
+  try {
+    const spec = swaggerJSDoc(options);
+    return NextResponse.json(spec);
+  } catch (err) {
+    console.error("Erro ao gerar Swagger spec:", err);
+    return NextResponse.json(
+      { error: "Erro ao gerar Swagger spec", details: err.message },
+      { status: 500 }
+    );
+  }
 }

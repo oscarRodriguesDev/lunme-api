@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/history:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Adiciona um registro ao histórico de um psicólogo
  *     description: Cria um novo registro no histórico de um psicólogo, com descrição, tipo e timestamp.
  *     tags:
@@ -120,6 +122,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/history:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista o histórico de um psicólogo
  *     description: Retorna todos os registros do histórico de um psicólogo, ordenados do mais recente para o mais antigo.
  *     tags:
@@ -211,6 +215,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/history:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Deleta um registro do histórico de um psicólogo
  *     description: Remove um registro do histórico com base no ID fornecido.
  *     tags:

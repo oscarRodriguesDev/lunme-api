@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/analize_pcte:
  *   post:
- *     summary: Cria um pré-cadastro de anamnese
+ *     summary: Cria um pré-cadastro de paciente com os dados da anamnese inicial, marcando-o como não habilitado.
  *     description: >
  *       Recebe todas as informações iniciais fornecidas pelo paciente e cria um registro
  *       de pré-anamnese vinculado a um psicólogo responsável.

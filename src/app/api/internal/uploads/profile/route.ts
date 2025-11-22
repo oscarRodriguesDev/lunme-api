@@ -76,6 +76,8 @@ async function uploadFile(file: File, path: string, id: string) {
  * @swagger
  * /api/internal/uploads/profile:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Faz upload de um arquivo para o storage
  *     description: |
  *       Realiza o upload de um arquivo para o bucket correto, dependendo do valor do parâmetro `path`.
@@ -191,6 +193,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/uploads/profile:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Retorna a URL pública da foto de perfil do usuário
  *     description: |
  *       Busca a imagem de perfil salva no Supabase Storage e retorna a URL pública.

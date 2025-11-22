@@ -12,12 +12,11 @@ const options = {
     },
     servers: [
       {
-        url, // base da sua API
+        url: url, // base da sua API
       },
     ],
-
-    // 🔥 Aqui ativamos Bearer Token
     components: {
+      // 🔥 Define o esquema de autenticação Bearer (JWT)
       securitySchemes: {
         BearerAuth: {
           type: "http",
@@ -27,8 +26,6 @@ const options = {
       },
     },
   },
-
-  // caminhos onde estão os comentários @swagger
   apis: ["./app/api/**/*.ts"],
 };
 

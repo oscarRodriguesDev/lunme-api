@@ -12,6 +12,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/user-profile:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Retorna um usuário pelo ID
  *     description: Busca no banco de dados um usuário específico pelo seu ID.
  *     tags:
@@ -116,6 +118,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/user-profile:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza os dados de um usuário
  *     description: Atualiza as informações de um usuário existente no sistema pelo ID.
  *     tags:

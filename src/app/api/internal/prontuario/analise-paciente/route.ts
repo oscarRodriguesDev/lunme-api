@@ -15,6 +15,8 @@ const openai = new OpenAI({
  * @swagger
  * /api/internal/prontuario/analise-paciente:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Gera uma avaliação baseada no prompt enviado
  *     description: Recebe um prompt, concatena com instruções internas e envia ao modelo de IA para gerar uma avaliação estruturada.
  *     tags:

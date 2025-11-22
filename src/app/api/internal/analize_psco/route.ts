@@ -13,6 +13,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/analize_psco:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista todos os pré-psicólogos cadastrados
  *     description: Retorna todos os registros de pré-psicólogos armazenados no sistema.
  *     tags:
@@ -60,8 +62,10 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/analize_psco:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Realiza o pré-cadastro de um psicólogo
- *     description: Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios.
+ *     description: Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios. esse endpoint sera removido futuramente
  *     tags:
  *        - Interno - Analise de Psicólogos
  *
@@ -330,11 +334,13 @@ async function efetivarPsicologo(nome: string, lastname: string, email_confirm: 
  * @swagger
  * /api/internal/analize_psco:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Habilita um psicólogo previamente pré-cadastrado
  *     description: Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.
  *     tags:
  *         - Interno - Analise de Psicólogos
- *
+
  *     requestBody:
  *       required: true
  *       content:
@@ -460,6 +466,8 @@ export async function PUT(req: Request) {
  * @swagger
  * /api/internal/analize_psco:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove um pré-psicólogo do sistema
  *     description: |
  *       Exclui o registro de um pré-psicólogo com base no CPF.  

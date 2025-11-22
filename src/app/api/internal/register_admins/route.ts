@@ -9,6 +9,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/register_admins:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cadastra um novo usuário administrador
  *     description: Cria um usuário com papel de ADMIN, realizando validação de campos e hash da senha.
  *     tags:

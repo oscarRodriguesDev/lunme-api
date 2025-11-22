@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/swagger/route.js", "src/app/api/swagger.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/swagger/route.js", "src/app/api/swagger.js", "next.config.mjs", "next.config.mjs", "next.config.mjs"],
   "exclude": ["node_modules"]
 }

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/avaliacao:
  *   post:
- *     summary: Registra uma nova avaliação sobre a reuniçao e o atendimento
+ *     summary: Registra uma nova avaliação sobre a reuniãoo e o atendimento
  *     description: >
  *       Permite que um paciente registre uma avaliação contendo notas sobre áudio,
  *       vídeo, experiência geral, avaliação profissional e um comentário opcional.

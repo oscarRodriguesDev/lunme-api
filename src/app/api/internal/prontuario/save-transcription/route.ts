@@ -12,6 +12,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/prontuario/save-transcription:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza e concatena uma nova transcription ao prontuário do paciente
  *     description: Busca o prontuário pelo pacienteId e adiciona uma nova entrada de transcription concatenada com as anteriores.
  *     tags:

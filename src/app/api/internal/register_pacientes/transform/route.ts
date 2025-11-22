@@ -9,6 +9,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/register_pacientes/transform:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Busca um pré-paciente pelo ID
  *     description: Retorna as informações completas de um pré-paciente específico.
  *     tags:
@@ -136,6 +138,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/register_pacientes/transform:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove um pré-paciente pelo ID
  *     description: Deleta permanentemente um registro de pré-paciente.
  *     tags:

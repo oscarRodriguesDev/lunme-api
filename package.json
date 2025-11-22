@@ -61,6 +61,7 @@
     "gpt-tokenizer": "^3.0.1",
     "html2pdf.js": "^0.10.3",
     "input-otp": "1.4.1",
+    "jose": "^6.1.2",
     "jotai": "^2.12.5",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^3.0.0",

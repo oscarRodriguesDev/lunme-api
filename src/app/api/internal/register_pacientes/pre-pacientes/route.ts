@@ -7,6 +7,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/register_pacientes/pre-pacientes:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista pré-pacientes ainda não habilitados de um psicólogo
  *     description: Retorna todos os registros de pré-pacientes vinculados ao psicólogo informado, filtrando apenas os não habilitados.
  *     tags:

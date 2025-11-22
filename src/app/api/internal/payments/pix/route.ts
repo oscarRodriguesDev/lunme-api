@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
  * @swagger
  * /api/internal/payments/pix:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria uma cobrança PIX via Pagar.me
  *     description: Gera uma ordem de pagamento PIX no Pagar.me e retorna o QR Code e dados da transação.
  *     tags:
@@ -194,6 +196,8 @@ export async function POST(req: NextRequest) {
  * @swagger
  * /api/internal/payments/pix:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Verifica se a API de pagamentos está funcionando
  *     description: Retorna uma mensagem simples confirmando o funcionamento da API.
  *     tags:

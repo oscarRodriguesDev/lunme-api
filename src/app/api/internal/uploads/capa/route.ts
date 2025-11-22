@@ -59,6 +59,8 @@ async function uploadFile(file: File, path: string) {
  * @swagger
  * /api/internal/uploads/capa:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Realiza upload de arquivos
  *     description: Envia um arquivo em formato multipart/form-data e retorna a URL final após o upload.
  *     tags:
@@ -159,6 +161,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/uploads/capa:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Retorna a URL pública da foto da capa do livro
  *     description: Busca a ulr da capa do livro do usuário pelo ID fornecido.
  *     tags:

@@ -9,6 +9,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/gerar-link-anamnese:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Gera um link temporário de acesso à anamnese
  *     description: Cria um token temporário para o psicólogo acessar a anamnese de forma segura e retorna o link completo.
  *     tags:

@@ -12,6 +12,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/payments/savepay:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista as compras de um usuário
  *     description: Retorna todas as compras associadas a um usuário, ordenadas da mais recente para a mais antiga.
  *     tags:
@@ -111,6 +113,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/payments/savepay:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Salva uma compra/pagamento no sistema
  *     description: Registra uma nova compra no banco de dados com status e créditos adquiridos.
  *     tags:
@@ -233,6 +237,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/payments/savepay:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove uma compra salva pelo paymentId
  *     description: Deleta todas as compras associadas ao paymentId informado.
  *     tags:

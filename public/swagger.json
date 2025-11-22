@@ -157,7 +157,7 @@
     },
     "/api/analize_pcte": {
       "post": {
-        "summary": "Cria um pré-cadastro de anamnese",
+        "summary": "Cria um pré-cadastro de paciente com os dados da anamnese inicial, marcando-o como não habilitado.",
         "description": "Recebe todas as informações iniciais fornecidas pelo paciente e cria um registro de pré-anamnese vinculado a um psicólogo responsável.\n",
         "tags": [
           "Anamnese"
@@ -481,7 +481,7 @@
     },
     "/api/avaliacao": {
       "post": {
-        "summary": "Registra uma nova avaliação sobre a reuniçao e o atendimento",
+        "summary": "Registra uma nova avaliação sobre a reuniãoo e o atendimento",
         "description": "Permite que um paciente registre uma avaliação contendo notas sobre áudio, vídeo, experiência geral, avaliação profissional e um comentário opcional.\n",
         "tags": [
           "Avaliações"
@@ -580,7 +580,7 @@
     },
     "/api/consent": {
       "post": {
-        "summary": "Registra um novo consentimento do usuário.",
+        "summary": "Registra o consentimento lgpd do usuario.",
         "description": "Salva no banco de dados a confirmação do termo de consentimento, incluindo IP, data, hora, nome e CPF.",
         "tags": [
           "Consentimento"
@@ -613,7 +613,7 @@
                   },
                   "nome": {
                     "type": "string",
-                    "example": "Oscar Rodrigues"
+                    "example": "Jhon Doe"
                   },
                   "cpf": {
                     "type": "string",
@@ -814,6 +814,11 @@
     },
     "/api/internal/analize_psco": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista todos os pré-psicólogos cadastrados",
         "description": "Retorna todos os registros de pré-psicólogos armazenados no sistema.",
         "tags": [
@@ -858,8 +863,13 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Realiza o pré-cadastro de um psicólogo",
-        "description": "Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios.",
+        "description": "Registra um novo pré-psicólogo no sistema. Todos os campos são obrigatórios. esse endpoint sera removido futuramente",
         "tags": [
           "Interno - Analise de Psicólogos"
         ],
@@ -989,6 +999,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Habilita um psicólogo previamente pré-cadastrado",
         "description": "Ativa um pré-psicólogo no sistema, atualiza o status de habilitado e dispara o fluxo de efetivação.",
         "tags": [
@@ -1092,6 +1107,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove um pré-psicólogo do sistema",
         "description": "Exclui o registro de um pré-psicólogo com base no CPF.  \nSe o psicólogo não estiver habilitado, envia notificação antes da exclusão.\n",
         "tags": [
@@ -1190,6 +1210,11 @@
     },
     "/api/internal/creditos": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Consulta os créditos de um usuário",
         "description": "Retorna a quantidade de créditos disponíveis de um usuário específico no sistema.",
         "tags": [
@@ -1280,6 +1305,11 @@
     },
     "/api/internal/gen-meet": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria uma nova consulta",
         "description": "Registra uma nova consulta associada a paciente e psicólogo.",
         "tags": [
@@ -1421,6 +1451,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista todas as consultas de um psicólogo",
         "description": "Retorna todas as consultas associadas a um psicólogo específico.  \nCaso não existam consultas, retorna um exemplo de consulta fictícia para exibição.\n",
         "tags": [
@@ -1540,6 +1575,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza os dados de uma consulta",
         "description": "Permite atualizar qualquer campo de uma consulta existente, exceto o ID.",
         "tags": [
@@ -1673,6 +1713,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Exclui uma consulta existente",
         "description": "Remove do banco de dados uma consulta específica pelo seu ID.",
         "tags": [
@@ -1735,6 +1780,11 @@
     },
     "/api/internal/gerar-link-anamnese": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Gera um link temporário de acesso à anamnese",
         "description": "Cria um token temporário para o psicólogo acessar a anamnese de forma segura e retorna o link completo.",
         "tags": [
@@ -1813,6 +1863,11 @@
     },
     "/api/internal/history": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Adiciona um registro ao histórico de um psicólogo",
         "description": "Cria um novo registro no histórico de um psicólogo, com descrição, tipo e timestamp.",
         "tags": [
@@ -1920,6 +1975,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista o histórico de um psicólogo",
         "description": "Retorna todos os registros do histórico de um psicólogo, ordenados do mais recente para o mais antigo.",
         "tags": [
@@ -2007,6 +2067,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Deleta um registro do histórico de um psicólogo",
         "description": "Remove um registro do histórico com base no ID fornecido.",
         "tags": [
@@ -2077,6 +2142,11 @@
     },
     "/api/internal/insight/generate-anamnese": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Gera uma análise de anamnese usando IA",
         "description": "Recebe respostas do usuário, gera um prompt para análise psicológica e retorna a resposta do modelo de IA.",
         "tags": [
@@ -2170,6 +2240,11 @@
     },
     "/api/internal/insight/generateResume": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Gera um resumo de livro usando IA",
         "description": "Recebe o título e o autor do livro, gera um prompt e retorna um resumo criado pela IA.",
         "tags": [
@@ -2266,6 +2341,11 @@
     },
     "/api/internal/insight/psicochat": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Gera texto clínico baseado na transcrição e informações do paciente usando IA",
         "description": "Recebe transcrição, modelo, nome do psicólogo, CRP e nome do paciente. Gera texto estruturado com base no modelo informado.",
         "tags": [
@@ -2380,6 +2460,11 @@
     },
     "/api/internal/location-verification": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Consulta o status de pagamento de uma ordem",
         "description": "Retorna o status de pagamento de uma ordem consultando a API do Pagar.me.",
         "tags": [
@@ -2458,6 +2543,11 @@
     },
     "/api/internal/payments/compra-status": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Consulta o status de uma compra",
         "description": "Retorna o status e informações de uma compra específica com base no userId e paymentId.",
         "tags": [
@@ -2582,6 +2672,11 @@
     },
     "/api/internal/payments/credit-card": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria uma cobrança via cartão de crédito usando Pagar.me",
         "description": "Realiza a criação de uma ordem e pagamento por cartão de crédito diretamente via API do Pagar.me.",
         "tags": [
@@ -2778,6 +2873,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Teste de funcionamento da API de pagamentos",
         "description": "Retorna uma mensagem simples indicando que a API está ativa.",
         "tags": [
@@ -2805,6 +2905,11 @@
     },
     "/api/internal/payments/pix": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria uma cobrança PIX via Pagar.me",
         "description": "Gera uma ordem de pagamento PIX no Pagar.me e retorna o QR Code e dados da transação.",
         "tags": [
@@ -2959,6 +3064,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Verifica se a API de pagamentos está funcionando",
         "description": "Retorna uma mensagem simples confirmando o funcionamento da API.",
         "tags": [
@@ -2986,6 +3096,11 @@
     },
     "/api/internal/payments/savepay": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista as compras de um usuário",
         "description": "Retorna todas as compras associadas a um usuário, ordenadas da mais recente para a mais antiga.",
         "tags": [
@@ -3087,6 +3202,11 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Salva uma compra/pagamento no sistema",
         "description": "Registra uma nova compra no banco de dados com status e créditos adquiridos.",
         "tags": [
@@ -3206,6 +3326,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove uma compra salva pelo paymentId",
         "description": "Deleta todas as compras associadas ao paymentId informado.",
         "tags": [
@@ -3304,6 +3429,11 @@
     },
     "/api/internal/products": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cadastra um novo produto",
         "description": "Cria um produto com código, título, descrição, preço, valor unitário e quantidade.",
         "tags": [
@@ -3438,6 +3568,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista todos os produtos",
         "description": "Retorna todos os produtos cadastrados, ordenados do mais recente para o mais antigo.",
         "tags": [
@@ -3514,6 +3649,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza um produto existente",
         "description": "Atualiza os dados de um produto cadastrado com base no ID fornecido.",
         "tags": [
@@ -3637,6 +3777,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove um produto",
         "description": "Deleta um produto existente a partir do código informado como parâmetro de query.",
         "tags": [
@@ -3707,6 +3852,11 @@
     },
     "/api/internal/prontuario/analise-paciente": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Gera uma avaliação baseada no prompt enviado",
         "description": "Recebe um prompt, concatena com instruções internas e envia ao modelo de IA para gerar uma avaliação estruturada.",
         "tags": [
@@ -3785,6 +3935,11 @@
     },
     "/api/internal/prontuario": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Retorna o prontuário de um paciente",
         "description": "Busca um prontuário usando o pacienteId informado na URL.",
         "tags": [
@@ -3863,6 +4018,11 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria um prontuário para um paciente",
         "description": "Registra um novo prontuário vinculado a um paciente. Cada paciente só pode ter um prontuário.",
         "tags": [
@@ -3969,6 +4129,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza o prontuário de um paciente",
         "description": "Atualiza os campos do prontuário existente. Caso um campo não seja enviado, o valor atual é mantido. O campo \"evolucao\" é concatenado ao valor anterior.",
         "tags": [
@@ -4077,6 +4242,11 @@
     },
     "/api/internal/prontuario/save-transcription": {
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza e concatena uma nova transcription ao prontuário do paciente",
         "description": "Busca o prontuário pelo pacienteId e adiciona uma nova entrada de transcription concatenada com as anteriores.",
         "tags": [
@@ -4176,6 +4346,11 @@
     },
     "/api/internal/register_admins": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cadastra um novo usuário administrador",
         "description": "Cria um usuário com papel de ADMIN, realizando validação de campos e hash da senha.",
         "tags": [
@@ -4298,6 +4473,11 @@
     },
     "/api/internal/register_pacientes/pre-pacientes": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista pré-pacientes ainda não habilitados de um psicólogo",
         "description": "Retorna todos os registros de pré-pacientes vinculados ao psicólogo informado, filtrando apenas os não habilitados.",
         "tags": [
@@ -4520,6 +4700,11 @@
     },
     "/api/internal/register_pacientes": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista todos os pacientes vinculados a um psicólogo",
         "description": "Retorna todos os pacientes associados ao psicólogo informado via query string.",
         "tags": [
@@ -4645,6 +4830,11 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria um novo paciente e gera automaticamente o prontuário inicial",
         "description": "Cria um paciente no sistema e já vincula um prontuário com dados iniciais.",
         "tags": [
@@ -4806,6 +4996,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove um paciente e seu prontuário vinculado",
         "description": "Deleta um paciente pelo ID. Caso exista um prontuário associado, ele será removido automaticamente.",
         "tags": [
@@ -4890,6 +5085,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza os dados de um paciente",
         "description": "Atualiza qualquer campo do paciente a partir do ID informado. Apenas os campos enviados no corpo serão alterados.",
         "tags": [
@@ -5039,6 +5239,11 @@
     },
     "/api/internal/register_pacientes/transform": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Busca um pré-paciente pelo ID",
         "description": "Retorna as informações completas de um pré-paciente específico.",
         "tags": [
@@ -5276,6 +5481,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove um pré-paciente pelo ID",
         "description": "Deleta permanentemente um registro de pré-paciente.",
         "tags": [
@@ -5475,6 +5685,11 @@
     },
     "/api/internal/upbook": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria um novo livro científico",
         "description": "Adiciona um livro à base científica, vinculando opcionalmente a um psicólogo.",
         "tags": [
@@ -5588,6 +5803,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista livros científicos de um psicólogo",
         "description": "Retorna todos os livros científicos associados a um psicólogo específico.",
         "tags": [
@@ -5673,6 +5893,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Deleta um livro científico pelo ID",
         "description": "Remove um livro específico do banco de dados usando seu ID.",
         "tags": [
@@ -5759,6 +5984,11 @@
     },
     "/api/internal/uploads/capa": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Realiza upload de arquivos",
         "description": "Envia um arquivo em formato multipart/form-data e retorna a URL final após o upload.",
         "tags": [
@@ -5852,6 +6082,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Retorna a URL pública da foto da capa do livro",
         "description": "Busca a ulr da capa do livro do usuário pelo ID fornecido.",
         "tags": [
@@ -5939,6 +6174,11 @@
     },
     "/api/internal/uploads/doc-model": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Cria um novo modelo de documento",
         "description": "Registra um novo model_doc vinculado a um psicólogo, contendo nome, prompt e ferramenta utilizada.",
         "tags": [
@@ -6033,6 +6273,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista todos os modelos de documentos do psicólogo",
         "description": "Retorna os modelos de documentos salvos no banco e também os modelos mockados carregados automaticamente.",
         "tags": [
@@ -6117,6 +6362,11 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Remove um modelo de documento",
         "description": "Deleta um registro de modelo de documento pelo ID fornecido.",
         "tags": [
@@ -6188,6 +6438,11 @@
     },
     "/api/internal/uploads/my-models": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Lista modelos de documentos",
         "description": "Retorna todos os documentos cadastrados. Se for informado um psicologoId, retorna apenas os documentos associados a esse profissional.",
         "tags": [
@@ -6267,6 +6522,11 @@
     },
     "/api/internal/uploads/profile": {
       "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Faz upload de um arquivo para o storage",
         "description": "Realiza o upload de um arquivo para o bucket correto, dependendo do valor do parâmetro `path`.\n- `profile-pictures` → envia para a pasta de fotos de perfil  \n- `banner` → envia para a pasta de banners  \nO parâmetro `id` é opcional e pode ser usado como nome ou referência do arquivo.\n",
         "tags": [
@@ -6371,6 +6631,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Retorna a URL pública da foto de perfil do usuário",
         "description": "Busca a imagem de perfil salva no Supabase Storage e retorna a URL pública.\nCaso o campo `photoprofile` contenha uma URL completa, apenas o path é extraído.\n",
         "tags": [
@@ -6458,6 +6723,11 @@
     },
     "/api/internal/user-profile": {
       "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Retorna um usuário pelo ID",
         "description": "Busca no banco de dados um usuário específico pelo seu ID.",
         "tags": [
@@ -6568,6 +6838,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Atualiza os dados de um usuário",
         "description": "Atualiza as informações de um usuário existente no sistema pelo ID.",
         "tags": [
@@ -7504,7 +7779,7 @@
     "/api/swagger": {
       "get": {
         "summary": "Retorna o documento OpenAPI/Swagger da API",
-        "description": "Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc.",
+        "description": "Gera o arquivo de especificação OpenAPI em tempo real usando swagger-jsdoc",
         "tags": [
           "Interno - Documentação"
         ],
@@ -7737,10 +8012,12 @@
   },
   "components": {
     "securitySchemes": {
-      "basicAuth": {
+      "BearerAuth": {
         "type": "http",
-        "scheme": "basic"
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": []
 }

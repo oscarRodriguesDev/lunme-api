@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
  * @swagger
  * /api/internal/location-verification:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Consulta o status de pagamento de uma ordem
  *     description: Retorna o status de pagamento de uma ordem consultando a API do Pagar.me.
  *     tags:

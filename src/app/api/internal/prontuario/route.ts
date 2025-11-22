@@ -14,6 +14,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/prontuario:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Retorna o prontuário de um paciente
  *     description: Busca um prontuário usando o pacienteId informado na URL.
  *     tags:
@@ -96,6 +98,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/prontuario:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria um prontuário para um paciente
  *     description: Registra um novo prontuário vinculado a um paciente. Cada paciente só pode ter um prontuário.
  *     tags:
@@ -222,6 +226,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/prontuario:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza o prontuário de um paciente
  *     description: Atualiza os campos do prontuário existente. Caso um campo não seja enviado, o valor atual é mantido. O campo "evolucao" é concatenado ao valor anterior.
  *     tags:

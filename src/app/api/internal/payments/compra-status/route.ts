@@ -10,6 +10,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/payments/compra-status:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Consulta o status de uma compra
  *     description: Retorna o status e informações de uma compra específica com base no userId e paymentId.
  *     tags:

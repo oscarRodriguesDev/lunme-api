@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
  * @swagger
  * /api/internal/payments/credit-card:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria uma cobrança via cartão de crédito usando Pagar.me
  *     description: Realiza a criação de uma ordem e pagamento por cartão de crédito diretamente via API do Pagar.me.
  *     tags:
@@ -240,6 +242,8 @@ const orderData = {
  * @swagger
  * /api/internal/payments/credit-card:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Teste de funcionamento da API de pagamentos
  *     description: Retorna uma mensagem simples indicando que a API está ativa.
  *     tags:

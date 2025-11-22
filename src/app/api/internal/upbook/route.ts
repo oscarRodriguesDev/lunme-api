@@ -16,6 +16,8 @@ const prisma = new PrismaClient()
  * @swagger
  * /api/internal/upbook:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria um novo livro científico
  *     description: Adiciona um livro à base científica, vinculando opcionalmente a um psicólogo.
  *     tags:
@@ -132,6 +134,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/upbook:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista livros científicos de um psicólogo
  *     description: Retorna todos os livros científicos associados a um psicólogo específico.
  *     tags:
@@ -215,6 +219,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/upbook:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Deleta um livro científico pelo ID
  *     description: Remove um livro específico do banco de dados usando seu ID.
  *     tags:

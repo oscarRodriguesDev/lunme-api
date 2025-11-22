@@ -36,6 +36,8 @@ function codeGen(data: string, hora: string): string {
  * @swagger
  * /api/internal/gen-meet:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cria uma nova consulta
  *     description: Registra uma nova consulta associada a paciente e psicólogo.
  *     tags:
@@ -184,6 +186,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/gen-meet:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista todas as consultas de um psicólogo
  *     description: |
  *       Retorna todas as consultas associadas a um psicólogo específico.  
@@ -327,6 +331,8 @@ export async function GET(req: Request) {
  * @swagger
  * /api/internal/gen-meet:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza os dados de uma consulta
  *     description: Permite atualizar qualquer campo de uma consulta existente, exceto o ID.
  *     tags:
@@ -443,6 +449,8 @@ export async function PUT(req: Request) {
  * @swagger
  * /api/internal/gen-meet:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Exclui uma consulta existente
  *     description: Remove do banco de dados uma consulta específica pelo seu ID.
  *     tags:

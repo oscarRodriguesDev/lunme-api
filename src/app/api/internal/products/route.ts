@@ -7,6 +7,8 @@ const prisma = new PrismaClient();
  * @swagger
  * /api/internal/products:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Cadastra um novo produto
  *     description: Cria um produto com código, título, descrição, preço, valor unitário e quantidade.
  *     tags:
@@ -159,6 +161,8 @@ export async function POST(req: Request) {
  * @swagger
  * /api/internal/products:
  *   get:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Lista todos os produtos
  *     description: Retorna todos os produtos cadastrados, ordenados do mais recente para o mais antigo.
  *     tags:
@@ -248,6 +252,8 @@ export async function GET() {
  * @swagger
  * /api/internal/products:
  *   put:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Atualiza um produto existente
  *     description: Atualiza os dados de um produto cadastrado com base no ID fornecido.
  *     tags:
@@ -382,6 +388,8 @@ export async function PUT(req: Request) {
  * @swagger
  * /api/internal/products:
  *   delete:
+ *     security:
+ *       - BearerAuth: []
  *     summary: Remove um produto
  *     description: Deleta um produto existente a partir do código informado como parâmetro de query.
  *     tags:
