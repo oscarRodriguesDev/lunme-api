@@ -7884,11 +7884,6 @@
         "tags": [
           "pagarme"
         ],
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {

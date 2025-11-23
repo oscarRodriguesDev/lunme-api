@@ -94,10 +94,6 @@ async function atualizarStatusCompra(transactionId: string, status: "PENDING" | 
  *
  *     tags:
  *       - pagarme 
- *     
- *
- *     security:
- *       - basicAuth: []
  *
  *     requestBody:
  *       required: true
